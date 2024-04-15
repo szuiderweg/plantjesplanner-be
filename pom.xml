@@ -10,6 +10,7 @@
     </parent>
     <groupId>nl.novi</groupId>
     <artifactId>be_plantjesplanner</artifactId>
+<!--   todo voor inleveren hier een version 1.0 van maken-->
     <version>0.0.1-SNAPSHOT</version>
     <name>be_plantjesplanner</name>
     <description>be_plantjesplanner</description>
@@ -26,6 +27,21 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
 
