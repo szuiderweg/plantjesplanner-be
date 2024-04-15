@@ -1,8 +1,9 @@
 package nl.novi.be_plantjesplanner.controllers;
-
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
+import nl.novi.be_plantjesplanner.entities.Plant;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/plants")
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 public class PlantController {
 
    //POST a single plant
+   @PostMapping("/")
+   public ResponseEntity<Plant> postPlant(@RequestBody Plant plant){
+      return ResponseEntity.status(HttpStatus.CREATED).body(plant);
+   }
 
     //GET a specific plant
 
