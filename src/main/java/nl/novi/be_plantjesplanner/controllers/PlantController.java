@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.*;
 public class PlantController {
 
    //POST a single plant
+   //todo: repository
+   //todo: service
+   //todo: connect repository to service
+   //todo: connect controller to service
+   //todo: complete POST method
+   //todo: Postman plant POST request
    @PostMapping("/")
    public ResponseEntity<Plant> postPlant(@RequestBody Plant plant){
       return ResponseEntity.status(HttpStatus.CREATED).body(plant);
