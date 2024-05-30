@@ -15,26 +15,34 @@ public class PlantController {
    {this.plantService = plantService;}
 
 
-   //POST a single plant
-   //done: repository
-   //done: service
-   //done: connect repository to service
-   //done: connect service to controller
-   //done: complete controller POST method
-   //todo: Postman plant POST request
+   //POST a new plant
    @PostMapping
    public ResponseEntity<Plant> postPlant(@RequestBody Plant plant){
       return ResponseEntity.status(HttpStatus.CREATED).body(plantService.savePlant(plant));
    }
 
-    //GET a specific plant
 
-    //GET all plants
-
-   //edit a specific plant
+   //todo edit (PUT) a specific plant
 
 
-    //delete a specific plant
+   //todo DELETE a specific plant
+
+   //todo GET a specific plant
+   //   @GetMapping("/{name}")
+//   public ResponseEntity<Plant> getPlant(@PathVariable("name") String name){
+//      return ResponseEntity.ok(plantService.)
+//   }
+
+    //todo GET all plants
+
+   //todo GET plants that match properties of myGarden
+
+   //todo GET plants that match custom criteria
+
+
+
+
+
 
     //dto mappers
 
