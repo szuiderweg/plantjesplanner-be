@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "plants")
@@ -13,6 +14,7 @@ public class Plant {
     private Long id;
     private String dutchName;
     private String latinName;
+    @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short todo: probably needs some finetuning
     private String plantDescription;
     private String waterPreference;
     private String sunPreference;

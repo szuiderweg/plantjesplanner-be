@@ -4,6 +4,8 @@ import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,7 +22,10 @@ public class PlantService {
         return plantRepository.save(plant);
     }
 
-//    public Optional<Plant> getPlantByName(String name){
-//        return plantRepository.findBy(name);
-//    }
+    //corresponds to GET all Plants request in the PlantController
+    public List<Plant> getAllPlants()
+    {
+        return plantRepository.findAll();
+    }
+
 }
