@@ -22,11 +22,20 @@ public class PlantController {
       return ResponseEntity.status(HttpStatus.CREATED).body(plantService.savePlant(plant));
    }
 
-
    // edit (PUT) a specific plant
+   @PutMapping("/{id}")
+   public ResponseEntity<Plant> updatePlant(@Valid @RequestBody Plant plant, @PathVariable Long id){
+      Plant updatedPlant = plantService.updatePlantById(plant, id);
+      return ResponseEntity.ok().body(updatedPlant);
+   }
 
 
    //DELETE a specific plant
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
+      plantService.deletePlantById(id);
+      return ResponseEntity.noContent().build();
+   }
 
    //GET all plants
    @GetMapping
