@@ -1,9 +1,6 @@
 package nl.novi.be_plantjesplanner.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -12,6 +9,8 @@ public class Plant {
     @Id
     @GeneratedValue
     private Long id;
+    // todo set up errorhandling of errors caused by non-unique plantnames
+    //@Column(unique = true)
     private String dutchName;
     private String latinName;
     @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short todo: probably needs some finetuning
@@ -22,7 +21,7 @@ public class Plant {
     private String bloomColour;
     private Double height;//vertical size [meters]
     private Double footprint;//horizontal size [meters^2]
-    private Boolean pottedPlant;//suitable for living in a pot
+    private Boolean pottedPlant;//plant can survive and thrive  in a pot
     private String soilPreference;
 
 

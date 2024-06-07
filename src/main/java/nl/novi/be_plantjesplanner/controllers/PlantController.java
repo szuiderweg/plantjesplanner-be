@@ -34,12 +34,11 @@ public class PlantController {
       List<Plant> foundPlants = plantService.getAllPlants();
       return ResponseEntity.ok().body(foundPlants);
    }
-
-   //todo GET a specific plant
-   //@GetMapping("/{name}")
-//   public ResponseEntity<Plant> getPlant(@PathVariable("name") String name){
-//      return ResponseEntity.ok(plantService.)
-//   }
+   //GET a specific plant by id
+   @GetMapping("/{id}")
+   public ResponseEntity<Plant> getPlant(@PathVariable("id") Long id){
+      return ResponseEntity.ok(plantService.getPlantById(id));
+   }
 
 
 

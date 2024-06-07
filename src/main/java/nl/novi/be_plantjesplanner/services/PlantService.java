@@ -22,6 +22,10 @@ public class PlantService {
         return plantRepository.save(plant);
     }
 
+    public Plant getPlantById(Long id){
+      return plantRepository.findById(id).get();
+    }
+
     //corresponds to GET all Plants request in the PlantController
     public List<Plant> getAllPlants()
     {
