@@ -50,20 +50,12 @@ public class PlantController {
    }
 
 
+   //todo GET plants by name
 
    //todo GET plants that match properties of myGarden
 
    //todo GET plants that match custom criteria
 
-
-
-
-
-
-    //dto mappers
-
-    //plantEntity2Dto
-    //plantD
 
 
 }
