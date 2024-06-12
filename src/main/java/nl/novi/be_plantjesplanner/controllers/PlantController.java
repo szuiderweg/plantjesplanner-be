@@ -1,29 +1,61 @@
 package nl.novi.be_plantjesplanner.controllers;
-
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
+import nl.novi.be_plantjesplanner.entities.Plant;
+import nl.novi.be_plantjesplanner.services.PlantService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/plants")
-//this is a basic version of the plant controller that just returns some string messages (or nothing) It does not communicate with other layers yet.
+@RequestMapping(value ="/plants")
 public class PlantController {
+   private final PlantService plantService;
 
-   //POST a single plant
-
-    //GET a specific plant
-
-    //GET all plants
-
-   //edit a specific plant
+   public PlantController(PlantService plantService)
+   {this.plantService = plantService;}
 
 
-    //delete a specific plant
+   //POST a new plant
+   @PostMapping
+   public ResponseEntity<Plant> postPlant(@Valid @RequestBody Plant plant){
+      return ResponseEntity.status(HttpStatus.CREATED).body(plantService.savePlant(plant));
+   }
 
-    //dto mappers
+   // edit (PUT) a specific plant
+   @PutMapping("/{id}")
+   public ResponseEntity<Plant> updatePlant(@Valid @RequestBody Plant plant, @PathVariable Long id){
+      Plant updatedPlant = plantService.updatePlantById(plant, id);
+      return ResponseEntity.ok().body(updatedPlant);
+   }
 
-    //plantEntity2Dto
-    //plantD
+
+   //DELETE a specific plant
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
+      plantService.deletePlantById(id);
+      return ResponseEntity.noContent().build();
+   }
+
+   //GET all plants
+   @GetMapping
+   public ResponseEntity<List<Plant>> getAllPlants(){
+      List<Plant> foundPlants = plantService.getAllPlants();
+      return ResponseEntity.ok().body(foundPlants);
+   }
+   //GET a specific plant by id
+   @GetMapping("/{id}")
+   public ResponseEntity<Plant> getPlant(@PathVariable("id") Long id){
+      return ResponseEntity.ok(plantService.getPlantById(id));
+   }
+
+
+   //todo GET plants by name
+
+   //todo GET plants that match properties of myGarden
+
+   //todo GET plants that match custom criteria
+
 
 
 }
