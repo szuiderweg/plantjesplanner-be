@@ -1,5 +1,6 @@
 package nl.novi.be_plantjesplanner.services;
 
+import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
@@ -65,6 +66,42 @@ public class PlantService {
     public List<Plant> getAllPlants()
     {
         return plantRepository.findAll();
+    }
+
+    //DTO mappers
+    private PlantDto mapToPlantDto(Plant plant){
+        PlantDto plantDto = new PlantDto();
+        plantDto.setId(plant.getId());
+        plantDto.setDutchName(plant.getDutchName());
+        plantDto.setLatinName(plant.getLatinName());
+        plantDto.setPlantDescription(plant.getPlantDescription());
+        plantDto.setWaterPreference(plant.getWaterPreference());
+        plantDto.setSunPreference(plant.getSunPreference());
+        plantDto.setWindTolerance(plant.getWindTolerance());
+        plantDto.setBloomColour(plant.getBloomColour());
+        plantDto.setHeight(plant.getHeight());
+        plantDto.setFootprint(plant.getFootprint());
+        plantDto.setPottedPlant(plant.getPottedPlant());
+        plantDto.setSoilPreference(plant.getSoilPreference());
+
+        return plantDto;
+    }
+
+    private Plant mapFromPlantDto(PlantDto plantDto){
+        Plant plant = new Plant();
+        plant.setDutchName(plantDto.getDutchName());
+        plant.setLatinName(plantDto.getLatinName());
+        plant.setPlantDescription(plantDto.getPlantDescription());
+        plant.setWaterPreference(plantDto.getWaterPreference());
+        plant.setSunPreference(plantDto.getSunPreference());
+        plant.setWindTolerance(plantDto.getWindTolerance());
+        plant.setBloomColour(plantDto.getBloomColour());
+        plant.setHeight(plantDto.getHeight());
+        plant.setFootprint(plantDto.getFootprint());
+        plant.setPottedPlant(plantDto.getPottedPlant());
+        plant.setSoilPreference(plantDto.getSoilPreference());
+
+        return plant;
     }
 
 }
