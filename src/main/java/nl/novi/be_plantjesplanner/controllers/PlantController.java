@@ -1,6 +1,6 @@
 package nl.novi.be_plantjesplanner.controllers;
 import jakarta.validation.Valid;
-import nl.novi.be_plantjesplanner.entities.Plant;
+import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.services.PlantService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +18,15 @@ public class PlantController {
 
    //POST a new plant
    @PostMapping
-   public ResponseEntity<Plant> postPlant(@Valid @RequestBody Plant plant){
-      return ResponseEntity.status(HttpStatus.CREATED).body(plantService.savePlant(plant));
+   public ResponseEntity<PlantDto> postPlant(@Valid @RequestBody PlantDto plantDto){
+      return ResponseEntity.status(HttpStatus.CREATED).body(plantService.savePlant(plantDto));
    }
 
    // edit (PUT) a specific plant
    @PutMapping("/{id}")
-   public ResponseEntity<Plant> updatePlant(@Valid @RequestBody Plant plant, @PathVariable Long id){
-      Plant updatedPlant = plantService.updatePlantById(plant, id);
-      return ResponseEntity.ok().body(updatedPlant);
+   public ResponseEntity<PlantDto> updatePlant(@Valid @RequestBody PlantDto plantDto, @PathVariable Long id){
+      PlantDto updatedPlantDto = plantService.updatePlantById(plantDto, id);
+      return ResponseEntity.ok().body(updatedPlantDto);
    }
 
 
@@ -39,13 +39,13 @@ public class PlantController {
 
    //GET all plants
    @GetMapping
-   public ResponseEntity<List<Plant>> getAllPlants(){
-      List<Plant> foundPlants = plantService.getAllPlants();
-      return ResponseEntity.ok().body(foundPlants);
+   public ResponseEntity<List<PlantDto>> getAllPlants(){
+      List<PlantDto> foundPlantsDto = plantService.getAllPlants();
+      return ResponseEntity.ok().body(foundPlantsDto);
    }
    //GET a specific plant by id
    @GetMapping("/{id}")
-   public ResponseEntity<Plant> getPlant(@PathVariable("id") Long id){
+   public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
       return ResponseEntity.ok(plantService.getPlantById(id));
    }
 

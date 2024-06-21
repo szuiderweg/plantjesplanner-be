@@ -1,5 +1,6 @@
 package nl.novi.be_plantjesplanner.services;
 
+import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
@@ -18,29 +19,35 @@ public class PlantService {
     }
 
     //corresponds to postPlant request in the PlantController
-    public Plant savePlant(Plant plant)
+    public PlantDto savePlant(PlantDto plantDto)
     {
-        return plantRepository.save(plant);
+        Plant savedPlant = plantRepository.save(mapFromPlantDto(plantDto));
+        return mapToPlantDto(savedPlant);
     }
 
-    public Plant updatePlantById(Plant plant , Long id){
+    //corresponds to updatePlant request in the PlantController
+    public PlantDto updatePlantById(PlantDto plantDto , Long id){
+       Plant plantUpdate = mapFromPlantDto(plantDto);
+
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
             Plant foundPlant = plantOptional.get();
             //update all fieldvalues in foundplant with values from  new plant
-            foundPlant.setDutchName(plant.getDutchName());
-            foundPlant.setLatinName(plant.getLatinName());
-            foundPlant.setPlantDescription(plant.getPlantDescription());
-            foundPlant.setWaterPreference(plant.getWaterPreference());
-            foundPlant.setSunPreference(plant.getSunPreference());
-            foundPlant.setWindTolerance(plant.getWindTolerance());
-            foundPlant.setBloomColour(plant.getBloomColour());
-            foundPlant.setHeight(plant.getHeight());
-            foundPlant.setFootprint(plant.getFootprint());
-            foundPlant.setPottedPlant(plant.getPottedPlant());
-            foundPlant.setSoilPreference(plant.getSoilPreference());
+            foundPlant.setDutchName(plantUpdate.getDutchName());
+            foundPlant.setLatinName(plantUpdate.getLatinName());
+            foundPlant.setPlantDescription(plantUpdate.getPlantDescription());
+            foundPlant.setWaterPreference(plantUpdate.getWaterPreference());
+            foundPlant.setSunPreference(plantUpdate.getSunPreference());
+            foundPlant.setWindTolerance(plantUpdate.getWindTolerance());
+            foundPlant.setBloomColour(plantUpdate.getBloomColour());
+            foundPlant.setHeight(plantUpdate.getHeight());
+            foundPlant.setFootprint(plantUpdate.getFootprint());
+            foundPlant.setPottedPlant(plantUpdate.getPottedPlant());
+            foundPlant.setSoilPreference(plantUpdate.getSoilPreference());
             //todo put additional fields here
-            return plantRepository.save(foundPlant);
+            plantRepository.save(foundPlant);
+            return mapToPlantDto(foundPlant);
+
         }
         else{
             throw new RecordNotFoundException("geen plant gevonden met id "+ id+" , dus ook niet aangepast");
@@ -51,10 +58,10 @@ public class PlantService {
         plantRepository.deleteById(id);
     }
 
-    public Plant getPlantById(Long id){
+    public PlantDto getPlantById(Long id){
       Optional<Plant> plantOptional = plantRepository.findById(id);
       if(plantOptional.isPresent()){
-          return plantOptional.get();
+          return mapToPlantDto(plantOptional.get());
       }
       else{
           throw new RecordNotFoundException("geen plant gevonden met id "+ id);
@@ -62,9 +69,53 @@ public class PlantService {
     }
 
     //corresponds to GET all Plants request in the PlantController
-    public List<Plant> getAllPlants()
+    public List<PlantDto> getAllPlants()
     {
-        return plantRepository.findAll();
+        List<Plant> foundPlants = plantRepository.findAll();
+
+        List<PlantDto> foundPlantsDto = new ArrayList<>();
+        for(Plant plant : foundPlants){
+            PlantDto foundPlantDto = mapToPlantDto(plant);
+            foundPlantsDto.add(foundPlantDto);
+        }
+        return foundPlantsDto;
+    }
+
+    //DTO mappers
+    private PlantDto mapToPlantDto(Plant plant){
+        PlantDto plantDto = new PlantDto();
+        plantDto.setId(plant.getId());
+        plantDto.setDutchName(plant.getDutchName());
+        plantDto.setLatinName(plant.getLatinName());
+        plantDto.setPlantDescription(plant.getPlantDescription());
+        plantDto.setWaterPreference(plant.getWaterPreference());
+        plantDto.setSunPreference(plant.getSunPreference());
+        plantDto.setWindTolerance(plant.getWindTolerance());
+        plantDto.setBloomColour(plant.getBloomColour());
+        plantDto.setHeight(plant.getHeight());
+        plantDto.setFootprint(plant.getFootprint());
+        plantDto.setPottedPlant(plant.getPottedPlant());
+        plantDto.setSoilPreference(plant.getSoilPreference());
+
+        return plantDto;
+    }
+
+    private Plant mapFromPlantDto(PlantDto plantDto){
+        Plant plant = new Plant();
+        //no setter for id since this will be generated automatically for a new plant
+        plant.setDutchName(plantDto.getDutchName());
+        plant.setLatinName(plantDto.getLatinName());
+        plant.setPlantDescription(plantDto.getPlantDescription());
+        plant.setWaterPreference(plantDto.getWaterPreference());
+        plant.setSunPreference(plantDto.getSunPreference());
+        plant.setWindTolerance(plantDto.getWindTolerance());
+        plant.setBloomColour(plantDto.getBloomColour());
+        plant.setHeight(plantDto.getHeight());
+        plant.setFootprint(plantDto.getFootprint());
+        plant.setPottedPlant(plantDto.getPottedPlant());
+        plant.setSoilPreference(plantDto.getSoilPreference());
+
+        return plant;
     }
 
 }
