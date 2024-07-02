@@ -10,7 +10,7 @@ public class Plant {
     @GeneratedValue
     private Long id;
     // todo set up errorhandling of errors caused by non-unique plantnames
-    //@Column(unique = true)
+    @Column(unique = true)
     private String dutchName;
     private String latinName;
     @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short todo: probably needs some finetuning
