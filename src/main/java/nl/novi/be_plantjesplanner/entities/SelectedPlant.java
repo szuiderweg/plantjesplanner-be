@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = selected_plants)
+@Table(name = "selected_plants")
 public class SelectedPlant {
     @Id
     @GeneratedValue
