@@ -9,8 +9,9 @@ public class SelectedPlant {
     @Id
     @GeneratedValue
     private Long id;
-//    foreign key naar plant enity
     private Integer quantity;
+    //    todo: configure relation with plant entity. for now this string is a placeholder.
+    private String plant = "test plant";
 
     public Long getId() {
         return id;
@@ -22,5 +23,13 @@ public class SelectedPlant {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getPlant() {
+        return plant;
+    }
+
+    public void setPlant(String plant) {
+        this.plant = plant;
     }
 }
