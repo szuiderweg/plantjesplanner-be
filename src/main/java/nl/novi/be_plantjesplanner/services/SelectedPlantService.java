@@ -1,5 +1,6 @@
 package nl.novi.be_plantjesplanner.services;
 
+import nl.novi.be_plantjesplanner.dtos.SelectedPlantDto;
 import nl.novi.be_plantjesplanner.entities.SelectedPlant;
 import nl.novi.be_plantjesplanner.repositories.SelectedPlantRepository;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,22 @@ public class SelectedPlantService {
     }
     //todo mapToDTO and mapFromDTO methods
     //DTO mappers
+    private SelectedPlantDto mapToSelectedPlantDto(SelectedPlant selectedPlant){
+        SelectedPlantDto selectedPlantDto = new SelectedPlantDto();
+        selectedPlantDto.setId(selectedPlant.getId());
+        selectedPlantDto.setQuantity(selectedPlant.getQuantity());
+        selectedPlantDto.setPlant(selectedPlant.getPlant());
 
+        return selectedPlantDto;
+    }
+
+    private SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
+        SelectedPlant selectedPlant = new SelectedPlant();
+        //no setter for id since this will be generated automatically for a new selectedPlant
+        selectedPlant.setQuantity(selectedPlantDto.getQuantity());
+        selectedPlant.setPlant(selectedPlantDto.getPlant());
+
+        return selectedPlant;
+    }
 
 }
