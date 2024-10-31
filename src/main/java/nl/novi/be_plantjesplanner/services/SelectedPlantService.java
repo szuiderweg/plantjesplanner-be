@@ -6,6 +6,8 @@ import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.SelectedPlantRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,12 +39,35 @@ public class SelectedPlantService {
         else{
             throw new RecordNotFoundException("geen uitgekozen plant gevonden met id "+id+" , dus ook niet aangepast");
         }
-
-        //todo: functie als quantity <1 , dan delete de selected plant
     }
 
+    //delete SelectedPlant by Id
+    public void deleteSelectedPlantById(Long id){
+        selectedPlantRepository.deleteById(id);
+    }
 
+    //get Selectedplant by id
+    public SelectedPlantDto getSelectedPlantById(Long id){
+        Optional<SelectedPlant> selectedPlantOptional = selectedPlantRepository.findById(id);
+        if(selectedPlantOptional.isPresent()){
+            return mapToSelectedPlantDto(selectedPlantOptional.get());
+        }
+        else{
+            throw new RecordNotFoundException("geen lievelingsplant gevonden met id "+id);
+        }
+    }
 
+    //GET all selected plants
+    public List<SelectedPlantDto> getAllSelectedPlants(){
+        List<SelectedPlant>  foundSelectedPlants = selectedPlantRepository.findAll();
+
+        List<SelectedPlantDto> foundSelectedPlantsDto = new ArrayList<>();
+        for(SelectedPlant selectedPlant : foundSelectedPlants){
+            SelectedPlantDto foundSelectedPlantDto = mapToSelectedPlantDto(selectedPlant);
+            foundSelectedPlantsDto.add(foundSelectedPlantDto);
+        }
+        return foundSelectedPlantsDto;
+    }
 
 
     //DTO mappers
