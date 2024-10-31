@@ -2,8 +2,11 @@ package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.SelectedPlantDto;
 import nl.novi.be_plantjesplanner.entities.SelectedPlant;
+import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.SelectedPlantRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class SelectedPlantService {
@@ -13,11 +16,35 @@ public class SelectedPlantService {
     }
 
     //corresponds to Post request of a selectedplant in the selectedplant controller
-    //todo implement DTO
-    public SelectedPlant saveSelectedPlant(SelectedPlant sp){
-        return selectedPlantRepository.save(sp);
+    public SelectedPlantDto saveSelectedPlant(SelectedPlantDto spDto)
+    {
+        SelectedPlant savedSelectedPlant = selectedPlantRepository.save(mapFromSelectedPlantDto(spDto));
+        return mapToSelectedPlantDto(savedSelectedPlant);
     }
-    //todo mapToDTO and mapFromDTO methods
+
+    //updateSelectedPlantById
+    public SelectedPlantDto updateSelectedPlantById(SelectedPlantDto selectedPlantDto, Long id){
+        SelectedPlant selectedPlantUpdate = mapFromSelectedPlantDto(selectedPlantDto);
+
+        Optional<SelectedPlant> selectedPlantOptional = selectedPlantRepository.findById(id);
+        if(selectedPlantOptional.isPresent()){
+            SelectedPlant foundSelectedPlant = selectedPlantOptional.get();
+            //only the quantity of an existing selected plant can be updated
+            foundSelectedPlant.setQuantity(selectedPlantUpdate.getQuantity());
+            selectedPlantRepository.save(foundSelectedPlant);
+            return mapToSelectedPlantDto(foundSelectedPlant);
+        }
+        else{
+            throw new RecordNotFoundException("geen uitgekozen plant gevonden met id "+id+" , dus ook niet aangepast");
+        }
+
+        //todo: functie als quantity <1 , dan delete de selected plant
+    }
+
+
+
+
+
     //DTO mappers
     private SelectedPlantDto mapToSelectedPlantDto(SelectedPlant selectedPlant){
         SelectedPlantDto selectedPlantDto = new SelectedPlantDto();
