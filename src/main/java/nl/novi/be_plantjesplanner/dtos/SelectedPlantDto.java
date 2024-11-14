@@ -5,8 +5,7 @@ public class SelectedPlantDto{
     private Integer quantity;
 
     //    todo: configure relation with plant entity. for now this string is a placeholder.
-    private String plant;
-
+    private PlantDto plantDto;
 
     public Long getId() {
         return id;
@@ -24,11 +23,11 @@ public class SelectedPlantDto{
         this.quantity = quantity;
     }
 
-    public String getPlant() {
-        return plant;
+    public PlantDto getPlantDto() {
+        return plantDto;
     }
 
-    public void setPlant(String plant) {
-        this.plant = plant;
+    public void setPlantDto(PlantDto plantDto) {
+        this.plantDto = plantDto;
     }
 }

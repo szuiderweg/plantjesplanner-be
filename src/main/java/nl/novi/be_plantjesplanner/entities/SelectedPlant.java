@@ -11,8 +11,12 @@ public class SelectedPlant {
     private Long id;
     private Integer quantity;
     //    todo: configure relation with plant entity. for now this string is a placeholder.
-    private String plant = "test plant";
 
+    @ManyToOne
+    @JoinColumn(name = "plant_id", nullable = false)
+    private Plant plant;
+
+    //getters & setters
     public Long getId() {
         return id;
     }
@@ -25,11 +29,11 @@ public class SelectedPlant {
         this.quantity = quantity;
     }
 
-    public String getPlant() {
+    public Plant getPlant() {
         return plant;
     }
 
-    public void setPlant(String plant) {
+    public void setPlant(Plant plant) {
         this.plant = plant;
     }
 }

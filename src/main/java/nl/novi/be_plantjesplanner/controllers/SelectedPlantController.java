@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//todo plantrelatie verwerken in deze klasse
 @RestController
 @RequestMapping(value="/selected_plants")
 public class SelectedPlantController {

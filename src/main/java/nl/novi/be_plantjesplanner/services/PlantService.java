@@ -82,7 +82,7 @@ public class PlantService {
     }
 
     //DTO mappers
-    private PlantDto mapToPlantDto(Plant plant){
+    public static PlantDto mapToPlantDto(Plant plant){
         PlantDto plantDto = new PlantDto();
         plantDto.setId(plant.getId());
         plantDto.setDutchName(plant.getDutchName());
@@ -100,7 +100,7 @@ public class PlantService {
         return plantDto;
     }
 
-    private Plant mapFromPlantDto(PlantDto plantDto){
+    public Plant mapFromPlantDto(PlantDto plantDto){
         Plant plant = new Plant();
         //no setter for id since this will be generated automatically for a new plant
         plant.setDutchName(plantDto.getDutchName());
