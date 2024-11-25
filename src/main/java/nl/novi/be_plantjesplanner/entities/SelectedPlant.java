@@ -10,7 +10,6 @@ public class SelectedPlant {
     @GeneratedValue
     private Long id;
     private Integer quantity;
-    //    todo: configure relation with plant entity. for now this string is a placeholder.
 
     @ManyToOne
     @JoinColumn(name = "plant_id", nullable = false)

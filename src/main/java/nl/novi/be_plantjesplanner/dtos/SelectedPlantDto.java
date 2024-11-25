@@ -4,7 +4,6 @@ public class SelectedPlantDto{
     private Long id;
     private Integer quantity;
 
-    //    todo: configure relation with plant entity. for now this string is a placeholder.
     private PlantDto plantDto;
 
     public Long getId() {

@@ -18,14 +18,17 @@ public class SelectedPlantController {
     }
 
     //POST a new selectedPlant
-    @PostMapping
-    public ResponseEntity<SelectedPlantDto> postSelectedPlant(@Valid @RequestBody SelectedPlantDto selectedPlantDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(selectedPlantService.saveSelectedPlant(selectedPlantDto));
+    @PostMapping("plantid/{plantid}")
+    public ResponseEntity<SelectedPlantDto> postSelectedPlant(@Valid @RequestBody SelectedPlantDto selectedPlantDto, @PathVariable("plantid") Long plantId){
+        SelectedPlantDto createdSelectedPlantDto = selectedPlantService.addSelectedPlant(selectedPlantDto, plantId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSelectedPlantDto);
     }
 
     //edit (PUT) a selectedPlant
+    //todo: dichttikken dat alleen quantity kan worden aangepast en niet de hele dto
     @PutMapping("/{id}")
-    public ResponseEntity<SelectedPlantDto> updateSelectedPlant(@Valid @RequestBody SelectedPlantDto selectedPlantDto, @PathVariable Long id) {
+    public ResponseEntity<SelectedPlantDto> updateSelectedPlant(@Valid @RequestBody SelectedPlantDto selectedPlantDto, @PathVariable("id") Long id) {
         SelectedPlantDto updatedSelectedPlantDto = selectedPlantService.updateSelectedPlantById(selectedPlantDto, id);
         return ResponseEntity.ok().body(updatedSelectedPlantDto);
     }
