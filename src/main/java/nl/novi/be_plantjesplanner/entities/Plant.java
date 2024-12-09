@@ -13,7 +13,7 @@ public class Plant {
     @Column(unique = true)
     private String dutchName;
 //    private String latinName;
-//    @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short todo: probably needs some finetuning
+//    @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short > probably need finetuning
 //    private String plantDescription;
 //    private String waterPreference;
 //    private String sunPreference;

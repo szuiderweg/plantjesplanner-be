@@ -3,7 +3,7 @@ package nl.novi.be_plantjesplanner.dtos;
 import org.hibernate.validator.constraints.Length;
 
 public class PlantDto {
-    private Long id; //todo decide if ID should be omitted from PlantDTO
+    private Long id;
     private String dutchName;
 //    private String latinName;
 //    @Length(max = 1000)// maximum length of description is 1000 characters.

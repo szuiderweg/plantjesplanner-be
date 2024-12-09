@@ -11,6 +11,7 @@ public class SelectedPlant {
     private Long id;
     private Integer quantity;
 
+    //todo enforce that a plant can only be selected once per design.
     @ManyToOne
     @JoinColumn(name = "plant_id", nullable = false)
     private Plant plant;

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//todo plantrelatie verwerken in deze klasse
 @RestController
 @RequestMapping(value="/selected_plants")
 public class SelectedPlantController {
@@ -26,7 +25,6 @@ public class SelectedPlantController {
     }
 
     //edit (PUT) a selectedPlant
-    //todo: dichttikken dat alleen quantity kan worden aangepast en niet de hele dto
     @PutMapping("/{id}")
     public ResponseEntity<SelectedPlantDto> updateSelectedPlant(@Valid @RequestBody SelectedPlantDto selectedPlantDto, @PathVariable("id") Long id) {
         SelectedPlantDto updatedSelectedPlantDto = selectedPlantService.updateSelectedPlantById(selectedPlantDto, id);
