@@ -19,4 +19,38 @@ public class Locale{
     private WindTolerance windTolerance;
     private String soilType;
 
+    public Long getId() {
+        return id;
+    }
+    public Sunlight getSunlight() {
+        return sunlight;
+    }
+
+    public void setSunlight(Sunlight sunlight) {
+        this.sunlight = sunlight;
+    }
+
+    public Moisture getMoisture() {
+        return moisture;
+    }
+
+    public void setMoisture(Moisture moisture) {
+        this.moisture = moisture;
+    }
+
+    public WindTolerance getWindTolerance() {
+        return windTolerance;
+    }
+
+    public void setWindTolerance(WindTolerance windTolerance) {
+        this.windTolerance = windTolerance;
+    }
+
+    public String getSoilType() {
+        return soilType;
+    }
+
+    public void setSoilType(String soilType) {
+        this.soilType = soilType;
+    }
 }
