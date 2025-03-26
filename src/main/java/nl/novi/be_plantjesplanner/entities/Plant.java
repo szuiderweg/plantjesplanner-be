@@ -1,6 +1,7 @@
 package nl.novi.be_plantjesplanner.entities;
 
 import jakarta.persistence.*;
+import nl.novi.be_plantjesplanner.enumerations.ColorGroup;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
@@ -12,26 +13,21 @@ public class Plant {
     // todo set up errorhandling of errors caused by non-unique plantnames
     @Column(unique = true)
     private String dutchName;
-//    private String latinName;
-//    @Length(max = 1000)// maximum length of description is 1000 characters. default length of 255 characters was too short > probably need finetuning
-//    private String plantDescription;
-//    private String waterPreference;
-//    private String sunPreference;
-//    private String windTolerance;
-//    private String bloomColour;
-//    private Double height;//vertical size [meters]
-//    private Double footprint;//horizontal size [meters^2]
-//    private Boolean pottedPlant;//plant can survive and thrive  in a pot
-//    private String soilPreference;
+    private String latinName;
+    @Length(max = 1000)
+// maximum length of description is 1000 characters. default length of 255 characters was too short > probably needs finetuning
+    private String description;
+    private Double height;//typical vertical size [meters]
+    private Double footprint;//typical area needed by the plant [meters^2]
+
+    private String bloomColorHex;//hex value of typical flower color for use in the frontend
+    private ColorGroup bloomColorGroup;//enum used to search for plants by general flower color
+    private Locale locale;//TODO fix error with relation to Locale
+    private BloomingMonths bloomingMonths;//TODO fix error with relation
+    private Image image; //TODO fix error with relation
 
 
-
-    //todo figure out how to set the blooming period (array with 12 booleans corresponding to the months of the year? which would require another table in the database?)
-
-//todo: property for plant image
-
-
-     public Long getId() {// getter only, since id is automatically generated
+    public Long getId() {// getter only, since id is automatically generated
         return id;
     }
 
@@ -43,83 +39,67 @@ public class Plant {
         this.dutchName = dutchName;
     }
 
-//    public String getLatinName() {
-//        return latinName;
-//    }
-//
-//    public void setLatinName(String latinName) {
-//        this.latinName = latinName;
-//    }
-//
-//    public String getPlantDescription() {
-//        return plantDescription;
-//    }
-//
-//    public void setPlantDescription(String plantDescription) {
-//        this.plantDescription = plantDescription;
-//    }
-//
-//    public String getWaterPreference() {
-//        return waterPreference;
-//    }
-//
-//    public void setWaterPreference(String waterPreference) {
-//        this.waterPreference = waterPreference;
-//    }
-//
-//    public String getSunPreference() {
-//        return sunPreference;
-//    }
-//
-//    public void setSunPreference(String sunPreference) {
-//        this.sunPreference = sunPreference;
-//    }
-//
-//    public String getWindTolerance() {
-//        return windTolerance;
-//    }
-//
-//    public void setWindTolerance(String windTolerance) {
-//        this.windTolerance = windTolerance;
-//    }
-//
-//    public String getBloomColour() {
-//        return bloomColour;
-//    }
-//
-//    public void setBloomColour(String bloomColour) {
-//        this.bloomColour = bloomColour;
-//    }
-//
-//    public Double getHeight() {
-//        return height;
-//    }
-//
-//    public void setHeight(Double height) {
-//        this.height = height;
-//    }
-//
-//    public Double getFootprint() {
-//        return footprint;
-//    }
-//
-//    public void setFootprint(Double footprint) {
-//        this.footprint = footprint;
-//    }
-//
-//    public Boolean getPottedPlant() {
-//        return pottedPlant;
-//    }
-//
-//    public void setPottedPlant(Boolean pottedPlant) {
-//        this.pottedPlant = pottedPlant;
-//    }
-//
-//    public String getSoilPreference() {
-//        return soilPreference;
-//    }
-//
-//    public void setSoilPreference(String soilPreference) {
-//        this.soilPreference = soilPreference;
-//    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getFootprint() {
+        return footprint;
+    }
+
+    public void setFootprint(Double footprint) {
+        this.footprint = footprint;
+    }
+
+    public String getBloomColorHex() {
+        return bloomColorHex;
+    }
+
+    public void setBloomColorHex(String bloomColorHex) {
+        this.bloomColorHex = bloomColorHex;
+    }
+
+    public ColorGroup getBloomColorGroup() {
+        return bloomColorGroup;
+    }
+
+    public void setBloomColorGroup(ColorGroup bloomColorGroup) {
+        this.bloomColorGroup = bloomColorGroup;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public BloomingMonths getBloomingMonths() {
+        return bloomingMonths;
+    }
+
+    public void setBloomingMonths(BloomingMonths bloomingMonths) {
+        this.bloomingMonths = bloomingMonths;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
 }

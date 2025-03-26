@@ -18,6 +18,7 @@ public class Locale{
     private Moisture moisture;
     private WindTolerance windTolerance;
     private String soilType;
+    private Boolean openGroundOnly;
 
     public Long getId() {
         return id;
@@ -52,5 +53,13 @@ public class Locale{
 
     public void setSoilType(String soilType) {
         this.soilType = soilType;
+    }
+
+    public Boolean getOpenGroundOnly() {
+        return openGroundOnly;
+    }
+
+    public void setOpenGroundOnly(Boolean openGroundOnly) {
+        this.openGroundOnly = openGroundOnly;
     }
 }

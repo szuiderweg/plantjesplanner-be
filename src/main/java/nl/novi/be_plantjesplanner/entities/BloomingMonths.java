@@ -3,8 +3,7 @@ package nl.novi.be_plantjesplanner.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "BloomingMonths")
-public class BloomingPeriod {
+public class BloomingMonths {
 //    TODO in Bloomingperiod service de logica stoppen om van de losse kolommen een mooie array maken voor de frontwend kalender en een string met de namen van de bloeimaanden erin voor postman apicalls. die gaan in de bloeiDTO
     @Id
     @GeneratedValue
