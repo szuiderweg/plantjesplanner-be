@@ -14,7 +14,7 @@ public class MoodboardItem {
         @GeneratedValue
         private Long id;
        private String caption;
-        private Image image;//TODO error fixen door relatie te leggen
+//        private Image image;//TODO error fixen door relatie te leggen
 
     public Long getId() {
         return id;
@@ -29,12 +29,12 @@ public class MoodboardItem {
         this.caption = caption;
     }
 
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
+//    public Image getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(Image image) {
+//        this.image = image;
+//    }
 }
 

@@ -9,34 +9,34 @@ public class BloomingMonths {
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
-    private boolean januari = false;
+    private boolean january = false;
 
     @Column(nullable = false)
-    private boolean februari = false;
+    private boolean february = false;
 
     @Column(nullable = false)
-    private boolean maart = false;
+    private boolean march = false;
 
     @Column(nullable = false)
     private boolean april = false;
 
     @Column(nullable = false)
-    private boolean mei = false;
+    private boolean may = false;
 
     @Column(nullable = false)
-    private boolean juni = false;
+    private boolean june = false;
 
     @Column(nullable = false)
-    private boolean juli = false;
+    private boolean july = false;
 
     @Column(nullable = false)
-    private boolean augustus = false;
+    private boolean august = false;
 
     @Column(nullable = false)
     private boolean september = false;
 
     @Column(nullable = false)
-    private boolean oktober = false;
+    private boolean october = false;
 
     @Column(nullable = false)
     private boolean november = false;
@@ -48,31 +48,31 @@ public class BloomingMonths {
         return id;
     }
 
-    public boolean isJanuari() {
-        return januari;
+    public boolean bloomsInJanuary() {
+        return january;
     }
 
-    public void setJanuari(boolean januari) {
-        this.januari = januari;
+    public void setJanuary(boolean january) {
+        this.january = january;
     }
 
-    public boolean isFebruari() {
-        return februari;
+    public boolean bloomsInFebruary() {
+        return february;
     }
 
-    public void setFebruari(boolean februari) {
-        this.februari = februari;
+    public void setFebruary(boolean february) {
+        this.february = february;
     }
 
-    public boolean isMaart() {
-        return maart;
+    public boolean bloomsInMarch() {
+        return march;
     }
 
-    public void setMaart(boolean maart) {
-        this.maart = maart;
+    public void setMarch(boolean march) {
+        this.march = march;
     }
 
-    public boolean isApril() {
+    public boolean bloomsInApril() {
         return april;
     }
 
@@ -80,39 +80,39 @@ public class BloomingMonths {
         this.april = april;
     }
 
-    public boolean isMei() {
-        return mei;
+    public boolean bloomsInMay() {
+        return may;
     }
 
-    public void setMei(boolean mei) {
-        this.mei = mei;
+    public void setMay(boolean may) {
+        this.may = may;
     }
 
-    public boolean isJuni() {
-        return juni;
+    public boolean bloomsInJune() {
+        return june;
     }
 
-    public void setJuni(boolean juni) {
-        this.juni = juni;
+    public void setJune(boolean june) {
+        this.june = june;
     }
 
-    public boolean isJuli() {
-        return juli;
+    public boolean bloomsInJuly() {
+        return july;
     }
 
-    public void setJuli(boolean juli) {
-        this.juli = juli;
+    public void setJule(boolean july) {
+        this.july = july;
     }
 
-    public boolean isAugustus() {
-        return augustus;
+    public boolean bloomsInAugust() {
+        return august;
     }
 
-    public void setAugustus(boolean augustus) {
-        this.augustus = augustus;
+    public void setAugust(boolean august) {
+        this.august = august;
     }
 
-    public boolean isSeptember() {
+    public boolean bloomsInSeptember() {
         return september;
     }
 
@@ -120,15 +120,15 @@ public class BloomingMonths {
         this.september = september;
     }
 
-    public boolean isOktober() {
-        return oktober;
+    public boolean bloomsInOctober() {
+        return october;
     }
 
-    public void setOktober(boolean oktober) {
-        this.oktober = oktober;
+    public void setOctober(boolean october) {
+        this.october = october;
     }
 
-    public boolean isNovember() {
+    public boolean bloomsInNovember() {
         return november;
     }
 
@@ -136,7 +136,7 @@ public class BloomingMonths {
         this.november = november;
     }
 
-    public boolean isDecember() {
+    public boolean bloomsInDecember() {
         return december;
     }
 

@@ -14,15 +14,15 @@ public class Design{
     @GeneratedValue
     private Long id;
 
-    private User user;
+//    private User user;
     private String name;
-    private GardenInfo gardenInfo;
+//    private GardenInfo gardenInfo;
     private Double plantedArea;
     private Integer totalAmountOfPlants;
     private Double plantMeterScore;
-    private List<SelectedPlant> selectedPlants;
-    private List<MoodboardItem> moodboard;
-    private List<BloomingMonths> bloomingCalendar;
+//    private List<SelectedPlant> selectedPlants;
+//    private List<MoodboardItem> moodboard;
+//    private List<BloomingMonths> bloomingCalendar;
 
     //TODO: een aantal properties (user, de lists, gardeninfo) moeten mogelijk geen setter hebben omdat de listitems op een andere plek worden gemaakt of dat de waarde final is.
     public Long getId() {
@@ -37,21 +37,21 @@ public class Design{
         this.name = name;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public GardenInfo getGardenInfo() {
-        return gardenInfo;
-    }
-
-    public void setGardenInfo(GardenInfo gardenInfo) {
-        this.gardenInfo = gardenInfo;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public GardenInfo getGardenInfo() {
+//        return gardenInfo;
+//    }
+//
+//    public void setGardenInfo(GardenInfo gardenInfo) {
+//        this.gardenInfo = gardenInfo;
+//    }
 
     public Double getPlantedArea() {
         return plantedArea;
@@ -77,27 +77,27 @@ public class Design{
         this.plantMeterScore = plantMeterScore;
     }
 
-    public List<SelectedPlant> getSelectedPlants() {
-        return selectedPlants;
-    }
-
-    public void setSelectedPlants(List<SelectedPlant> selectedPlants) {
-        this.selectedPlants = selectedPlants;
-    }
-
-    public List<MoodboardItem> getMoodboard() {
-        return moodboard;
-    }
-
-    public void setMoodboard(List<MoodboardItem> moodboard) {
-        this.moodboard = moodboard;
-    }
-
-    public List<BloomingMonths> getBloomingCalendar() {
-        return bloomingCalendar;
-    }
-
-    public void setBloomingCalendar(List<BloomingMonths> bloomingCalendar) {
-        this.bloomingCalendar = bloomingCalendar;
-    }
+//    public List<SelectedPlant> getSelectedPlants() {
+//        return selectedPlants;
+//    }
+//
+//    public void setSelectedPlants(List<SelectedPlant> selectedPlants) {
+//        this.selectedPlants = selectedPlants;
+//    }
+//
+//    public List<MoodboardItem> getMoodboard() {
+//        return moodboard;
+//    }
+//
+//    public void setMoodboard(List<MoodboardItem> moodboard) {
+//        this.moodboard = moodboard;
+//    }
+//
+//    public List<BloomingMonths> getBloomingCalendar() {
+//        return bloomingCalendar;
+//    }
+//
+//    public void setBloomingCalendar(List<BloomingMonths> bloomingCalendar) {
+//        this.bloomingCalendar = bloomingCalendar;
+//    }
 }

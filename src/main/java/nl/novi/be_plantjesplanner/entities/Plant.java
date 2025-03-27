@@ -22,9 +22,9 @@ public class Plant {
 
     private String bloomColorHex;//hex value of typical flower color for use in the frontend
     private ColorGroup bloomColorGroup;//enum used to search for plants by general flower color
-    private Locale locale;//TODO fix error with relation to Locale
-    private BloomingMonths bloomingMonths;//TODO fix error with relation
-    private Image image; //TODO fix error with relation
+//    private Locale locale;//TODO fix error with relation to Locale
+//    private BloomingMonths bloomingMonths;//TODO fix error with relation
+//    private Image image; //TODO fix error with relation
 
 
     public Long getId() {// getter only, since id is automatically generated
@@ -67,39 +67,39 @@ public class Plant {
         return bloomColorHex;
     }
 
-    public void setBloomColorHex(String bloomColorHex) {
-        this.bloomColorHex = bloomColorHex;
-    }
-
-    public ColorGroup getBloomColorGroup() {
-        return bloomColorGroup;
-    }
-
-    public void setBloomColorGroup(ColorGroup bloomColorGroup) {
-        this.bloomColorGroup = bloomColorGroup;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
-    public BloomingMonths getBloomingMonths() {
-        return bloomingMonths;
-    }
-
-    public void setBloomingMonths(BloomingMonths bloomingMonths) {
-        this.bloomingMonths = bloomingMonths;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    public void setImage(Image image) {
-        this.image = image;
-    }
+//    public void setBloomColorHex(String bloomColorHex) {
+//        this.bloomColorHex = bloomColorHex;
+//    }
+//
+//    public ColorGroup getBloomColorGroup() {
+//        return bloomColorGroup;
+//    }
+//
+//    public void setBloomColorGroup(ColorGroup bloomColorGroup) {
+//        this.bloomColorGroup = bloomColorGroup;
+//    }
+//
+//    public Locale getLocale() {
+//        return locale;
+//    }
+//
+//    public void setLocale(Locale locale) {
+//        this.locale = locale;
+//    }
+//
+//    public BloomingMonths getBloomingMonths() {
+//        return bloomingMonths;
+//    }
+//
+//    public void setBloomingMonths(BloomingMonths bloomingMonths) {
+//        this.bloomingMonths = bloomingMonths;
+//    }
+//
+//    public Image getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(Image image) {
+//        this.image = image;
+//    }
 }

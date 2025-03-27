@@ -12,7 +12,7 @@ public class GardenInfo {
     @GeneratedValue
     private Long id;
     private Double area;// area available for plants in square meters
-    private Locale locale;//TODO error fixen door relatie te leggen
+//    private Locale locale;//TODO error fixen door relatie te leggen
 
     public Long getId() {
         return id;
@@ -27,11 +27,4 @@ public class GardenInfo {
         this.area = area;
     }
 
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
 }
