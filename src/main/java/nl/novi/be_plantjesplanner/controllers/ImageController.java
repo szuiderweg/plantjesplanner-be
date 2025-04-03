@@ -1,6 +1,8 @@
 package nl.novi.be_plantjesplanner.controllers;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
+import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
+import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
 import nl.novi.be_plantjesplanner.services.ImageService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +22,15 @@ public class ImageController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("Geen bestand ontvangen.");
         }
-        String savedImageMessage = imageService.saveImage(file);
+        ImageUploadDto imageUploadDto = new ImageUploadDto(file, " ");
+        String savedImageMessage = imageService.saveImage(imageUploadDto);
         return ResponseEntity.ok(savedImageMessage);
     }
 
     @PutMapping("/{fileName}")
     public ResponseEntity<String> updateImage(@PathVariable String fileName, @RequestParam("file") MultipartFile file){
-        String message = imageService.updateImage(fileName,file);
+        ImageUploadDto imageUploadDto = new ImageUploadDto(file, fileName);
+        String message = imageService.updateImage(imageUploadDto);
         return ResponseEntity.ok(message);
     }
 
@@ -34,6 +38,13 @@ public class ImageController {
     public ResponseEntity<Resource>downloadImage(@PathVariable String fileName){
         ImageDownloadDto imageDownloadDto = imageService.getImageDto(fileName);
         return ResponseEntity.ok().contentType(imageDownloadDto.mediaType()).body(imageDownloadDto.resource());
+    }
+
+    @GetMapping("/metadata/{fileName}")//GET request for the metadata of the image
+    public ResponseEntity<ImageMetadataDto>downloadImageMetadata(@PathVariable String fileName){
+        ImageMetadataDto imageMetadataDto= imageService.getImageMetadataDto(fileName);
+
+        return ResponseEntity.ok(imageMetadataDto);
     }
     //TODO GET request for either metadata only or image+metadata. kijk in postman wat eruit komt
     //TODO adapt ImageDTO to include metadata

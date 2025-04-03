@@ -1,6 +1,8 @@
 package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
+import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
+import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
 import nl.novi.be_plantjesplanner.entities.Image;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
@@ -18,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +35,9 @@ public class ImageService {
         createImageUploadDirectory();
     }
 
-    public String saveImage(MultipartFile uploadedImage)
+    public String saveImage(ImageUploadDto imageUploadDto)
     {
+        MultipartFile uploadedImage = imageUploadDto.file();
         checkUploadedImage(uploadedImage);
        String originalFilename = uploadedImage.getOriginalFilename();
        try{
@@ -50,8 +52,9 @@ public class ImageService {
        }
     }
 
-    public String updateImage(String requestedFileName, MultipartFile newFile){
-        //controleer het bestand
+    public String updateImage(ImageUploadDto imageUploadDto){
+        MultipartFile newFile = imageUploadDto.file();
+        String requestedFileName = imageUploadDto.fileName();
         checkUploadedImage(newFile);//validate uploaded image
 
         //retrieve filepath of existing file
@@ -86,12 +89,11 @@ public class ImageService {
     }
 
     public ImageDownloadDto getImageDto(String fileName){
-
            try {
                Path filePath = Paths.get(uploadDirectory).resolve(fileName).normalize();
                Resource resource = new UrlResource(filePath.toUri());//retrieve file based on unique filename and upload directory location
 
-               if (!resource.exists() || !resource.isReadable()) {
+               if (!resource.exists()) {
                    throw new RecordNotFoundException();
                }
                else if (!resource.isReadable()) {
@@ -102,12 +104,25 @@ public class ImageService {
                 if (mediaTypeOptional.isEmpty() || !ALLOWED_TYPES.contains(mediaTypeOptional.get().toString())) {
                 throw new InvalidImageTypeException("Ongeldig bestandstype: "+mediaTypeOptional.get());
                 }
-                return new ImageDownloadDto(resource, mediaTypeOptional.get());
+               return new ImageDownloadDto(resource, mediaTypeOptional.get());
             }catch (IOException e) {
             throw new RuntimeException("Fout bij ophalen van bestand: " + fileName, e);
         }
 
     }
+
+    public ImageMetadataDto getImageMetadataDto(String fileName){
+            //retrieve metadata from database
+            Optional<Image> imageOptional = imageRepository.findByStoredFilename(fileName);
+            if(imageOptional.isPresent()) {
+                Image image = imageOptional.get();
+                return new ImageMetadataDto(image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
+            }
+            else{
+                throw new RecordNotFoundException("afbeelding niet gevonden in database");
+            }
+    }
+
 
     //local Helpers
     private void createImageUploadDirectory() {//create upload directory if it does not exist yet
@@ -124,7 +139,7 @@ public class ImageService {
         }
     }
 
-    private void checkUploadedImage(MultipartFile file){//for POST and PUT requests the file validation is identical
+    private void checkUploadedImage(MultipartFile file){//for POST and PUT requests the validation of the uploaded file is identical
         if(file.isEmpty()){
             throw new IllegalArgumentException("Het bestand is leeg! probeer het opnieuw");
         }
