@@ -18,6 +18,11 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(RecordNotFoundException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)//response for invalid user requests
+        public ResponseEntity<String> illegalInputException(IllegalArgumentException e){
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
     //handles the inbuilt Springboot MaxUploadSizeExceededException in an HTTP response
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException e) {

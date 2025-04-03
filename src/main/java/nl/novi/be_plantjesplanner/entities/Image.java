@@ -1,8 +1,5 @@
 package nl.novi.be_plantjesplanner.entities;
-
 import jakarta.persistence.*;
-
-import java.nio.file.Path;
 import java.time.ZonedDateTime;
 //TODO wanneer image uploader werkt, overbodige properties en getters+setters verwijderen
 @Entity
@@ -15,7 +12,7 @@ public class Image {
     @Column(unique = true)
     private String storedFilename;
 //    private Path filepath;
-    private final ZonedDateTime uploadDateTime;
+    private ZonedDateTime uploadDateTime;
 
     public Image(){
         uploadDateTime = ZonedDateTime.now();
@@ -59,4 +56,7 @@ public class Image {
         return uploadDateTime;
     }
 
+    public void setUploadDateTime() {
+        this.uploadDateTime = ZonedDateTime.now();
+    }
 }
