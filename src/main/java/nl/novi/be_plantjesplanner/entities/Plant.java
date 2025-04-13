@@ -25,7 +25,7 @@ public class Plant {
 //    private Locale locale;//TODO fix error with relation to Locale
 //    private BloomingMonths bloomingMonths;//TODO fix error with relation
 //    private Image image; //TODO fix error with relation
-
+    private boolean isPublished = false;//sets visibility for users with Designer-role
 
     public Long getId() {// getter only, since id is automatically generated
         return id;
