@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, Long> {
     Optional<Image> findByStoredFilename(String requestedFilename);
+
+    void deleteByStoredFilename(String storedFilename);
 }

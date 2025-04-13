@@ -123,6 +123,42 @@ public class ImageService {
             }
     }
 
+    public void deleteImageById(Long id, boolean isQuiet) {
+        //isQuiet == false: indicates that an error can be thrown that interrupts the flow of the program
+        //isQuiet == true: an error message is printed and the program continues
+        //before the image is deleted from the database, the original filename is needed to delete the file from the filesystem.
+
+            Optional<Image> imageOptional = imageRepository.findById(id);
+            String storedFilename;
+            if (imageOptional.isPresent()) {
+                Image image = imageOptional.get();
+                storedFilename = image.getStoredFilename();
+                //delete metadata from database
+                imageRepository.deleteById(id);
+
+            } else if (isQuiet == false) {
+                throw new RecordNotFoundException();
+            }else{
+                return;
+            }
+
+        try {
+            if(storedFilename!=null){
+                //determine filepath and delete file from filesystem if it exists
+                Path filePath = Paths.get(uploadDirectory).resolve(storedFilename).normalize();
+                Files.deleteIfExists(filePath);
+            }
+
+        } catch (IOException e) {
+            if(isQuiet == false){
+            throw new RecordNotFoundException("Bestand niet gevonden, dus ook niet verwijderd "+storedFilename);
+            }
+            else{
+                System.out.println("bestand niet gevonden met id: "+id);
+            }
+        }
+    }
+
 
     //local Helpers
     private void createImageUploadDirectory() {//create upload directory if it does not exist yet

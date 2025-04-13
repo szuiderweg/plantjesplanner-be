@@ -12,6 +12,16 @@ import java.util.Optional;
 
 @Service
 public class PlantService {
+//    public class PlantService { //imageservice injecteren
+//
+//        private final ImageService plantImageService;
+//
+//        public PlantService(ImageRepository imageRepository) {
+//            this.plantImageService = new ImageService(imageRepository, "plant_avatars");
+//        }
+//
+//        // Gebruik plantImageService voor upload etc.
+//    }
 
     private final PlantRepository plantRepository;
     public PlantService(PlantRepository plantRepository){

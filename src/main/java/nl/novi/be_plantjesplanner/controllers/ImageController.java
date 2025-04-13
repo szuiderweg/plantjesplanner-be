@@ -46,9 +46,10 @@ public class ImageController {
 
         return ResponseEntity.ok(imageMetadataDto);
     }
-    //TODO GET request for either metadata only or image+metadata. kijk in postman wat eruit komt
-    //TODO adapt ImageDTO to include metadata
-    //TODO PUT request
-    //TODO DEL request
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deletePlant(@PathVariable Long id){
+//        plantService.deletePlantById(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }
 

@@ -54,7 +54,7 @@ public class PlantController {
 
    //todo GET plants that match properties of myGarden
 
-   //todo GET plants that match custom criteria
+   //todo GET plants that match one custom criterium
 
 
 
