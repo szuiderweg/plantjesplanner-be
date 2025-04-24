@@ -14,7 +14,7 @@ import java.io.IOException;
 @ControllerAdvice
 public class ExceptionController {
     //HTTP 400-errors
-    @ExceptionHandler(value = RecordNotFoundException.class)//custom recordNotFound exception
+    @ExceptionHandler(RecordNotFoundException.class)//custom recordNotFound exception
     public ResponseEntity<Object> exception(RecordNotFoundException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -31,13 +31,13 @@ public class ExceptionController {
     }
 
     //handles exception related to uploading files with unsupported MIME-types
-    @ExceptionHandler(value = InvalidImageTypeException.class)
+    @ExceptionHandler(InvalidImageTypeException.class)
     public ResponseEntity<String> exception(InvalidImageTypeException e) {
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(e.getMessage());
     }
 
     //handles exception related to unreadable files. In case a file is of a supported MIMEtype, but has become unreadable somehow
-    @ExceptionHandler(value = UnreadableFileException.class)
+    @ExceptionHandler(UnreadableFileException.class)
     public ResponseEntity<String> exception(UnreadableFileException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
@@ -52,6 +52,6 @@ public class ExceptionController {
     //general runtime exception
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntimeException(RuntimeException e){
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Er is een of andere vage fout opgetreden");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Er is een of andere vage fout opgetreden. Sorry!");
     }
 }

@@ -91,7 +91,7 @@ public class PlantService {
         return foundPlantsDto;
     }
 
-    //DTO mappers
+    //DTO mappers, kopieer naar mapper class
     public static PlantDto mapToPlantDto(Plant plant){
         PlantDto plantDto = new PlantDto();
         plantDto.setId(plant.getId());

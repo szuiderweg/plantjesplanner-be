@@ -116,7 +116,7 @@ public class ImageService {
             Optional<Image> imageOptional = imageRepository.findByStoredFilename(fileName);
             if(imageOptional.isPresent()) {
                 Image image = imageOptional.get();
-                return new ImageMetadataDto(image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
+                return new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
             }
             else{
                 throw new RecordNotFoundException("afbeelding niet gevonden in database");

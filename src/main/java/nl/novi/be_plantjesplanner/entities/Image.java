@@ -14,6 +14,10 @@ public class Image {
 //    private Path filepath;
     private ZonedDateTime uploadDateTime;
 
+    @OneToOne(mappedBy = "plantAvatar")
+    private Plant plant;
+
+
     public Image(){
         uploadDateTime = ZonedDateTime.now();
     }
@@ -58,5 +62,13 @@ public class Image {
 
     public void setUploadDateTime() {
         this.uploadDateTime = ZonedDateTime.now();
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(Plant plant) {
+        this.plant = plant;
     }
 }

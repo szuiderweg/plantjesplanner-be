@@ -1,9 +1,6 @@
 package nl.novi.be_plantjesplanner.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import nl.novi.be_plantjesplanner.enumerations.Moisture;
 import nl.novi.be_plantjesplanner.enumerations.Sunlight;
 import nl.novi.be_plantjesplanner.enumerations.WindTolerance;
@@ -20,6 +17,14 @@ public class Locale{
     private String soilType;
     private Boolean openGroundOnly;
 
+    @OneToOne(mappedBy = "locale")
+    private Plant plant;
+
+    @OneToOne(mappedBy = "locale")
+    private Design design;
+
+
+    //getters and setters
     public Long getId() {
         return id;
     }
@@ -61,5 +66,21 @@ public class Locale{
 
     public void setOpenGroundOnly(Boolean openGroundOnly) {
         this.openGroundOnly = openGroundOnly;
+    }
+
+    public Plant getPlant() {
+        return plant;
+    }
+
+    public void setPlant(Plant plant) {
+        this.plant = plant;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
     }
 }

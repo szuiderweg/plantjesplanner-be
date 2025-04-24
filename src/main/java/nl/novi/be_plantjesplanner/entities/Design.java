@@ -22,7 +22,7 @@ public class Design{
     private Double plantMeterScore;
 //    private List<SelectedPlant> selectedPlants;
 //    private List<MoodboardItem> moodboard;
-//    private List<BloomingMonths> bloomingCalendar;
+//    private List<BloomingCalendar> bloomingCalendar;
 
     //TODO: een aantal properties (user, de lists, gardeninfo) moeten mogelijk geen setter hebben omdat de listitems op een andere plek worden gemaakt of dat de waarde final is.
     public Long getId() {
@@ -93,11 +93,11 @@ public class Design{
 //        this.moodboard = moodboard;
 //    }
 //
-//    public List<BloomingMonths> getBloomingCalendar() {
+//    public List<BloomingCalendar> getBloomingCalendar() {
 //        return bloomingCalendar;
 //    }
 //
-//    public void setBloomingCalendar(List<BloomingMonths> bloomingCalendar) {
+//    public void setBloomingCalendar(List<BloomingCalendar> bloomingCalendar) {
 //        this.bloomingCalendar = bloomingCalendar;
 //    }
 }
