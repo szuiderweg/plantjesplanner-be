@@ -19,7 +19,7 @@ public class Mapper {
         newPlant.setDescription(plantDto.description());
         newPlant.setHeight(plantDto.height());
         newPlant.setFootprint(plantDto.footprint());
-        newPlant.setBloomColorHex(plantDto.bloomColorHex());
+        newPlant.setBloomColorHex(plantDto.bloomColorHex().toUpperCase());
         newPlant.setBloomColorGroup(plantDto.bloomColorGroup());
         newPlant.setPublished(plantDto.published());
         if (plantDto.bloomingCalendarDto() != null) {

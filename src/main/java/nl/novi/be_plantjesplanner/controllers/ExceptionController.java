@@ -1,28 +1,44 @@
 package nl.novi.be_plantjesplanner.controllers;
 
+import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 
 @ControllerAdvice
 public class ExceptionController {
     //HTTP 400-errors
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)//handles Http requests with bad JSON
+    public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ongeldig request body "+e.getMostSpecificCause().getMessage());
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<String> handleDuplicateResourceException(DuplicateResourceException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
     @ExceptionHandler(RecordNotFoundException.class)//custom recordNotFound exception
-    public ResponseEntity<Object> exception(RecordNotFoundException e){
+    public ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)//response for invalid user requests
-        public ResponseEntity<String> illegalInputException(IllegalArgumentException e){
+        public ResponseEntity<String> handleIllegalInputException(IllegalArgumentException e){
                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+
+
     //handles the inbuilt Springboot MaxUploadSizeExceededException in an HTTP response
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException e) {
@@ -32,13 +48,13 @@ public class ExceptionController {
 
     //handles exception related to uploading files with unsupported MIME-types
     @ExceptionHandler(InvalidImageTypeException.class)
-    public ResponseEntity<String> exception(InvalidImageTypeException e) {
+    public ResponseEntity<String> handleInvalidImageTypeException(InvalidImageTypeException e) {
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(e.getMessage());
     }
 
     //handles exception related to unreadable files. In case a file is of a supported MIMEtype, but has become unreadable somehow
     @ExceptionHandler(UnreadableFileException.class)
-    public ResponseEntity<String> exception(UnreadableFileException e){
+    public ResponseEntity<String> handleUnreadableFileException(UnreadableFileException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 

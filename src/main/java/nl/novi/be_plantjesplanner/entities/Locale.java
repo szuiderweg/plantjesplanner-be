@@ -11,8 +11,11 @@ public class Locale{
     @Id
     @GeneratedValue
     private Long id;
+    @Enumerated(EnumType.STRING)
     private Sunlight sunlight;
+    @Enumerated(EnumType.STRING)
     private Moisture moisture;
+    @Enumerated(EnumType.STRING)
     private WindTolerance windTolerance;
     private String soilType;
     private Boolean openGroundOnly;
@@ -20,8 +23,8 @@ public class Locale{
     @OneToOne(mappedBy = "locale")
     private Plant plant;
 
-    @OneToOne(mappedBy = "locale")
-    private Design design;
+//    @OneToOne(mappedBy = "locale")
+//    private Design design;
 
 
     //getters and setters
@@ -76,11 +79,11 @@ public class Locale{
         this.plant = plant;
     }
 
-    public Design getDesign() {
-        return design;
-    }
-
-    public void setDesign(Design design) {
-        this.design = design;
-    }
+//    public Design getDesign() {
+//        return design;
+//    }
+//
+//    public void setDesign(Design design) {
+//        this.design = design;
+//    }
 }

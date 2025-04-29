@@ -12,16 +12,18 @@ public class Plant {
     private Long id;
     // todo set up errorhandling of errors caused by non-unique plantnames
     @Column(unique = true)
-    private String dutchName;
-    private String latinName;
-    @Length(max = 1000)
-// maximum length of description is 1000 characters. default length of 255 characters was too short > probably needs finetuning
-    private String description;
-    private Double height;//typical vertical size [meters]
-    private Double footprint;//typical area needed by the plant [meters^2]
+    private String dutchName ="";
+    private String latinName ="";
 
-    private String bloomColorHex;//hex value of typical flower color for use in the frontend
-    private ColorGroup bloomColorGroup;//enum used to search for plants by general (flower) color
+    // maximum length of description is 1000 characters. default length of 255 characters was too short > probably needs finetuning
+    @Length(max = 1000)
+    private String description ="";
+    private Double height = 0.00;//typical vertical size [meters]
+    private Double footprint =0.00;//typical area needed by the plant [meters^2]
+
+    private String bloomColorHex="#000000";//hex value of typical flower color for use in the frontend
+    @Enumerated(EnumType.STRING)
+    private ColorGroup bloomColorGroup=ColorGroup.GEEN;//enum used to search for plants by general (flower) color
 
     private Boolean published = false;//sets visibility of a plant for users with Designer-role
     @OneToOne(cascade = CascadeType.ALL)
@@ -29,7 +31,7 @@ public class Plant {
     private Locale locale;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "blooming_months_id")
+    @JoinColumn(name = "blooming_calendar_id")
     private BloomingCalendar bloomingCalendar;
 
     @OneToOne(cascade = CascadeType.ALL)

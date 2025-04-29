@@ -11,7 +11,6 @@ public class Image {
     private String originalFilename;
     @Column(unique = true)
     private String storedFilename;
-//    private Path filepath;
     private ZonedDateTime uploadDateTime;
 
     @OneToOne(mappedBy = "plantAvatar")

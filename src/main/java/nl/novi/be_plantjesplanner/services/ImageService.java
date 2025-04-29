@@ -7,6 +7,7 @@ import nl.novi.be_plantjesplanner.entities.Image;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
+import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.repositories.ImageRepository;
 
 import org.springframework.core.io.Resource;
@@ -35,7 +36,7 @@ public class ImageService {
         createImageUploadDirectory();
     }
 
-    public String saveImage(ImageUploadDto imageUploadDto)
+    public Image saveImage(ImageUploadDto imageUploadDto)
     {
         MultipartFile uploadedImage = imageUploadDto.file();
         checkUploadedImage(uploadedImage);
@@ -46,7 +47,7 @@ public class ImageService {
            Files.copy(uploadedImage.getInputStream(),filepath, StandardCopyOption.REPLACE_EXISTING);
            Image savedImage = new Image(originalFilename, storedFilename);
            imageRepository.save(savedImage);
-           return "Afbeelding is opgeslagen als "+ storedFilename;//return save-message only a message if save is successful.
+           return savedImage;
        }catch(IOException e){
            throw new RuntimeException("opslaan mislukt",e);
        }
