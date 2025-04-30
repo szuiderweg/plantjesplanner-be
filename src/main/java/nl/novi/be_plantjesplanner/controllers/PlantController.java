@@ -19,7 +19,6 @@ public class PlantController {
       this.plantService = plantService;
    }
 
-
    //POST a new plant
    @PostMapping
    public ResponseEntity<PlantDto> postPlant(@Valid @RequestPart("plant") PlantDto plantDto, @RequestPart(value = "image", required = false) MultipartFile file) {
@@ -27,22 +26,27 @@ public class PlantController {
       PlantDto savedPlantDto = plantService.savePlant(plantDto, imageUploadDto);
       return ResponseEntity.status(HttpStatus.CREATED).body(savedPlantDto);
    }
-}
+
+   // edit (PUT) a specific plant
+   @PutMapping("/{id}")
+   public ResponseEntity<PlantDto> updatePlant(@Valid @RequestPart("plant") PlantDto plantDto,@RequestPart(value = "image", required = false) MultipartFile file, @PathVariable Long id){
+      ImageUploadDto imageUploadDto = new ImageUploadDto(file,"");
+      PlantDto updatedPlantDto = plantService.updatePlantById(plantDto,imageUploadDto, id);
+      return ResponseEntity.ok().body(updatedPlantDto);
+   }
+
+   //GET a specific plant by id
+   @GetMapping("/{id}")
+   public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
+      return ResponseEntity.ok(plantService.getPlantById(id));
+   }
 //
-//   // edit (PUT) a specific plant
-//   @PutMapping("/{id}")
-//   public ResponseEntity<PlantDto> updatePlant(@Valid @RequestBody PlantDto plantDto, @PathVariable Long id){
-//      PlantDto updatedPlantDto = plantService.updatePlantById(plantDto, id);
-//      return ResponseEntity.ok().body(updatedPlantDto);
-//   }
+
+   // //todo GET plant image
 //
+//   //todo GET plants by name
 //
-//   //DELETE a specific plant
-//   @DeleteMapping("/{id}")
-//   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
-//      plantService.deletePlantById(id);
-//      return ResponseEntity.noContent().build();
-//   }
+
 //
 //   //GET all plants
 //   @GetMapping
@@ -50,21 +54,21 @@ public class PlantController {
 //      List<PlantDto> foundPlantsDto = plantService.getAllPlants();
 //      return ResponseEntity.ok().body(foundPlantsDto);
 //   }
-//   //GET a specific plant by id
-//   @GetMapping("/{id}")
-//   public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
-//      return ResponseEntity.ok(plantService.getPlantById(id));
-//   }
 //
-//
-//   //todo GET plants by name
+
 //
 //   //todo GET plants that match properties of myGarden
 //
 //   //todo GET plants that match one custom criterium
 //
+   //   //DELETE a specific plant
+//   @DeleteMapping("/{id}")
+//   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
+//      plantService.deletePlantById(id);
+//      return ResponseEntity.noContent().build();
+//   }
 //
 //
-//}
+}
 //
 //

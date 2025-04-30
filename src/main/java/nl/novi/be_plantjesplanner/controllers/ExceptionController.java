@@ -35,7 +35,7 @@ public class ExceptionController {
 
     @ExceptionHandler(IllegalArgumentException.class)//response for invalid user requests
         public ResponseEntity<String> handleIllegalInputException(IllegalArgumentException e){
-               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+               return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("dit verzoek klopt niet helemaal: \n"+e.getMessage());
     }
 
 
