@@ -10,7 +10,7 @@ public class Plant {
     @Id
     @GeneratedValue
     private Long id;
-    // todo set up errorhandling of errors caused by non-unique plantnames
+
     @Column(unique = true)
     private String dutchName ="";
     private String latinName ="";

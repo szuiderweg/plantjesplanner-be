@@ -1,5 +1,7 @@
 package nl.novi.be_plantjesplanner.controllers;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
@@ -7,12 +9,16 @@ import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -23,7 +29,7 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ongeldig request body "+e.getMostSpecificCause().getMessage());
     }
 
-    @ExceptionHandler(DuplicateResourceException.class)
+    @ExceptionHandler(DuplicateResourceException.class)//handles error when trying to duplicate something that should be unique
     public ResponseEntity<String> handleDuplicateResourceException(DuplicateResourceException e){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
@@ -36,6 +42,25 @@ public class ExceptionController {
     @ExceptionHandler(IllegalArgumentException.class)//response for invalid user requests
         public ResponseEntity<String> handleIllegalInputException(IllegalArgumentException e){
                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("dit verzoek klopt niet helemaal: \n"+e.getMessage());
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)//handle errors thrown by @valid annotation in DTO's. limitation: only one error per DTO field
+    public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        for (FieldError error : ex.getFieldErrors()) {
+            errors.putIfAbsent(error.getField(), error.getDefaultMessage());
+        }
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)//handle errors Thrown by @Validated annotion in controllers in case of invalid requestparameters. collect all violations in a Map with the field name and error message as key-value pairs .
+    //limitation: only one error message per parameter
+    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errors.putIfAbsent(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return ResponseEntity.badRequest().body(errors);
     }
 
 

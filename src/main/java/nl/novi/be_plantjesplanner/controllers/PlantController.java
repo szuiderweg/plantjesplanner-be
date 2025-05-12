@@ -1,10 +1,15 @@
 package nl.novi.be_plantjesplanner.controllers;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
 import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
 import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.services.PlantService;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value ="/plants")
+@Validated
 public class PlantController {
    private final PlantService plantService;
 
@@ -40,35 +46,31 @@ public class PlantController {
    public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
       return ResponseEntity.ok(plantService.getPlantById(id));
    }
-//
 
-   // //todo GET plant image
-//
-//   //todo GET plants by name
-//
+   //GET avatar image of a specific plant by plant id
+   @GetMapping("/{id}/avatar")
+   public ResponseEntity<Resource> downloadPlantAvatar(@PathVariable("id") Long id){
+      ImageDownloadDto imageDownloadDto = plantService.getPlantAvatarByPlantId(id);
+      return ResponseEntity.ok().contentType(imageDownloadDto.mediaType()).body(imageDownloadDto.resource());
+   }
 
-//
-//   //GET all plants
-//   @GetMapping
-//   public ResponseEntity<List<PlantDto>> getAllPlants(){
-//      List<PlantDto> foundPlantsDto = plantService.getAllPlants();
-//      return ResponseEntity.ok().body(foundPlantsDto);
-//   }
-//
+   //GET all plants
+   @GetMapping
+   public ResponseEntity<List<PlantDto>> getAllPlants(){
+      List<PlantDto> foundPlantsDto = plantService.getAllPlants();
+      return ResponseEntity.ok().body(foundPlantsDto);
+   }
 
-//
-//   //todo GET plants that match properties of myGarden
-//
-//   //todo GET plants that match one custom criterium
-//
-   //   //DELETE a specific plant
-//   @DeleteMapping("/{id}")
-//   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
-//      plantService.deletePlantById(id);
-//      return ResponseEntity.noContent().build();
-//   }
-//
-//
+   @GetMapping("/search")
+   ResponseEntity<List<PlantDto>> getPlantsByDutchName(@RequestParam @NotBlank @Length(min = 2, max = 50, message = "De zoekterm moet tussen de 2 en 50 tekens zijn") String name){
+      List<PlantDto> foundPlantsDto = plantService.getPlantsByDutchName(name);
+      return ResponseEntity.ok().body(foundPlantsDto);
+   }
+
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> deletePlant(@PathVariable Long id){
+      plantService.deletePlantById(id);
+      return ResponseEntity.noContent().build();
+   }
 }
-//
-//
+

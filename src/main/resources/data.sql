@@ -14,9 +14,9 @@ VALUES
 
 -- Insert Images
 INSERT INTO images (id, original_filename, stored_filename, upload_date_time)
-VALUES (1, 'klimroos.jpg', 'uuid_klimroos_1234.jpg', '2025-04-28T20:45:00+02:00'),
-        (2, 'zonnebloem.jpg', 'uuid_zonnebloem_1234.jpg', '2025-04-28T20:45:00+02:00'),
-        (3, 'Hosta-Plant.jpg', 'uuid_hosta_1234.jpg', '2025-04-28T20:45:00+02:00');
+VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
+        (2, 'zonnebloem.jpg', 'zonnebloem.jpg', '2025-04-28T20:45:00+02:00'),
+        (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
 
 -- Insert Plants
 INSERT INTO plants (id, dutch_name, latin_name, description, height, footprint, bloom_color_hex, bloom_color_group, published, locale_id, blooming_calendar_id, plantavatar_id)

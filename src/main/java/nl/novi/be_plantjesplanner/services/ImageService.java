@@ -27,7 +27,7 @@ import java.util.Optional;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final String uploadDirectory;
-    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/tiff", "image/svg+xml" );
+    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" ); //todo: deze constant op een gepaste plek parkeren
 
     public ImageService(ImageRepository imageRepository, String folderName){
         this.imageRepository = imageRepository;
@@ -95,7 +95,7 @@ public class ImageService {
                Resource resource = new UrlResource(filePath.toUri());//retrieve file based on unique filename and upload directory location
 
                if (!resource.exists()) {
-                   throw new RecordNotFoundException();
+                   throw new RecordNotFoundException("afbeelding niet gevonden");
                }
                else if (!resource.isReadable()) {
                     throw new UnreadableFileException("dit bestand is onleesbaar: "+fileName);
@@ -167,12 +167,12 @@ public class ImageService {
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-                System.out.println("Upload directory aangemaakt:"+ uploadDirectory);
+                System.out.println("Upload directory aangemaakt: "+ uploadDirectory);
             } catch (IOException e) {
                 throw new RuntimeException("Kon upload-map niet aanmaken", e);
             }
         } else {
-            System.out.println("Upload directory bestaat al.");
+            System.out.println("Upload directory bestaat al: "+ uploadDirectory);
         }
     }
 
@@ -182,7 +182,8 @@ public class ImageService {
         }
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_TYPES.contains(contentType.toLowerCase())) {
-            throw new InvalidImageTypeException("Ongeldig bestandstype: Alleen PNG, JPG, JPEG, TIFF en SVG zijn toegestaan.");
+            String errorMessage = "Ongeldig bestandstype: Alleen .png, .jpeg, jpg, .webp en .svg zijn toegestaan.";
+            throw new InvalidImageTypeException(errorMessage);
         }
     }
 
