@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "blooming_calendars")
 public class BloomingCalendar {
-//    TODO in Bloomingperiod service de logica stoppen om van de losse kolommen een mooie array maken voor de frontend kalender en een string met de namen van de bloeimaanden erin voor postman apicalls. die gaan in de bloeiDTO
-    //TODO for now no service and repo for this entity. It is managed by the parent Plant
+
     @Id
     @GeneratedValue
     private Long id;

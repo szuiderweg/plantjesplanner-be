@@ -27,7 +27,7 @@ import java.util.Optional;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final String uploadDirectory;
-    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" ); //todo: deze constant op een gepaste plek parkeren
+    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" );
 
     public ImageService(ImageRepository imageRepository, String folderName){
         this.imageRepository = imageRepository;

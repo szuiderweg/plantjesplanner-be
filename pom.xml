@@ -6,12 +6,11 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>nl.novi</groupId>
     <artifactId>be_plantjesplanner</artifactId>
-<!--   todo voor inleveren hier een version 1.0 van maken-->
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>be_plantjesplanner</name>
     <description>be_plantjesplanner</description>
     <properties>
@@ -51,6 +50,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
         </plugins>
     </build>
 

@@ -1,7 +1,7 @@
 package nl.novi.be_plantjesplanner.entities;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
-//TODO wanneer image uploader werkt, overbodige properties en getters+setters verwijderen
+
 @Entity
 @Table(name = "images")
 public class Image {
