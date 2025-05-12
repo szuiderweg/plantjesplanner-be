@@ -7,9 +7,13 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
-    @Bean
-    public ImageService imageService(ImageRepository imageRepository){
-        String folderName = "uploads";
-        return new ImageService(imageRepository, folderName);
+    @Bean(name = "plantImageService")
+    public ImageService plantImageService(ImageRepository imageRepository){
+        return new ImageService(imageRepository, "plant_avatars");
     }
+
+//    @Bean(name = "moodboardImageService")
+//    public ImageService moodboardImageService(ImageRepository imageRepository){
+//        return new ImageService(imageRepository, "moodboard_items");
+//    }
 }

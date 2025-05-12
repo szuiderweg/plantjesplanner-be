@@ -7,6 +7,7 @@ import nl.novi.be_plantjesplanner.entities.Image;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
+import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.repositories.ImageRepository;
 
 import org.springframework.core.io.Resource;
@@ -26,7 +27,7 @@ import java.util.Optional;
 public class ImageService {
     private final ImageRepository imageRepository;
     private final String uploadDirectory;
-    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/tiff", "image/svg+xml" );
+    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" ); //todo: deze constant op een gepaste plek parkeren
 
     public ImageService(ImageRepository imageRepository, String folderName){
         this.imageRepository = imageRepository;
@@ -35,7 +36,7 @@ public class ImageService {
         createImageUploadDirectory();
     }
 
-    public String saveImage(ImageUploadDto imageUploadDto)
+    public Image saveImage(ImageUploadDto imageUploadDto)
     {
         MultipartFile uploadedImage = imageUploadDto.file();
         checkUploadedImage(uploadedImage);
@@ -46,7 +47,7 @@ public class ImageService {
            Files.copy(uploadedImage.getInputStream(),filepath, StandardCopyOption.REPLACE_EXISTING);
            Image savedImage = new Image(originalFilename, storedFilename);
            imageRepository.save(savedImage);
-           return "Afbeelding is opgeslagen als "+ storedFilename;//return save-message only a message if save is successful.
+           return savedImage;
        }catch(IOException e){
            throw new RuntimeException("opslaan mislukt",e);
        }
@@ -94,7 +95,7 @@ public class ImageService {
                Resource resource = new UrlResource(filePath.toUri());//retrieve file based on unique filename and upload directory location
 
                if (!resource.exists()) {
-                   throw new RecordNotFoundException();
+                   throw new RecordNotFoundException("afbeelding niet gevonden");
                }
                else if (!resource.isReadable()) {
                     throw new UnreadableFileException("dit bestand is onleesbaar: "+fileName);
@@ -116,7 +117,7 @@ public class ImageService {
             Optional<Image> imageOptional = imageRepository.findByStoredFilename(fileName);
             if(imageOptional.isPresent()) {
                 Image image = imageOptional.get();
-                return new ImageMetadataDto(image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
+                return new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
             }
             else{
                 throw new RecordNotFoundException("afbeelding niet gevonden in database");
@@ -166,12 +167,12 @@ public class ImageService {
         if (!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-                System.out.println("Upload directory aangemaakt:"+ uploadDirectory);
+                System.out.println("Upload directory aangemaakt: "+ uploadDirectory);
             } catch (IOException e) {
                 throw new RuntimeException("Kon upload-map niet aanmaken", e);
             }
         } else {
-            System.out.println("Upload directory bestaat al.");
+            System.out.println("Upload directory bestaat al: "+ uploadDirectory);
         }
     }
 
@@ -181,7 +182,8 @@ public class ImageService {
         }
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_TYPES.contains(contentType.toLowerCase())) {
-            throw new InvalidImageTypeException("Ongeldig bestandstype: Alleen PNG, JPG, JPEG, TIFF en SVG zijn toegestaan.");
+            String errorMessage = "Ongeldig bestandstype: Alleen .png, .jpeg, jpg, .webp en .svg zijn toegestaan.";
+            throw new InvalidImageTypeException(errorMessage);
         }
     }
 

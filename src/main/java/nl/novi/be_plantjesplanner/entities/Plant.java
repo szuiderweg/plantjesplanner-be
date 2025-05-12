@@ -10,22 +10,34 @@ public class Plant {
     @Id
     @GeneratedValue
     private Long id;
-    // todo set up errorhandling of errors caused by non-unique plantnames
-    @Column(unique = true)
-    private String dutchName;
-    private String latinName;
-    @Length(max = 1000)
-// maximum length of description is 1000 characters. default length of 255 characters was too short > probably needs finetuning
-    private String description;
-    private Double height;//typical vertical size [meters]
-    private Double footprint;//typical area needed by the plant [meters^2]
 
-    private String bloomColorHex;//hex value of typical flower color for use in the frontend
-    private ColorGroup bloomColorGroup;//enum used to search for plants by general flower color
-//    private Locale locale;//TODO fix error with relation to Locale
-//    private BloomingMonths bloomingMonths;//TODO fix error with relation
-//    private Image image; //TODO fix error with relation
-    private boolean isPublished = false;//sets visibility for users with Designer-role
+    @Column(unique = true)
+    private String dutchName ="";
+    private String latinName ="";
+
+    // maximum length of description is 1000 characters. default length of 255 characters was too short > probably needs finetuning
+    @Length(max = 1000)
+    private String description ="";
+    private Double height = 0.00;//typical vertical size [meters]
+    private Double footprint =0.00;//typical area needed by the plant [meters^2]
+
+    private String bloomColorHex="#000000";//hex value of typical flower color for use in the frontend
+    @Enumerated(EnumType.STRING)
+    private ColorGroup bloomColorGroup=ColorGroup.GEEN;//enum used to search for plants by general (flower) color
+
+    private Boolean published = false;//sets visibility of a plant for users with Designer-role
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "locale_id")
+    private Locale locale;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "blooming_calendar_id")
+    private BloomingCalendar bloomingCalendar;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "plantavatar_id")
+    private Image plantAvatar;
+
 
     public Long getId() {// getter only, since id is automatically generated
         return id;
@@ -37,6 +49,14 @@ public class Plant {
 
     public void setDutchName(String dutchName) {
         this.dutchName = dutchName;
+    }
+
+    public String getLatinName() {
+        return latinName;
+    }
+
+    public void setLatinName(String latinName) {
+        this.latinName = latinName;
     }
 
     public String getDescription() {
@@ -67,39 +87,48 @@ public class Plant {
         return bloomColorHex;
     }
 
-//    public void setBloomColorHex(String bloomColorHex) {
-//        this.bloomColorHex = bloomColorHex;
-//    }
-//
-//    public ColorGroup getBloomColorGroup() {
-//        return bloomColorGroup;
-//    }
-//
-//    public void setBloomColorGroup(ColorGroup bloomColorGroup) {
-//        this.bloomColorGroup = bloomColorGroup;
-//    }
-//
-//    public Locale getLocale() {
-//        return locale;
-//    }
-//
-//    public void setLocale(Locale locale) {
-//        this.locale = locale;
-//    }
-//
-//    public BloomingMonths getBloomingMonths() {
-//        return bloomingMonths;
-//    }
-//
-//    public void setBloomingMonths(BloomingMonths bloomingMonths) {
-//        this.bloomingMonths = bloomingMonths;
-//    }
-//
-//    public Image getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(Image image) {
-//        this.image = image;
-//    }
+    public void setBloomColorHex(String bloomColorHex) {
+        this.bloomColorHex = bloomColorHex;
+    }
+
+    public ColorGroup getBloomColorGroup() {
+        return bloomColorGroup;
+    }
+
+    public void setBloomColorGroup(ColorGroup bloomColorGroup) {
+        this.bloomColorGroup = bloomColorGroup;
+    }
+
+    public boolean isPublished() {
+        return published;
+    }
+
+    public void setPublished(boolean published) {
+        this.published = published;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public BloomingCalendar getBloomingCalendar() {
+        return bloomingCalendar;
+    }
+
+    public void setBloomingCalendar
+            (BloomingCalendar bloomingCalendar) {
+        this.bloomingCalendar = bloomingCalendar;
+    }
+
+    public Image getPlantAvatar() {
+        return plantAvatar;
+    }
+
+    public void setPlantAvatar(Image plantAvatar) {
+        this.plantAvatar = plantAvatar;
+    }
 }

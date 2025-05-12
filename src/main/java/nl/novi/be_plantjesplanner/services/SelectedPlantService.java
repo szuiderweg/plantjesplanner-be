@@ -4,6 +4,7 @@ import nl.novi.be_plantjesplanner.dtos.SelectedPlantDto;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.entities.SelectedPlant;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
+import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import nl.novi.be_plantjesplanner.repositories.SelectedPlantRepository;
 import org.springframework.stereotype.Service;
@@ -96,7 +97,7 @@ public class SelectedPlantService {
         selectedPlantDto.setId(selectedPlant.getId());
         selectedPlantDto.setQuantity(selectedPlant.getQuantity());
         //use the mapToPlantDto-mapper from the PlantService to convert the Plant linked to a plant DTO
-        selectedPlantDto.setPlantDto(PlantService.mapToPlantDto(selectedPlant.getPlant()));
+        selectedPlantDto.setPlantDto(Mapper.mapToPlantDto(selectedPlant.getPlant()));
         return selectedPlantDto;
     }
 

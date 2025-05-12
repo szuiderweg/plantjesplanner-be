@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+//TODO deze entiteit samenvoegen met Design
 @Entity
 @Table(name = "gardens")
 public class GardenInfo {
