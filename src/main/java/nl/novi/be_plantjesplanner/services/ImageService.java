@@ -137,7 +137,7 @@ public class ImageService {
                 //delete metadata from database
                 imageRepository.deleteById(id);
 
-            } else if (isQuiet == false) {
+            } else if (!isQuiet) {
                 throw new RecordNotFoundException();
             }else{
                 return;
@@ -151,7 +151,7 @@ public class ImageService {
             }
 
         } catch (IOException e) {
-            if(isQuiet == false){
+            if(!isQuiet){
             throw new RecordNotFoundException("Bestand niet gevonden, dus ook niet verwijderd "+storedFilename);
             }
             else{
@@ -181,7 +181,7 @@ public class ImageService {
             throw new IllegalArgumentException("Het bestand is leeg! probeer het opnieuw");
         }
         String contentType = file.getContentType();
-        if (contentType == null || !ALLOWED_TYPES.contains(contentType.toLowerCase())) {
+        if (!ALLOWED_TYPES.contains(contentType.toLowerCase())) {
             String errorMessage = "Ongeldig bestandstype: Alleen .png, .jpeg, jpg, .webp en .svg zijn toegestaan.";
             throw new InvalidImageTypeException(errorMessage);
         }
