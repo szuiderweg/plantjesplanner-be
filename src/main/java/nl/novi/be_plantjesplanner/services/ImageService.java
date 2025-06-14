@@ -53,41 +53,44 @@ public class ImageService {
        }
     }
 
-    public String updateImage(ImageUploadDto imageUploadDto){
+    public Image updateImage(ImageUploadDto imageUploadDto, String requestedFileName) {
         MultipartFile newFile = imageUploadDto.file();
-        String requestedFileName = imageUploadDto.fileName();
+//     String requestedFileName = imageUploadDto.fileName();//klopt niet! dit is altijd null!
+
         checkUploadedImage(newFile);//validate uploaded image
 
         //retrieve filepath of existing file
         Path oldFilePath = Paths.get(uploadDirectory, requestedFileName);
-        if(!Files.exists(oldFilePath)){
-            throw new RecordNotFoundException("Afbeelding niet gevonden: "+requestedFileName);
+        if (!Files.exists(oldFilePath)) {
+            throw new RecordNotFoundException("Afbeelding niet gevonden: " + requestedFileName);
         }
         //generate new unique filename and path for updated file
-       String originalFileName = newFile.getOriginalFilename();
-       String newStoredFileName = System.currentTimeMillis()+"_"+originalFileName;
-       Path newFilePath = Paths.get(uploadDirectory, newStoredFileName);
-
-        try{
+        String originalFileName = newFile.getOriginalFilename();
+        String newStoredFileName = System.currentTimeMillis() + "_" + originalFileName;
+        Path newFilePath = Paths.get(uploadDirectory, newStoredFileName);
+        Image newImage = new Image();
+        try {
             //delete the old file
             Files.deleteIfExists(oldFilePath);
             //overwrite the existing file
             Files.copy(newFile.getInputStream(), newFilePath, StandardCopyOption.REPLACE_EXISTING);
 
             //update metadata in database
+
             Optional<Image> imageOptional = imageRepository.findByStoredFilename(requestedFileName);
-            if(imageOptional.isPresent()){
-                Image image = imageOptional.get();
-                image.setStoredFilename(newStoredFileName);
-                image.setOriginalFilename(originalFileName);
-                image.setUploadDateTime();
-                imageRepository.save(image);
+            if (imageOptional.isPresent()) {
+                newImage = imageOptional.get();
+                newImage.setStoredFilename(newStoredFileName);
+                newImage.setOriginalFilename(originalFileName);
+                newImage.setUploadDateTime();
+                imageRepository.save(newImage);
             }
-            return "Afbeelding  "+requestedFileName+ "is aangepast naar "+newStoredFileName;
-        } catch (IOException e){
-            throw new RuntimeException("Fout bij updaten van bestand: "+ requestedFileName);
+        } catch (IOException e) {
+            throw new RuntimeException("Fout bij updaten van bestand: " + requestedFileName);
         }
+        return newImage;
     }
+
 
     public ImageDownloadDto getImageDto(String fileName){
            try {
