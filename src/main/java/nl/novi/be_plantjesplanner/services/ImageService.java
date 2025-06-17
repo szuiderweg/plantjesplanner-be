@@ -55,8 +55,6 @@ public class ImageService {
 
     public Image updateImage(ImageUploadDto imageUploadDto, String requestedFileName) {
         MultipartFile newFile = imageUploadDto.file();
-//     String requestedFileName = imageUploadDto.fileName();//klopt niet! dit is altijd null!
-
         checkUploadedImage(newFile);//validate uploaded image
 
         //retrieve filepath of existing file
@@ -126,8 +124,8 @@ public class ImageService {
                 throw new RecordNotFoundException("afbeelding niet gevonden in database");
             }
     }
-
-    public void deleteImageById(Long id, boolean isQuiet) {
+//todo BUG check gebruik van deze method door plant service want ik weet niet of het nu goed werkt
+    public void deleteImageById(Long id, Boolean isQuiet) {
         //isQuiet == false: indicates that an error can be thrown that interrupts the flow of the program
         //isQuiet == true: an error message is printed and the program continues
         //before the image is deleted from the database, the original filename is needed to delete the file from the filesystem.

@@ -11,9 +11,10 @@ public class SelectedPlant {
     private Long id;
     private Integer quantity;
 
-    private Double gardenMatchScore;
+    @ManyToOne
+    @JoinColumn(name= "design_id")
+    private Design design;
 
-    //todo enforce that a plant can only be selected once per design.
     @ManyToOne
     @JoinColumn(name = "plant_id", nullable = false)
     private Plant plant;
@@ -37,13 +38,5 @@ public class SelectedPlant {
 
     public void setPlant(Plant plant) {
         this.plant = plant;
-    }
-
-    public Double getGardenMatchScore() {
-        return gardenMatchScore;
-    }
-
-    public void setGardenMatchScore(Double gardenMatchScore) {
-        this.gardenMatchScore = gardenMatchScore;
     }
 }

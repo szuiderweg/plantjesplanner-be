@@ -1,20 +1,23 @@
 package nl.novi.be_plantjesplanner.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "moodboarditems")
+@Table(name = "moodboard_items")
 public class MoodboardItem {
         @Id
         @GeneratedValue
         private Long id;
        private String caption;
-//        private Image image;//TODO error fixen door relatie te leggen
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "moodboardItemImage_id")
+       private Image image;
+
+    @ManyToOne
+    @JoinColumn(name = "design_id")
+    private Design design;
 
     public Long getId() {
         return id;

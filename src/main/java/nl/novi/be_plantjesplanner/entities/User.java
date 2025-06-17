@@ -1,9 +1,6 @@
 package nl.novi.be_plantjesplanner.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
 //TODO dit is een placeholder class om een Design aan te linken
@@ -16,7 +13,9 @@ public class User {
     private String username;
     private String password;
     private final ZonedDateTime zonedDateTime;
-//    private Design design;//TODO fix relation with design
+    @OneToOne
+    @JoinColumn(name ="design_id")
+    private Design design;//TODO fix relation with design
 
     public User(){
         this.zonedDateTime = ZonedDateTime.now();
@@ -27,6 +26,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.zonedDateTime = ZonedDateTime.now();
+        this.design = new Design();
     }
 
     public Long getId() {

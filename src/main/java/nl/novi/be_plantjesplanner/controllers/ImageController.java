@@ -1,3 +1,6 @@
+
+//TODO voor het inleveren deze klasse verwijderen. requests op images lopen altijd via de controller van een parent entity
+
 //package nl.novi.be_plantjesplanner.controllers;
 //
 //import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
@@ -17,7 +20,7 @@
 //        this.imageService = imageService;
 //    }
 //
-//    @PostMapping//TODO uplaod DTO implementeren . Dit is een andere DTO omdat voor het downloaden een Multipart file naar de servicegaat  en voor uploaden de uitkomt een Resource is. Dus de input is wezenlijk anders dan de output.
+//    @PostMapping//uplaod DTO implementeren . Dit is een andere DTO omdat voor het downloaden een Multipart file naar de servicegaat  en voor uploaden de uitkomt een Resource is. Dus de input is wezenlijk anders dan de output.
 //    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
 //        if (file.isEmpty()) {
 //            return ResponseEntity.badRequest().body("Geen bestand ontvangen.");

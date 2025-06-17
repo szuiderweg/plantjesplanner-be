@@ -138,6 +138,13 @@ public class PlantService {
     }
 
     public void deletePlantById(Long id){
+        //look up the Id of the image linked to this plant and delete the image file first, then the rest of the plant
+        Optional<Plant> plantOptional = plantRepository.findById(id);
+        if(plantOptional.isPresent()){
+            Plant foundPlant = plantOptional.get();
+            Long plantAvatarId = foundPlant.getPlantAvatar().getId();
+            imageService.deleteImageById(plantAvatarId, true);
+        }
         plantRepository.deleteById(id);
     }
 }
