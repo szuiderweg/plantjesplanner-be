@@ -128,8 +128,8 @@ public class ImageService {
     public void deleteImageById(Long id, Boolean isQuiet) {
         //isQuiet == false: indicates that an error can be thrown that interrupts the flow of the program
         //isQuiet == true: an error message is printed and the program continues
-        //before the image is deleted from the database, the original filename is needed to delete the file from the filesystem.
 
+        //before the image is deleted from the database, the original filename is needed to delete the file from the filesystem.
             Optional<Image> imageOptional = imageRepository.findById(id);
             String storedFilename;
             if (imageOptional.isPresent()) {

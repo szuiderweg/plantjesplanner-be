@@ -15,7 +15,7 @@ public class User {
     private final ZonedDateTime zonedDateTime;
     @OneToOne
     @JoinColumn(name ="design_id")
-    private Design design;//TODO fix relation with design
+    private Design design;
 
     public User(){
         this.zonedDateTime = ZonedDateTime.now();

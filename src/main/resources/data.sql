@@ -19,7 +19,7 @@ VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
         (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
 
 -- Insert Plants
-INSERT INTO plants (id, dutch_name, latin_name, description, height, footprint, bloom_color_hex, bloom_color_group, published, locale_id, blooming_calendar_id, plantavatar_id)
+INSERT INTO plantcatalogue (id, dutch_name, latin_name, description, height, footprint, bloom_color_hex, bloom_color_group, published, locale_id, blooming_calendar_id, plantavatar_id)
 VALUES
     (1, 'Klimroos New Dawn', 'Rosa New Dawn', 'Zachte roze klimroos die lang wordt.', 1.5, 1.0, '#FFE4E1', 'ROZE', true, 1, 1, 1),
     (2, 'Zonnebloem', 'Helianthus annuus', 'Zonnige hoge bloem met groot hart.', 2.0, 0.5, '#FFD700', 'GEEL', true, 2, 2, 2),
