@@ -5,7 +5,7 @@ import nl.novi.be_plantjesplanner.enumerations.ColorGroup;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "plants")
+@Table(name = "plantcatalogue")
 public class Plant {
     @Id
     @GeneratedValue
@@ -25,12 +25,12 @@ public class Plant {
     @Enumerated(EnumType.STRING)
     private ColorGroup bloomColorGroup=ColorGroup.GEEN;//enum used to search for plants by general (flower) color
 
-    private Boolean published = false;//sets visibility of a plant for users with Designer-role
-    @OneToOne(cascade = CascadeType.ALL)
+    private Boolean published = false;//sets visibility of a plant:  with users Designer-role only see plant with published = true
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "locale_id")
     private Locale locale;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "blooming_calendar_id")
     private BloomingCalendar bloomingCalendar;
 

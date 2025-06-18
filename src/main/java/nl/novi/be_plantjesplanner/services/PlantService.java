@@ -72,8 +72,9 @@ public class PlantService {
             }
             //update plant avatar image (optional)
             if (imageUploadDto.file() != null && !imageUploadDto.file().isEmpty()) {
-                Image imageUpdate = imageService.saveImage(imageUploadDto);
-                existingPlant.setPlantAvatar(imageUpdate);
+                String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
+                Image imageUpdate = imageService.updateImage(imageUploadDto,oldAvatarFilename);
+                existingPlant.setPlantAvatar(imageUpdate);//
             }
 
             plantRepository.save(existingPlant);
@@ -136,8 +137,14 @@ public class PlantService {
         return foundPlantsDto;
     }
 
-
     public void deletePlantById(Long id){
+        //look up the Id of the image linked to this plant and delete the image file first, then the rest of the plant
+        Optional<Plant> plantOptional = plantRepository.findById(id);
+        if(plantOptional.isPresent()){
+            Plant foundPlant = plantOptional.get();
+            Long plantAvatarId = foundPlant.getPlantAvatar().getId();
+            imageService.deleteImageById(plantAvatarId, true);
+        }
         plantRepository.deleteById(id);
     }
 }

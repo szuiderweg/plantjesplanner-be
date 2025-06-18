@@ -25,7 +25,7 @@ public class SelectedPlantService {
 
     //corresponds to Post request of a selectedplant in the selectedplant controller
     //a plant is only assigned to a selected plant once during the creation of the selectedplant and a plant is mandatory for a new selectedplant. only the quantity can be changed or the entire selectedplant can be deleted and replaced.
-    public SelectedPlantDto addSelectedPlant(SelectedPlantDto spDto, Long plantId)
+    public SelectedPlantDto addSelectedPlant(SelectedPlantDto spDto, Long plantId) //todo enforce that a plant can only be selected once per design. doe check in save selectedplant
     {
         //convert selectedplantdto to selectedplant
         SelectedPlant newSelectedPlant = mapFromSelectedPlantDto(spDto);
