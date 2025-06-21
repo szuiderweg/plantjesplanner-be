@@ -4,6 +4,7 @@ import nl.novi.be_plantjesplanner.entities.Design2;
 import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.enumerations.Role;
 import nl.novi.be_plantjesplanner.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +13,19 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //register user with designer role
     public User registerDesigner(User newUser){
-        newUser.setRole(Role.DESIGNER);
-        Design2 design = new Design2();
+        newUser.setRole(Role.DESIGNER);//set user properties
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));//encode password
+
+        Design2 design = new Design2();//initialize new default design
         design.setTitle("Mijn prachtige tuin");
         design.setUser(newUser);
 
