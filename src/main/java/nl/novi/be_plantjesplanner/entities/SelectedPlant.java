@@ -39,4 +39,12 @@ public class SelectedPlant {
     public void setPlant(Plant plant) {
         this.plant = plant;
     }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
+    }
 }

@@ -10,8 +10,8 @@ public class Design{
     @GeneratedValue
     private Long id;
 
-    @OneToOne(mappedBy = "design")
-    private User user;
+//    @OneToOne(mappedBy = "design")
+//    private User user;
 
     @OneToOne
     @JoinColumn(name = "locale_id")
@@ -36,9 +36,9 @@ public class Design{
         return id;
     }
 
-    public User getUser() {
-        return user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
 
     public Locale getGardenInfo() {
         return gardenInfo;

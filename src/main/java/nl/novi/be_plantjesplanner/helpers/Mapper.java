@@ -1,17 +1,20 @@
 package nl.novi.be_plantjesplanner.helpers;
 
-import nl.novi.be_plantjesplanner.dtos.BloomingCalendarDto;
-import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
-import nl.novi.be_plantjesplanner.dtos.LocaleDto;
-import nl.novi.be_plantjesplanner.dtos.PlantDto;
-import nl.novi.be_plantjesplanner.entities.BloomingCalendar;
-import nl.novi.be_plantjesplanner.entities.Image;
-import nl.novi.be_plantjesplanner.entities.Locale;
-import nl.novi.be_plantjesplanner.entities.Plant;
+import nl.novi.be_plantjesplanner.dtos.*;
+import nl.novi.be_plantjesplanner.entities.*;
 
 public class Mapper {
 
     //FROM-DTO mappers
+    public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
+        SelectedPlant newSelectedPlant = new SelectedPlant();
+        newSelectedPlant.setQuantity(selectedPlantDto.quantity());
+
+//      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
+        newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
+        return newSelectedPlant;
+    }
+
     public static Plant mapFromPlantDto(PlantDto plantDto){
         Plant newPlant = new Plant();
         newPlant.setDutchName(plantDto.dutchName());
@@ -70,15 +73,48 @@ public class Mapper {
         newAvatar.setStoredFilename(plantAvatarDto.storedFilename());
         return newAvatar;
     }
-//TO DTO mappers
 
+    public static Design2 mapFromDesign2Dto(Design2Dto design2Dto){
+        Design2 newDesign2 = new Design2();
+        newDesign2.setTitle(design2Dto.title());
+        return newDesign2;
+    }
+
+    public static User mapFromUserDto(UserDto userDto){
+    User newUser = new User();
+    newUser.setUsername(userDto.username());
+    newUser.setPassword(userDto.password());
+//    newUser.setRole(userDto.role());
+   // newUser.setDesign2(mapFromDesign2Dto(userDto.design2Dto()));
+    return newUser;
+    }
+
+//    public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
+//        SelectedPlant newSelectedPlant = new SelectedPlant();
+//        newSelectedPlant.setQuantity(selectedPlantDto.quantity());
+//
+////      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
+//        newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
+//        return newSelectedPlant;
+//    }
+
+
+//TO DTO mappers
+//    public static SelectedPlantDto mapToSelectedPlantDto(SelectedPlant selectedPlant){
+//        //map child objects first
+//        PlantDto newPlantDto = Mapper.mapToPlantDto(selectedPlant.getPlant());
+//
+//        //DesignDto newDesignDto = Mapper.mapToDesignDto(selectedPlant.getDesign());
+//        SelectedPlantDto = new SelectedPlantDto(selectedPlant.getId(), selectedPlant.getQuantity(), )
+//    }
     public static PlantDto mapToPlantDto(Plant plant){
-        //map child entities first for clarity
+        //map child objects first
         LocaleDto newLocaleDto = plant.getLocale() != null? Mapper.mapToLocaleDto(plant.getLocale()) : null;
 
         BloomingCalendarDto newBloomingCalendarDto = plant.getBloomingCalendar() != null? Mapper.mapToBloomingCalendarDto(plant.getBloomingCalendar()) : null;
 
         ImageMetadataDto newImageMetadataDto = plant.getPlantAvatar() != null? Mapper.mapToImageMetadataDto(plant.getPlantAvatar()) : null;
+
         PlantDto newPlantDto = new PlantDto(plant.getId(), plant.getDutchName(), plant.getLatinName(), plant.getDescription(), plant.getHeight(), plant.getFootprint(), plant.getBloomColorHex(), plant.getBloomColorGroup(), plant.isPublished(), newLocaleDto, newBloomingCalendarDto, newImageMetadataDto);
         return newPlantDto;
     }
@@ -96,5 +132,19 @@ public class Mapper {
         ImageMetadataDto newImageMetadataDto = new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(),image.getUploadDateTime());
         return newImageMetadataDto;
     }
+
+    public static Design2Dto mapToDesign2Dto(Design2 design2){
+        Design2Dto newDesign2Dto = new Design2Dto(design2.getId(), design2.getTitle());
+        return newDesign2Dto;
+    }
+
+    public static UserDto mapToUserDto(User user){
+        //map child object design first
+        Design2Dto newDesign2Dto = Mapper.mapToDesign2Dto(user.getDesign2());
+
+        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.getCreationDate(), newDesign2Dto);
+        return newUserDto;
+    }
+
 
 }
