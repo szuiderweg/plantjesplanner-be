@@ -27,26 +27,24 @@ public class UserService {
     //register user with designer role
     @Transactional
     public User registerDesigner(User newUser){
-        try {
+
             newUser.setRole(Role.ROLE_DESIGNER);//set user properties
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));//encode password
 
             Design2 design = new Design2();//initialize new default design
             design.setTitle("Mijn prachtige tuin");
+            //set bidirectional one to one relation with Design
             design.setUser(newUser);
-
             newUser.setDesign2(design);
             User savedUser = userRepository.save(newUser);
             // Voeg authority toe via JDBC
-//            userRepository.flush(); // <-- forceert de insert naar de database
+
             jdbcTemplate.update(
                     "INSERT INTO authorities (username, authority) VALUES (?, ?)",
                     savedUser.getUsername(), "ROLE_DESIGNER"
             );
             return savedUser;
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;}
+
     }
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);

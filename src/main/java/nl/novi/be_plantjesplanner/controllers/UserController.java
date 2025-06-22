@@ -25,15 +25,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    //for anyone
+    //for anyone without credentials
     @PostMapping("/register")
     public ResponseEntity<UserDto> registerDesigner(@Valid @RequestBody UserDto userDto){
         User user = Mapper.mapFromUserDto(userDto);
         User savedUser = userService.registerDesigner(user);
         UserDto responseDto = Mapper.mapToUserDto(savedUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+//
     }
+
+    //----for owners
+    //inloggen (eigen account ophalen): /users/me of users/authenticate
+    //edit eigen account: wachtwoord resetten
+    //eigen account deleten
+
+
+    //---for designers only
+    //
+
+    //-----for logged in user or admin
+
 
     //for admins only
     @GetMapping("/all")
@@ -45,6 +57,9 @@ public class UserController {
         }
         return ResponseEntity.ok().body(allUsersDto);
     }
-
+    //andere user opzoeken: users/{id}
+    //password van een ander resetten
+    //nieuw admin account maken
+    //account van een ander verwijderen
 
 }
