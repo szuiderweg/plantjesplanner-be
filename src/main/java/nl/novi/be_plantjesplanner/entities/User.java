@@ -1,6 +1,7 @@
 package nl.novi.be_plantjesplanner.entities;
 
 import jakarta.persistence.*;
+import nl.novi.be_plantjesplanner.enumerations.Role;
 
 import java.time.ZonedDateTime;
 //TODO dit is een placeholder class om een Design aan te linken
@@ -8,25 +9,28 @@ import java.time.ZonedDateTime;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
-    private final ZonedDateTime zonedDateTime;
-    @OneToOne
+
+    @Column(nullable = false)// for JBDC authentication
+    private boolean enabled = true;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Column(updatable = false, nullable = false)
+    private ZonedDateTime creationDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="design_id")
-    private Design design;
+    private Design2 design2;
 
-    public User(){
-        this.zonedDateTime = ZonedDateTime.now();
-    }
-
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.zonedDateTime = ZonedDateTime.now();
-        this.design = new Design();
+    @PrePersist
+    public void prePersist(){
+        this.creationDate = ZonedDateTime.now();
     }
 
     public Long getId() {
@@ -41,8 +45,8 @@ public class User {
         return password;
     }
 
-    public ZonedDateTime getZonedDateTime() {
-        return zonedDateTime;
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
     }
 
     public void setUsername(String username) {
@@ -52,4 +56,21 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Design2 getDesign2() {
+        return design2;
+    }
+
+    public void setDesign2(Design2 design2) {
+        this.design2 = design2;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
 }

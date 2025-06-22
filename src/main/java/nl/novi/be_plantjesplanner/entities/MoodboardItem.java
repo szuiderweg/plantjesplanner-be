@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 @Table(name = "moodboard_items")
 public class MoodboardItem {
         @Id
-        @GeneratedValue
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
        private String caption;
     @OneToOne(cascade = CascadeType.ALL)

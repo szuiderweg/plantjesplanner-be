@@ -1,5 +1,5 @@
 package nl.novi.be_plantjesplanner.enumerations;
 
 public enum Role {
-    ADMIN, DESIGNER, CURATOR
+    ROLE_ADMIN, ROLE_DESIGNER
 }

@@ -5,10 +5,10 @@ import nl.novi.be_plantjesplanner.enumerations.ColorGroup;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Table(name = "plantcatalogue")
+@Table(name = "plants")
 public class Plant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
@@ -37,7 +37,7 @@ public class Plant {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "plantavatar_id")
     private Image plantAvatar;
-
+    //
 
     public Long getId() {// getter only, since id is automatically generated
         return id;

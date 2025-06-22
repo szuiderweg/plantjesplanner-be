@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 @Table(name = "images")
 public class Image {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String originalFilename;
     @Column(unique = true)
