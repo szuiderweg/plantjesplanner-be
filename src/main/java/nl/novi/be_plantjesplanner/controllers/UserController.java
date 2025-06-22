@@ -32,6 +32,7 @@ public class UserController {
         User savedUser = userService.registerDesigner(user);
         UserDto responseDto = Mapper.mapToUserDto(savedUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
     //for admins only

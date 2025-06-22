@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "plants")
 public class Plant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)

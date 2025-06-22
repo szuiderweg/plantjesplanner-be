@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "designs")
 public class Design{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 //    @OneToOne(mappedBy = "design")

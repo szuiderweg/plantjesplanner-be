@@ -9,7 +9,7 @@ import nl.novi.be_plantjesplanner.enumerations.WindTolerance;
 @Table(name = "locales")
 public class Locale{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private Sunlight sunlight;

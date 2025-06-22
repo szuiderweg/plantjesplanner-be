@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "selected_plants")
 public class SelectedPlant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
 

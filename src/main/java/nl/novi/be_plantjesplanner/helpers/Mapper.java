@@ -142,7 +142,7 @@ public class Mapper {
         //map child object design first
         Design2Dto newDesign2Dto = Mapper.mapToDesign2Dto(user.getDesign2());
 
-        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), user.getPassword(), user.getRole(), user.getCreationDate(), newDesign2Dto);
+        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "***encrypted***", user.getRole(), user.getCreationDate(), newDesign2Dto);
         return newUserDto;
     }
 

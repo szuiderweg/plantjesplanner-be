@@ -9,11 +9,14 @@ import java.time.ZonedDateTime;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String username;
     private String password;
+
+    @Column(nullable = false)// for JBDC authentication
+    private boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     private Role role;
