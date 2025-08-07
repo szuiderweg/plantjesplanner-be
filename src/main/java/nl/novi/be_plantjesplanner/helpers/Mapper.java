@@ -85,7 +85,7 @@ public class Mapper {
     newUser.setUsername(userDto.username());
     newUser.setPassword(userDto.password());
 //    newUser.setRole(userDto.role());
-   // newUser.setDesign2(mapFromDesign2Dto(userDto.design2Dto()));
+
     return newUser;
     }
 
@@ -140,9 +140,7 @@ public class Mapper {
 
     public static UserDto mapToUserDto(User user){
         //map child object design first
-        Design2Dto newDesign2Dto = Mapper.mapToDesign2Dto(user.getDesign2());
-
-        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "***encrypted***", user.getRole(), user.getCreationDate(), newDesign2Dto);
+        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "********", user.getRole(), user.getCreationDate());
         return newUserDto;
     }
 
