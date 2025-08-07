@@ -36,7 +36,7 @@ public class UserController {
     }
 
     //----for owners
-    //inloggen (eigen account ophalen): /users/me of users/authenticate
+    //inloggen (eigen account ophalen): gebeurt in Authcontroller
     //edit eigen account: wachtwoord resetten
     //eigen account deleten
 

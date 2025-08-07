@@ -9,6 +9,8 @@ import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +83,12 @@ public class ExceptionController {
     @ExceptionHandler(UnreadableFileException.class)
     public ResponseEntity<String> handleUnreadableFileException(UnreadableFileException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
+    //handles exceptions related to invalid user credentials
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ongeldige inloggegevens");
     }
 
     //500 errors for development
