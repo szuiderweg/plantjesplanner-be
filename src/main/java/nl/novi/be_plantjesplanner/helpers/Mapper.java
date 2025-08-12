@@ -74,10 +74,10 @@ public class Mapper {
         return newAvatar;
     }
 
-    public static Design2 mapFromDesign2Dto(Design2Dto design2Dto){
-        Design2 newDesign2 = new Design2();
-        newDesign2.setTitle(design2Dto.title());
-        return newDesign2;
+    public static Design mapFromDesignDto(DesignDto designDto){
+        Design newDesign = new Design();
+        newDesign.setTitle(designDto.title());
+        return newDesign;
     }
 
     public static User mapFromUserDto(UserDto userDto){
@@ -133,9 +133,9 @@ public class Mapper {
         return newImageMetadataDto;
     }
 
-    public static Design2Dto mapToDesign2Dto(Design2 design2){
-        Design2Dto newDesign2Dto = new Design2Dto(design2.getId(), design2.getTitle());
-        return newDesign2Dto;
+    public static DesignDto mapToDesignDto(Design design){
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle());
+        return newDesignDto;
     }
 
     public static UserDto mapToUserDto(User user){

@@ -21,8 +21,8 @@ VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
        (2, 'zonnebloem.jpg', 'zonnebloem.jpg', '2025-04-28T20:45:00+02:00'),
        (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
 
--- Insert Design2
-INSERT INTO design2 (id, title) VALUES (1, 'Standaard ontwerp voor admin'),(2,'Mijn prachtige tuin');
+-- Insert Design
+INSERT INTO design (id, title) VALUES (1, 'Standaard ontwerp voor admin'),(2,'Mijn prachtige tuin');
 
 -- Insert Users (gebruik BCrypt hashes!) designer: "geheim" admin: "super_geheim"
 INSERT INTO users (id, username, password, enabled, role, creation_date, design_id) VALUES
@@ -46,5 +46,5 @@ SELECT setval('images_id_seq', (SELECT MAX(id) FROM images));
 SELECT setval('plants_id_seq', (SELECT MAX(id) FROM plants));
 SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calendars));
 SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));
-SELECT setval('design2_id_seq', (SELECT MAX(id) FROM design2));
+SELECT setval('design_id_seq', (SELECT MAX(id) FROM design));
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

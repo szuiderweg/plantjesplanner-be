@@ -1,7 +1,7 @@
 package nl.novi.be_plantjesplanner.services;
 
 import jakarta.transaction.Transactional;
-import nl.novi.be_plantjesplanner.entities.Design2;
+import nl.novi.be_plantjesplanner.entities.Design;
 import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.enumerations.Role;
 import nl.novi.be_plantjesplanner.repositories.UserRepository;
@@ -31,11 +31,11 @@ public class UserService {
             newUser.setRole(Role.ROLE_DESIGNER);//set user properties
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));//encode password
 
-            Design2 design = new Design2();//initialize new default design
+            Design design = new Design();//initialize new default design
             design.setTitle("Mijn prachtige tuin");
             //set bidirectional one to one relation with Design
             design.setUser(newUser);
-            newUser.setDesign2(design);
+            newUser.setDesign(design);
             User savedUser = userRepository.save(newUser);
             // Voeg authority toe via JDBC
 
