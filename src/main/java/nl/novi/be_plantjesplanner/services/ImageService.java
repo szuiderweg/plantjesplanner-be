@@ -1,13 +1,12 @@
 package nl.novi.be_plantjesplanner.services;
 
-import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
+import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
 import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
-import nl.novi.be_plantjesplanner.entities.Image;
+import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
+import nl.novi.be_plantjesplanner.entities.ImageMetadata;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.exceptions.UnreadableFileException;
-import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.repositories.ImageRepository;
 
 import org.springframework.core.io.Resource;
@@ -36,16 +35,16 @@ public class ImageService {
         createImageUploadDirectory();
     }
 
-    public Image saveImage(ImageUploadDto imageUploadDto)
+    public ImageMetadata saveImage(ImageUploadFileDto imageUploadDto)//todo replace dto with ImageMetadata uploaded image
     {
-        MultipartFile uploadedImage = imageUploadDto.file();
+        MultipartFile uploadedImage = imageUploadDto.file();//todo file uit
         checkUploadedImage(uploadedImage);
        String originalFilename = uploadedImage.getOriginalFilename();
        try{
            String storedFilename = System.currentTimeMillis()+"_"+originalFilename;//make the storedfilename unique by adding the currrent time to the filename. This is to prevent confusion when downloading images with identical original names
            Path filepath = Paths.get(uploadDirectory, storedFilename);
            Files.copy(uploadedImage.getInputStream(),filepath, StandardCopyOption.REPLACE_EXISTING);
-           Image savedImage = new Image(originalFilename, storedFilename);
+           ImageMetadata savedImage = new ImageMetadata(originalFilename, storedFilename);
            imageRepository.save(savedImage);
            return savedImage;
        }catch(IOException e){
@@ -53,7 +52,7 @@ public class ImageService {
        }
     }
 
-    public Image updateImage(ImageUploadDto imageUploadDto, String requestedFileName) {
+    public ImageMetadata updateImage(ImageUploadFileDto imageUploadDto, String requestedFileName) {
         MultipartFile newFile = imageUploadDto.file();
         checkUploadedImage(newFile);//validate uploaded image
 
@@ -66,7 +65,7 @@ public class ImageService {
         String originalFileName = newFile.getOriginalFilename();
         String newStoredFileName = System.currentTimeMillis() + "_" + originalFileName;
         Path newFilePath = Paths.get(uploadDirectory, newStoredFileName);
-        Image newImage = new Image();
+        ImageMetadata newImage = new ImageMetadata();
         try {
             //delete the old file
             Files.deleteIfExists(oldFilePath);
@@ -75,7 +74,7 @@ public class ImageService {
 
             //update metadata in database
 
-            Optional<Image> imageOptional = imageRepository.findByStoredFilename(requestedFileName);
+            Optional<ImageMetadata> imageOptional = imageRepository.findByStoredFilename(requestedFileName);
             if (imageOptional.isPresent()) {
                 newImage = imageOptional.get();
                 newImage.setStoredFilename(newStoredFileName);
@@ -90,7 +89,7 @@ public class ImageService {
     }
 
 
-    public ImageDownloadDto getImageDto(String fileName){
+    public ImageDownloadFileDto getImageDto(String fileName){
            try {
                Path filePath = Paths.get(uploadDirectory).resolve(fileName).normalize();
                Resource resource = new UrlResource(filePath.toUri());//retrieve file based on unique filename and upload directory location
@@ -106,7 +105,7 @@ public class ImageService {
                 if (mediaTypeOptional.isEmpty() || !ALLOWED_TYPES.contains(mediaTypeOptional.get().toString())) {
                 throw new InvalidImageTypeException("Ongeldig bestandstype: "+mediaTypeOptional.get());
                 }
-               return new ImageDownloadDto(resource, mediaTypeOptional.get());
+               return new ImageDownloadFileDto(resource, mediaTypeOptional.get());
             }catch (IOException e) {
             throw new RuntimeException("Fout bij ophalen van bestand: " + fileName, e);
         }
@@ -115,9 +114,9 @@ public class ImageService {
 
     public ImageMetadataDto getImageMetadataDto(String fileName){
             //retrieve metadata from database
-            Optional<Image> imageOptional = imageRepository.findByStoredFilename(fileName);
+            Optional<ImageMetadata> imageOptional = imageRepository.findByStoredFilename(fileName);
             if(imageOptional.isPresent()) {
-                Image image = imageOptional.get();
+                ImageMetadata image = imageOptional.get();
                 return new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
             }
             else{
@@ -130,10 +129,10 @@ public class ImageService {
         //isQuiet == true: an error message is printed and the program continues
 
         //before the image is deleted from the database, the original filename is needed to delete the file from the filesystem.
-            Optional<Image> imageOptional = imageRepository.findById(id);
+            Optional<ImageMetadata> imageOptional = imageRepository.findById(id);
             String storedFilename;
             if (imageOptional.isPresent()) {
-                Image image = imageOptional.get();
+                ImageMetadata image = imageOptional.get();
                 storedFilename = image.getStoredFilename();
                 //delete metadata from database
                 imageRepository.deleteById(id);

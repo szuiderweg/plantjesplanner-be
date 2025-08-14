@@ -36,7 +36,7 @@ public class Plant {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "plantavatar_id")
-    private Image plantAvatar;
+    private ImageMetadata plantAvatar;
     //
 
     public Long getId() {// getter only, since id is automatically generated
@@ -124,11 +124,11 @@ public class Plant {
         this.bloomingCalendar = bloomingCalendar;
     }
 
-    public Image getPlantAvatar() {
+    public ImageMetadata getPlantAvatar() {
         return plantAvatar;
     }
 
-    public void setPlantAvatar(Image plantAvatar) {
+    public void setPlantAvatar(ImageMetadata plantAvatar) {
         this.plantAvatar = plantAvatar;
     }
 }

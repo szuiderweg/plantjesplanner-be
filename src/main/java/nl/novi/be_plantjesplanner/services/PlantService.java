@@ -1,9 +1,9 @@
 package nl.novi.be_plantjesplanner.services;
 
-import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
+import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
+import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 import nl.novi.be_plantjesplanner.dtos.PlantDto;
-import nl.novi.be_plantjesplanner.entities.Image;
+import nl.novi.be_plantjesplanner.entities.ImageMetadata;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.helpers.Mapper;
@@ -29,14 +29,14 @@ public class PlantService {
     }
 
     //corresponds to postPlant request in the PlantController
-    public PlantDto savePlant(PlantDto plantDto, ImageUploadDto imageUploadDto) {
+    public PlantDto savePlant(PlantDto plantDto, ImageUploadFileDto imageUploadDto) {
         Plant newPlant = Mapper.mapFromPlantDto(plantDto);
 
         if (plantRepository.existsByDutchNameIgnoreCase(newPlant.getDutchName())) {
             throw new DuplicateResourceException("Er bestaat al een plant met deze naam: " + newPlant.getDutchName());
         }
         if (imageUploadDto.file() != null && !imageUploadDto.file().isEmpty()) {
-            Image newImage = imageService.saveImage(imageUploadDto);
+            ImageMetadata newImage = imageService.saveImage(imageUploadDto);
             newPlant.setPlantAvatar(newImage);
         }
 
@@ -45,7 +45,7 @@ public class PlantService {
     }
 
     //corresponds to updatePlant request in the PlantController
-    public PlantDto updatePlantById(PlantDto plantDto , ImageUploadDto imageUploadDto, Long id){
+    public PlantDto updatePlantById(PlantDto plantDto , ImageUploadFileDto imageUploadDto, Long id){
        Plant plantUpdate = Mapper.mapFromPlantDto(plantDto);
 
         Optional<Plant> plantOptional = plantRepository.findById(id);
@@ -73,7 +73,7 @@ public class PlantService {
             //update plant avatar image (optional)
             if (imageUploadDto.file() != null && !imageUploadDto.file().isEmpty()) {
                 String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
-                Image imageUpdate = imageService.updateImage(imageUploadDto,oldAvatarFilename);
+                ImageMetadata imageUpdate = imageService.updateImage(imageUploadDto,oldAvatarFilename);
                 existingPlant.setPlantAvatar(imageUpdate);//
             }
 
@@ -95,7 +95,7 @@ public class PlantService {
         }
     }
 
-    public ImageDownloadDto getPlantAvatarByPlantId(Long id){
+    public ImageDownloadFileDto getPlantAvatarByPlantId(Long id){
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
             Plant foundPlant = plantOptional.get();

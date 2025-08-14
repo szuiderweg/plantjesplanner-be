@@ -1,8 +1,8 @@
 package nl.novi.be_plantjesplanner.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
+import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
+import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.services.PlantService;
 import org.hibernate.validator.constraints.Length;
@@ -28,7 +28,7 @@ public class PlantController {
    //POST a new plant
    @PostMapping
    public ResponseEntity<PlantDto> postPlant(@Valid @RequestPart("plant") PlantDto plantDto, @RequestPart(value = "image", required = false) MultipartFile file) {
-      ImageUploadDto imageUploadDto = new ImageUploadDto(file, "");
+      ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file, "");
       PlantDto savedPlantDto = plantService.savePlant(plantDto, imageUploadDto);
       return ResponseEntity.status(HttpStatus.CREATED).body(savedPlantDto);
    }
@@ -36,7 +36,7 @@ public class PlantController {
    // edit (PUT) a specific plant
    @PutMapping("/{id}")
    public ResponseEntity<PlantDto> updatePlant(@Valid @RequestPart("plant") PlantDto plantDto,@RequestPart(value = "image", required = false) MultipartFile file, @PathVariable Long id){
-      ImageUploadDto imageUploadDto = new ImageUploadDto(file,"");
+      ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file,"");
       PlantDto updatedPlantDto = plantService.updatePlantById(plantDto,imageUploadDto, id);
       return ResponseEntity.ok().body(updatedPlantDto);
    }
@@ -50,7 +50,7 @@ public class PlantController {
    //GET avatar image of a specific plant by plant id
    @GetMapping("/{id}/avatar")
    public ResponseEntity<Resource> downloadPlantAvatar(@PathVariable("id") Long id){
-      ImageDownloadDto imageDownloadDto = plantService.getPlantAvatarByPlantId(id);
+      ImageDownloadFileDto imageDownloadDto = plantService.getPlantAvatarByPlantId(id);
       return ResponseEntity.ok().contentType(imageDownloadDto.mediaType()).body(imageDownloadDto.resource());
    }
 

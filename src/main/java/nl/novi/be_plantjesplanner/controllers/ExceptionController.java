@@ -54,7 +54,7 @@ public class ExceptionController {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)//handle errors Thrown by @Validated annotion in controllers in case of invalid requestparameters. collect all violations in a Map with the field name and error message as key-value pairs .
+    @ExceptionHandler(ConstraintViolationException.class)//handles errors Thrown by @Validated annotation in controllers in case of invalid requestparameters. collect all violations in a Map with the field name and error message as key-value pairs .
     //limitation: only one error message per parameter
     public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();

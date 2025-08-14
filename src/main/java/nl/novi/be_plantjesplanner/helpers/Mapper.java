@@ -67,8 +67,8 @@ public class Mapper {
         return newLocale;
     }
 
-    public static Image mapFromImageMetadataDto(ImageMetadataDto plantAvatarDto){
-        Image newAvatar = new Image();
+    public static ImageMetadata mapFromImageMetadataDto(ImageMetadataDto plantAvatarDto){
+        ImageMetadata newAvatar = new ImageMetadata();
         newAvatar.setOriginalFilename(plantAvatarDto.originalFilename());
         newAvatar.setStoredFilename(plantAvatarDto.storedFilename());
         return newAvatar;
@@ -128,7 +128,7 @@ public class Mapper {
         return newLocaleDto;
     }
 
-    public static ImageMetadataDto mapToImageMetadataDto(Image image){
+    public static ImageMetadataDto mapToImageMetadataDto(ImageMetadata image){
         ImageMetadataDto newImageMetadataDto = new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(),image.getUploadDateTime());
         return newImageMetadataDto;
     }
