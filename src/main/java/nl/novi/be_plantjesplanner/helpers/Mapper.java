@@ -4,7 +4,7 @@ import nl.novi.be_plantjesplanner.dtos.*;
 import nl.novi.be_plantjesplanner.entities.*;
 
 public class Mapper {
-
+    private Mapper(){}//private constructor to prevent accidental instantiation
     //FROM-DTO mappers
     public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
         SelectedPlant newSelectedPlant = new SelectedPlant();
@@ -68,10 +68,10 @@ public class Mapper {
     }
 
     public static ImageMetadata mapFromImageMetadataDto(ImageMetadataDto plantAvatarDto){
-        ImageMetadata newAvatar = new ImageMetadata();
-        newAvatar.setOriginalFilename(plantAvatarDto.originalFilename());
-        newAvatar.setStoredFilename(plantAvatarDto.storedFilename());
-        return newAvatar;
+        ImageMetadata newMetadata = new ImageMetadata();
+        newMetadata.setOriginalFilename(plantAvatarDto.originalFilename());
+        newMetadata.setStoredFilename(plantAvatarDto.storedFilename());
+        return newMetadata;
     }
 
     public static Design mapFromDesignDto(DesignDto designDto){

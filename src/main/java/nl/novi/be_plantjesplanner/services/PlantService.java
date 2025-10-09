@@ -1,9 +1,10 @@
 package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 import nl.novi.be_plantjesplanner.dtos.PlantDto;
+import nl.novi.be_plantjesplanner.entities.BloomingCalendar;
 import nl.novi.be_plantjesplanner.entities.ImageMetadata;
+import nl.novi.be_plantjesplanner.entities.Locale;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.helpers.Mapper;
@@ -11,6 +12,7 @@ import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,66 +31,63 @@ public class PlantService {
     }
 
     //corresponds to postPlant request in the PlantController
-    public PlantDto savePlant(PlantDto plantDto, ImageUploadFileDto imageUploadDto) {
-        Plant newPlant = Mapper.mapFromPlantDto(plantDto);
-
+    public Plant savePlant(Plant newPlant, MultipartFile newPlantAvatar) {
         if (plantRepository.existsByDutchNameIgnoreCase(newPlant.getDutchName())) {
             throw new DuplicateResourceException("Er bestaat al een plant met deze naam: " + newPlant.getDutchName());
         }
-        if (imageUploadDto.file() != null && !imageUploadDto.file().isEmpty()) {
-            ImageMetadata newImage = imageService.saveImage(imageUploadDto);
-            newPlant.setPlantAvatar(newImage);
+        if (newPlantAvatar!= null && newPlantAvatar.isEmpty()) {
+            ImageMetadata plantAvatarMetadata = imageService.saveImage(newPlantAvatar); //save new avatar file in local filesystem, and create metadata about the avatar file
+            newPlant.setPlantAvatar(plantAvatarMetadata);//save avatar metadata as part of the new plant
         }
 
         Plant savedPlant = plantRepository.save(newPlant);
-        return Mapper.mapToPlantDto(savedPlant);
+        return savedPlant;
     }
 
     //corresponds to updatePlant request in the PlantController
-    public PlantDto updatePlantById(PlantDto plantDto , ImageUploadFileDto imageUploadDto, Long id){
-       Plant plantUpdate = Mapper.mapFromPlantDto(plantDto);
-
+    public Plant updatePlantById(Plant updatedPlant , MultipartFile updatedAvatarFile, Long id){//todo iets verzinnen om met null-child values om te gaan. ik vind dat in PUT requests de child entities niet leeg/null mogen zijn. Anders was het wel een PATCH
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
             Plant existingPlant = plantOptional.get();
 
             //update basic plant properties
-            existingPlant.setDutchName(plantUpdate.getDutchName());
-            existingPlant.setLatinName(plantUpdate.getLatinName());
-            existingPlant.setDescription(plantUpdate.getDescription());
-            existingPlant.setHeight(plantUpdate.getHeight());
-            existingPlant.setFootprint(plantUpdate.getFootprint());
-            existingPlant.setBloomColorHex(plantUpdate.getBloomColorHex());
-            existingPlant.setBloomColorGroup(plantUpdate.getBloomColorGroup());
-            existingPlant.setPublished(plantUpdate.isPublished());
+            existingPlant.setDutchName(updatedPlant.getDutchName());
+            existingPlant.setLatinName(updatedPlant.getLatinName());
+            existingPlant.setDescription(updatedPlant.getDescription());
+            existingPlant.setHeight(updatedPlant.getHeight());
+            existingPlant.setFootprint(updatedPlant.getFootprint());
+            existingPlant.setBloomColorHex(updatedPlant.getBloomColorHex());
+            existingPlant.setBloomColorGroup(updatedPlant.getBloomColorGroup());
+            existingPlant.setPublished(updatedPlant.isPublished());
 
-            //update plant Locale (optional)
-            if(plantDto.localeDto() != null){
-                existingPlant.setLocale(Mapper.mapFromLocaleDto(plantDto.localeDto()));
+            //update plant Locale ()
+            Locale updatedLocale = updatedPlant.getLocale();
+            if(updatedLocale != null){
+                existingPlant.setLocale(updatedLocale);
             }
-            //update plant BloomingCalendar (optional)
-            if(plantDto.bloomingCalendarDto() != null){
-                existingPlant.setBloomingCalendar(Mapper.mapFromBloomingCalendarDto(plantDto.bloomingCalendarDto()));
+            //update plant BloomingCalendar ()
+            BloomingCalendar updatedBloomingCalendar = updatedPlant.getBloomingCalendar();
+            if(updatedBloomingCalendar != null){
+                existingPlant.setBloomingCalendar(updatedBloomingCalendar);
             }
             //update plant avatar image (optional)
-            if (imageUploadDto.file() != null && !imageUploadDto.file().isEmpty()) {
+            if (updatedAvatarFile != null) {
                 String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
-                ImageMetadata imageUpdate = imageService.updateImage(imageUploadDto,oldAvatarFilename);
-                existingPlant.setPlantAvatar(imageUpdate);//
+                ImageMetadata updatedAvatarMetadata = imageService.updateImage(updatedAvatarFile, oldAvatarFilename);//update plant avatar file and generate new metadata
+                existingPlant.setPlantAvatar(updatedAvatarMetadata);//
             }
-
-            plantRepository.save(existingPlant);
-            return Mapper.mapToPlantDto(existingPlant);
+            plantRepository.save(existingPlant);// todo try catch block hier?
+            return existingPlant;
         }
         else{
             throw new RecordNotFoundException("geen plant gevonden met id "+ id+" , dus ook niet aangepast");
         }
     }
 
-    public PlantDto getPlantById(Long id){
+    public Plant getPlantById(Long id){
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
-            return Mapper.mapToPlantDto(plantOptional.get());
+            return plantOptional.get();
         }
         else{
             throw new RecordNotFoundException("geen plant gevonden met id "+ id);

@@ -2,7 +2,6 @@ package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
 import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 import nl.novi.be_plantjesplanner.entities.ImageMetadata;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
@@ -20,42 +19,40 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.Optional;
+
+import static nl.novi.be_plantjesplanner.helpers.FileChecker.checkMediaType;
 
 public class ImageService {
     private final ImageRepository imageRepository;
     private final String uploadDirectory;
-    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" ); //todo: deze constant op een gepaste plek parkeren
 
     public ImageService(ImageRepository imageRepository, String folderName){
         this.imageRepository = imageRepository;
+        //set up the folder in local filesystem that will store imagefiles in the same directory as the Plantjesplanner app.
         String uploadDir = "../"+folderName;
         this.uploadDirectory = Paths.get(System.getProperty("user.dir"),uploadDir).toString();
         createImageUploadDirectory();
     }
 
-    public ImageMetadata saveImage(ImageUploadFileDto imageUploadDto)//todo replace dto with ImageMetadata uploaded image
+    //saves imagefile in local filesystem and creates, saves and returns image metadata
+    public ImageMetadata saveImage(MultipartFile uploadedImage)
     {
-        MultipartFile uploadedImage = imageUploadDto.file();//todo file uit
-        checkUploadedImage(uploadedImage);
        String originalFilename = uploadedImage.getOriginalFilename();
        try{
            String storedFilename = System.currentTimeMillis()+"_"+originalFilename;//make the storedfilename unique by adding the currrent time to the filename. This is to prevent confusion when downloading images with identical original names
            Path filepath = Paths.get(uploadDirectory, storedFilename);
-           Files.copy(uploadedImage.getInputStream(),filepath, StandardCopyOption.REPLACE_EXISTING);
-           ImageMetadata savedImage = new ImageMetadata(originalFilename, storedFilename);
-           imageRepository.save(savedImage);
-           return savedImage;
+           Files.copy(uploadedImage.getInputStream(),filepath, StandardCopyOption.REPLACE_EXISTING);//save the uploadedImage in filesystem with modified filename
+           ImageMetadata savedImageMetadata = new ImageMetadata(originalFilename, storedFilename);
+           imageRepository.save(savedImageMetadata);
+           return savedImageMetadata;
        }catch(IOException e){
            throw new RuntimeException("opslaan mislukt",e);
        }
     }
 
-    public ImageMetadata updateImage(ImageUploadFileDto imageUploadDto, String requestedFileName) {
-        MultipartFile newFile = imageUploadDto.file();
-        checkUploadedImage(newFile);//validate uploaded image
-
+    //retrieves old image file, replaces with new file and updates+returns  the image metadata
+    public ImageMetadata updateImage(MultipartFile newFile, String requestedFileName) {
         //retrieve filepath of existing file
         Path oldFilePath = Paths.get(uploadDirectory, requestedFileName);
         if (!Files.exists(oldFilePath)) {
@@ -65,30 +62,31 @@ public class ImageService {
         String originalFileName = newFile.getOriginalFilename();
         String newStoredFileName = System.currentTimeMillis() + "_" + originalFileName;
         Path newFilePath = Paths.get(uploadDirectory, newStoredFileName);
-        ImageMetadata newImage = new ImageMetadata();
+        ImageMetadata newImageMetadata = new ImageMetadata();
         try {
-            //delete the old file
+            //delete the old file first
             Files.deleteIfExists(oldFilePath);
-            //overwrite the existing file
+            //save new file
             Files.copy(newFile.getInputStream(), newFilePath, StandardCopyOption.REPLACE_EXISTING);
 
             //update metadata in database
 
             Optional<ImageMetadata> imageOptional = imageRepository.findByStoredFilename(requestedFileName);
             if (imageOptional.isPresent()) {
-                newImage = imageOptional.get();
-                newImage.setStoredFilename(newStoredFileName);
-                newImage.setOriginalFilename(originalFileName);
-                newImage.setUploadDateTime();
-                imageRepository.save(newImage);
+                newImageMetadata = imageOptional.get();
+                newImageMetadata.setStoredFilename(newStoredFileName);
+                newImageMetadata.setOriginalFilename(originalFileName);
+                newImageMetadata.setUploadDateTime();
+                imageRepository.save(newImageMetadata);
             }
         } catch (IOException e) {
             throw new RuntimeException("Fout bij updaten van bestand: " + requestedFileName);
         }
-        return newImage;
+        return newImageMetadata;
     }
 
 
+    //retrieves an image file and returns it in a DTO together with its mediatype
     public ImageDownloadFileDto getImageDto(String fileName){
            try {
                Path filePath = Paths.get(uploadDirectory).resolve(fileName).normalize();
@@ -102,7 +100,7 @@ public class ImageService {
                }
                 //MIME-type ophalen en controleren
                 Optional<MediaType> mediaTypeOptional = MediaTypeFactory.getMediaType(resource);
-                if (mediaTypeOptional.isEmpty() || !ALLOWED_TYPES.contains(mediaTypeOptional.get().toString())) {
+                if (mediaTypeOptional.isEmpty() || !checkMediaType(mediaTypeOptional.get())) {
                 throw new InvalidImageTypeException("Ongeldig bestandstype: "+mediaTypeOptional.get());
                 }
                return new ImageDownloadFileDto(resource, mediaTypeOptional.get());
@@ -176,15 +174,6 @@ public class ImageService {
         }
     }
 
-    private void checkUploadedImage(MultipartFile file){//for POST and PUT requests the validation of the uploaded file is identical
-        if(file.isEmpty()){
-            throw new IllegalArgumentException("Het bestand is leeg! probeer het opnieuw");
-        }
-        String contentType = file.getContentType();
-        if (!ALLOWED_TYPES.contains(contentType.toLowerCase())) {
-            String errorMessage = "Ongeldig bestandstype: Alleen .png, .jpeg, jpg, .webp en .svg zijn toegestaan.";
-            throw new InvalidImageTypeException(errorMessage);
-        }
-    }
+
 
 }

@@ -2,8 +2,9 @@ package nl.novi.be_plantjesplanner.controllers;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 import nl.novi.be_plantjesplanner.dtos.PlantDto;
+import nl.novi.be_plantjesplanner.entities.Plant;
+import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.services.PlantService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.core.io.Resource;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static nl.novi.be_plantjesplanner.helpers.Mapper.mapFromPlantDto;
+import static nl.novi.be_plantjesplanner.helpers.Mapper.mapToPlantDto;
+import nl.novi.be_plantjesplanner.helpers.FileChecker;
 
 @RestController
 @RequestMapping(value ="/plants")
@@ -28,23 +33,32 @@ public class PlantController {
    //POST a new plant
    @PostMapping
    public ResponseEntity<PlantDto> postPlant(@Valid @RequestPart("plant") PlantDto plantDto, @RequestPart(value = "image", required = false) MultipartFile file) {
-      ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file, "");
-      PlantDto savedPlantDto = plantService.savePlant(plantDto, imageUploadDto);
+      if(file != null) {
+         FileChecker.checkUploadedImage(file);
+      }
+      Plant newPlant = mapFromPlantDto(plantDto);
+      newPlant = plantService.savePlant(newPlant, file);
+      PlantDto savedPlantDto = mapToPlantDto(newPlant);
       return ResponseEntity.status(HttpStatus.CREATED).body(savedPlantDto);
    }
 
    // edit (PUT) a specific plant
    @PutMapping("/{id}")
    public ResponseEntity<PlantDto> updatePlant(@Valid @RequestPart("plant") PlantDto plantDto,@RequestPart(value = "image", required = false) MultipartFile file, @PathVariable Long id){
-      ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file,"");
-      PlantDto updatedPlantDto = plantService.updatePlantById(plantDto,imageUploadDto, id);
+      if(file != null) {
+         FileChecker.checkUploadedImage(file);
+      }
+      Plant updatedPlant = mapFromPlantDto(plantDto);
+      updatedPlant = plantService.updatePlantById(updatedPlant,file, id);
+      PlantDto updatedPlantDto = mapToPlantDto(updatedPlant);
       return ResponseEntity.ok().body(updatedPlantDto);
    }
 
    //GET a specific plant by id
    @GetMapping("/{id}")
    public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
-      return ResponseEntity.ok(plantService.getPlantById(id));
+      Plant foundPlant = plantService.getPlantById(id);
+      return ResponseEntity.ok(Mapper.mapToPlantDto(foundPlant));
    }
 
    //GET avatar image of a specific plant by plant id
