@@ -3,6 +3,9 @@ package nl.novi.be_plantjesplanner.helpers;
 import nl.novi.be_plantjesplanner.dtos.*;
 import nl.novi.be_plantjesplanner.entities.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mapper {
     private Mapper(){}//private constructor to prevent accidental instantiation
     //FROM-DTO mappers
@@ -39,6 +42,8 @@ public class Mapper {
 
         return newPlant;
     }
+
+
 
     public static BloomingCalendar mapFromBloomingCalendarDto(BloomingCalendarDto bloomingCalendarDto){
         BloomingCalendar newBloomingCalendar = new BloomingCalendar();
@@ -117,6 +122,16 @@ public class Mapper {
 
         PlantDto newPlantDto = new PlantDto(plant.getId(), plant.getDutchName(), plant.getLatinName(), plant.getDescription(), plant.getHeight(), plant.getFootprint(), plant.getBloomColorHex(), plant.getBloomColorGroup(), plant.isPublished(), newLocaleDto, newBloomingCalendarDto, newImageMetadataDto);
         return newPlantDto;
+    }
+
+    //map list of Plants to list of PlantDTOs
+    public static List<PlantDto> mapToPlantDtoList(List<Plant> plantList) {
+        List<PlantDto> plantDtoList = new ArrayList<>();
+        for (Plant plant : plantList) {
+            PlantDto plantDto = Mapper.mapToPlantDto(plant);
+            plantDtoList.add(plantDto);
+        }
+    return plantDtoList;
     }
 
     public static BloomingCalendarDto mapToBloomingCalendarDto(BloomingCalendar bloomingCalendar) {

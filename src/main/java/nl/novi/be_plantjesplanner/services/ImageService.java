@@ -110,13 +110,12 @@ public class ImageService {
 
     }
 
-    public ImageMetadataDto getImageMetadataDto(String fileName){
+    public ImageMetadata getImageMetadata(String fileName){
             //retrieve metadata from database
             Optional<ImageMetadata> imageOptional = imageRepository.findByStoredFilename(fileName);
             if(imageOptional.isPresent()) {
-                ImageMetadata image = imageOptional.get();
-                return new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(), image.getUploadDateTime());
-            }
+                return imageOptional.get();
+               }
             else{
                 throw new RecordNotFoundException("afbeelding niet gevonden in database");
             }

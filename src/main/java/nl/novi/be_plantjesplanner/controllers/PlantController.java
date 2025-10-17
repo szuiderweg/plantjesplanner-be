@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static nl.novi.be_plantjesplanner.helpers.Mapper.mapFromPlantDto;
@@ -57,8 +58,7 @@ public class PlantController {
    //GET a specific plant by id
    @GetMapping("/{id}")
    public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
-      Plant foundPlant = plantService.getPlantById(id);
-      return ResponseEntity.ok(Mapper.mapToPlantDto(foundPlant));
+      return ResponseEntity.ok(Mapper.mapToPlantDto(plantService.getPlantById(id)));
    }
 
    //GET avatar image of a specific plant by plant id
@@ -71,14 +71,14 @@ public class PlantController {
    //GET all plants
    @GetMapping
    public ResponseEntity<List<PlantDto>> getAllPlants(){
-      List<PlantDto> foundPlantsDto = plantService.getAllPlants();
-      return ResponseEntity.ok().body(foundPlantsDto);
+      List<Plant> foundPlants = plantService.getAllPlants();
+      return ResponseEntity.ok().body(Mapper.mapToPlantDtoList(foundPlants));
    }
 
    @GetMapping("/search")
-   ResponseEntity<List<PlantDto>> getPlantsByDutchName(@RequestParam @NotBlank @Length(min = 2, max = 50, message = "De zoekterm moet tussen de 2 en 50 tekens zijn") String name){
-      List<PlantDto> foundPlantsDto = plantService.getPlantsByDutchName(name);
-      return ResponseEntity.ok().body(foundPlantsDto);
+   ResponseEntity<List<PlantDto>> getPlantsByDutchName(@RequestParam @NotBlank @Length(min = 1, max = 50, message = "De zoekterm moet tussen de 1 en 50 tekens zijn") String name){
+      List<Plant> foundPlants = plantService.getPlantsByDutchName(name);
+      return ResponseEntity.ok().body(Mapper.mapToPlantDtoList(foundPlants));
    }
 
    @DeleteMapping("/{id}")

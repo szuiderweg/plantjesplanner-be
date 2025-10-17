@@ -111,29 +111,17 @@ public class PlantService {
         }
     }
         //corresponds to GET all Plants request in the PlantController
-    public List<PlantDto> getAllPlants()
+    public List<Plant> getAllPlants()
     {
         List<Plant> foundPlants = plantRepository.findAll();
-
-        List<PlantDto> foundPlantsDto = new ArrayList<>();
-        for(Plant plant : foundPlants){
-            PlantDto foundPlantDto = Mapper.mapToPlantDto(plant);
-            foundPlantsDto.add(foundPlantDto);
-        }
-        return foundPlantsDto;
+        return foundPlants;
     }
 
     //search for plants by Dutch name
-    public List<PlantDto> getPlantsByDutchName(String dutchName)
+    public List<Plant> getPlantsByDutchName(String dutchName)
     {
         List<Plant> foundPlants = plantRepository.findByDutchNameContainingIgnoreCase(dutchName);
-
-        List<PlantDto> foundPlantsDto = new ArrayList<>();
-        for(Plant plant : foundPlants){
-            PlantDto foundPlantDto = Mapper.mapToPlantDto(plant);
-            foundPlantsDto.add(foundPlantDto);
-        }
-        return foundPlantsDto;
+        return foundPlants;
     }
 
     public void deletePlantById(Long id){
