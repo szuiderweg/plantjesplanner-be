@@ -4,7 +4,7 @@
 DROP TABLE IF EXISTS plants CASCADE;
 DROP TABLE IF EXISTS authorities CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS design2 CASCADE;
+DROP TABLE IF EXISTS design CASCADE;
 DROP TABLE IF EXISTS images CASCADE;
 DROP TABLE IF EXISTS blooming_calendars CASCADE;
 DROP TABLE IF EXISTS locales CASCADE;
@@ -47,7 +47,7 @@ CREATE TABLE images (
                         upload_date_time TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE design2 (
+CREATE TABLE design (
                          id SERIAL PRIMARY KEY,
                          title VARCHAR(255) NOT NULL
 );
@@ -59,7 +59,7 @@ CREATE TABLE users (
                        enabled BOOLEAN NOT NULL,
                        role VARCHAR(64) NOT NULL,
                        creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                       design_id INTEGER REFERENCES design2(id)
+                       design_id INTEGER REFERENCES design(id)
 );
 
 CREATE TABLE authorities (

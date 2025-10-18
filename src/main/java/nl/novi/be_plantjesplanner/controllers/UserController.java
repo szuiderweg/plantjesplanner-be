@@ -1,7 +1,5 @@
 package nl.novi.be_plantjesplanner.controllers;
 import jakarta.validation.Valid;
-import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
-import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.dtos.UserDto;
 import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.helpers.Mapper;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;

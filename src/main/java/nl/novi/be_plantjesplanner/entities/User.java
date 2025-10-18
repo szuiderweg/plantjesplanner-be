@@ -26,7 +26,7 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="design_id")
-    private Design2 design2;
+    private Design design;
 
     @PrePersist
     public void prePersist(){
@@ -57,12 +57,12 @@ public class User {
         this.password = password;
     }
 
-    public Design2 getDesign2() {
-        return design2;
+    public Design getDesign() {
+        return design;
     }
 
-    public void setDesign2(Design2 design2) {
-        this.design2 = design2;
+    public void setDesign(Design design) {
+        this.design = design;
     }
 
     public Role getRole() {

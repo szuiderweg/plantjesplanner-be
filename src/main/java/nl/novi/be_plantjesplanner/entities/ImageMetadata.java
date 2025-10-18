@@ -3,8 +3,8 @@ import jakarta.persistence.*;
 import java.time.ZonedDateTime;
 //TODO wanneer image uploader werkt, overbodige properties en getters+setters verwijderen
 @Entity
-@Table(name = "images")
-public class Image {
+@Table(name = "image_metadata")
+public class ImageMetadata {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,10 +17,10 @@ public class Image {
     private Plant plant;
 
 
-    public Image(){
+    public ImageMetadata(){
         uploadDateTime = ZonedDateTime.now();
     }
-    public Image(String originalFilename, String storedFilename) {
+    public ImageMetadata(String originalFilename, String storedFilename) {
         this.originalFilename = originalFilename;
         this.storedFilename = storedFilename;
 //        this.filepath = filepath;

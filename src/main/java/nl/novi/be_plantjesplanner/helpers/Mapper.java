@@ -3,8 +3,11 @@ package nl.novi.be_plantjesplanner.helpers;
 import nl.novi.be_plantjesplanner.dtos.*;
 import nl.novi.be_plantjesplanner.entities.*;
 
-public class Mapper {
+import java.util.ArrayList;
+import java.util.List;
 
+public class Mapper {
+    private Mapper(){}//private constructor to prevent accidental instantiation
     //FROM-DTO mappers
     public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
         SelectedPlant newSelectedPlant = new SelectedPlant();
@@ -40,6 +43,8 @@ public class Mapper {
         return newPlant;
     }
 
+
+
     public static BloomingCalendar mapFromBloomingCalendarDto(BloomingCalendarDto bloomingCalendarDto){
         BloomingCalendar newBloomingCalendar = new BloomingCalendar();
         newBloomingCalendar.setJanuary(bloomingCalendarDto.january());
@@ -67,17 +72,17 @@ public class Mapper {
         return newLocale;
     }
 
-    public static Image mapFromImageMetadataDto(ImageMetadataDto plantAvatarDto){
-        Image newAvatar = new Image();
-        newAvatar.setOriginalFilename(plantAvatarDto.originalFilename());
-        newAvatar.setStoredFilename(plantAvatarDto.storedFilename());
-        return newAvatar;
+    public static ImageMetadata mapFromImageMetadataDto(ImageMetadataDto plantAvatarDto){
+        ImageMetadata newMetadata = new ImageMetadata();
+        newMetadata.setOriginalFilename(plantAvatarDto.originalFilename());
+        newMetadata.setStoredFilename(plantAvatarDto.storedFilename());
+        return newMetadata;
     }
 
-    public static Design2 mapFromDesign2Dto(Design2Dto design2Dto){
-        Design2 newDesign2 = new Design2();
-        newDesign2.setTitle(design2Dto.title());
-        return newDesign2;
+    public static Design mapFromDesignDto(DesignDto designDto){
+        Design newDesign = new Design();
+        newDesign.setTitle(designDto.title());
+        return newDesign;
     }
 
     public static User mapFromUserDto(UserDto userDto){
@@ -119,6 +124,16 @@ public class Mapper {
         return newPlantDto;
     }
 
+    //map list of Plants to list of PlantDTOs
+    public static List<PlantDto> mapToPlantDtoList(List<Plant> plantList) {
+        List<PlantDto> plantDtoList = new ArrayList<>();
+        for (Plant plant : plantList) {
+            PlantDto plantDto = Mapper.mapToPlantDto(plant);
+            plantDtoList.add(plantDto);
+        }
+    return plantDtoList;
+    }
+
     public static BloomingCalendarDto mapToBloomingCalendarDto(BloomingCalendar bloomingCalendar) {
         BloomingCalendarDto newBloomingCalendarDto = new BloomingCalendarDto(bloomingCalendar.bloomsInJanuary(), bloomingCalendar.bloomsInFebruary(), bloomingCalendar.bloomsInMarch(), bloomingCalendar.bloomsInApril(), bloomingCalendar.bloomsInMay(), bloomingCalendar.bloomsInJune(), bloomingCalendar.bloomsInJuly(), bloomingCalendar.bloomsInAugust(), bloomingCalendar.bloomsInSeptember(), bloomingCalendar.bloomsInOctober(), bloomingCalendar.bloomsInNovember(), bloomingCalendar.bloomsInDecember());
         return newBloomingCalendarDto;
@@ -128,14 +143,14 @@ public class Mapper {
         return newLocaleDto;
     }
 
-    public static ImageMetadataDto mapToImageMetadataDto(Image image){
+    public static ImageMetadataDto mapToImageMetadataDto(ImageMetadata image){
         ImageMetadataDto newImageMetadataDto = new ImageMetadataDto(image.getId(), image.getOriginalFilename(), image.getStoredFilename(),image.getUploadDateTime());
         return newImageMetadataDto;
     }
 
-    public static Design2Dto mapToDesign2Dto(Design2 design2){
-        Design2Dto newDesign2Dto = new Design2Dto(design2.getId(), design2.getTitle());
-        return newDesign2Dto;
+    public static DesignDto mapToDesignDto(Design design){
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle());
+        return newDesignDto;
     }
 
     public static UserDto mapToUserDto(User user){

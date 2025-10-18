@@ -3,9 +3,9 @@
 
 //package nl.novi.be_plantjesplanner.controllers;
 //
-//import nl.novi.be_plantjesplanner.dtos.ImageDownloadDto;
+//import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
 //import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
-//import nl.novi.be_plantjesplanner.dtos.ImageUploadDto;
+//import nl.novi.be_plantjesplanner.dtos.ImageUploadFileDto;
 //import nl.novi.be_plantjesplanner.services.ImageService;
 //import org.springframework.core.io.Resource;
 //import org.springframework.http.ResponseEntity;
@@ -25,21 +25,21 @@
 //        if (file.isEmpty()) {
 //            return ResponseEntity.badRequest().body("Geen bestand ontvangen.");
 //        }
-//        ImageUploadDto imageUploadDto = new ImageUploadDto(file, " ");
+//        ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file, " ");
 //        String savedImageMessage = imageService.saveImage(imageUploadDto);
 //        return ResponseEntity.ok(savedImageMessage);
 //    }
 //
 //    @PutMapping("/{fileName}")
 //    public ResponseEntity<String> updateImage(@PathVariable String fileName, @RequestParam("file") MultipartFile file){
-//        ImageUploadDto imageUploadDto = new ImageUploadDto(file, fileName);
+//        ImageUploadFileDto imageUploadDto = new ImageUploadFileDto(file, fileName);
 //        String message = imageService.updateImage(imageUploadDto);
 //        return ResponseEntity.ok(message);
 //    }
 //
 //    @GetMapping("/{fileName}")//GET request for the image without metadata
 //    public ResponseEntity<Resource>downloadImage(@PathVariable String fileName){
-//        ImageDownloadDto imageDownloadDto = imageService.getImageDto(fileName);
+//        ImageDownloadFileDto imageDownloadDto = imageService.getImageDto(fileName);
 //        return ResponseEntity.ok().contentType(imageDownloadDto.mediaType()).body(imageDownloadDto.resource());
 //    }
 //

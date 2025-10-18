@@ -2,8 +2,6 @@ package nl.novi.be_plantjesplanner.entities;
 
 import jakarta.persistence.*;
 
-import java.time.ZonedDateTime;
-
 @Entity
 @Table(name = "moodboard_items")
 public class MoodboardItem {
@@ -13,7 +11,7 @@ public class MoodboardItem {
        private String caption;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "moodboardItemImage_id")
-       private Image image;
+       private ImageMetadata image;
 
     @ManyToOne
     @JoinColumn(name = "design_id")
@@ -32,11 +30,11 @@ public class MoodboardItem {
         this.caption = caption;
     }
 
-//    public Image getImage() {
+//    public ImageMetadata getImage() {
 //        return image;
 //    }
 //
-//    public void setImage(Image image) {
+//    public void setImage(ImageMetadata image) {
 //        this.image = image;
 //    }
 }
