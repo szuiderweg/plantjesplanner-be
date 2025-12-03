@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/register","/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/info").hasRole("USER")
                 .requestMatchers("/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/admins").hasAuthority("ROLE_ADMIN")
+                .requestMatchers("/admins").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
                 .requestMatchers("/authenticate").permitAll()
                 .anyRequest().denyAll()

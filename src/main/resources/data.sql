@@ -31,7 +31,7 @@ INSERT INTO users (id, username, password, enabled, role, creation_date, design_
 
 -- Authorities (rollen)
 INSERT INTO authorities (username, authority) VALUES
-                                                  ('designer_test', 'ROLE_USER'),
+                                                  ('designer_test', 'ROLE_DESIGNER'),
                                                   ('admin_test',   'ROLE_ADMIN');
 
 -- Insert Plants

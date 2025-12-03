@@ -21,6 +21,7 @@ import static nl.novi.be_plantjesplanner.helpers.Mapper.mapFromPlantDto;
 import static nl.novi.be_plantjesplanner.helpers.Mapper.mapToPlantDto;
 import nl.novi.be_plantjesplanner.helpers.FileChecker;
 
+//todo: set role rules
 @RestController
 @RequestMapping(value ="/plants")
 @Validated
@@ -31,7 +32,7 @@ public class PlantController {
       this.plantService = plantService;
    }
 
-   //POST a new plant
+   //POST a new plant - admin only
    @PostMapping
    public ResponseEntity<PlantDto> postPlant(@Valid @RequestPart("plant") PlantDto plantDto, @RequestPart(value = "image", required = false) MultipartFile file) {
       if(file != null) {
@@ -43,7 +44,7 @@ public class PlantController {
       return ResponseEntity.status(HttpStatus.CREATED).body(savedPlantDto);
    }
 
-   // edit (PUT) a specific plant
+   // edit (PUT) a specific plant - admin only
    @PutMapping("/{id}")
    public ResponseEntity<PlantDto> updatePlant(@Valid @RequestPart("plant") PlantDto plantDto,@RequestPart(value = "image", required = false) MultipartFile file, @PathVariable Long id){
       if(file != null) {
@@ -55,32 +56,34 @@ public class PlantController {
       return ResponseEntity.ok().body(updatedPlantDto);
    }
 
-   //GET a specific plant by id
+   //GET a specific plant by id - admin & designer
    @GetMapping("/{id}")
    public ResponseEntity<PlantDto> getPlant(@PathVariable("id") Long id){
       return ResponseEntity.ok(Mapper.mapToPlantDto(plantService.getPlantById(id)));
    }
 
-   //GET avatar image of a specific plant by plant id
+   //GET avatar image of a specific plant by plant id - admin & designer
    @GetMapping("/{id}/avatar")
    public ResponseEntity<Resource> downloadPlantAvatar(@PathVariable("id") Long id){
       ImageDownloadFileDto imageDownloadDto = plantService.getPlantAvatarByPlantId(id);
       return ResponseEntity.ok().contentType(imageDownloadDto.mediaType()).body(imageDownloadDto.resource());
    }
 
-   //GET all plants
+   //GET all plants - admin & designer
    @GetMapping
    public ResponseEntity<List<PlantDto>> getAllPlants(){
       List<Plant> foundPlants = plantService.getAllPlants();
       return ResponseEntity.ok().body(Mapper.mapToPlantDtoList(foundPlants));
    }
-
+   //GET plant by dutch name - admin & designer
+   //todo: include Latin name in search
    @GetMapping("/search")
    ResponseEntity<List<PlantDto>> getPlantsByDutchName(@RequestParam @NotBlank @Length(min = 1, max = 50, message = "De zoekterm moet tussen de 1 en 50 tekens zijn") String name){
       List<Plant> foundPlants = plantService.getPlantsByDutchName(name);
       return ResponseEntity.ok().body(Mapper.mapToPlantDtoList(foundPlants));
    }
 
+   //DELETE plant - admin only
    @DeleteMapping("/{id}")
    public ResponseEntity<Void> deletePlant(@PathVariable Long id){
       plantService.deletePlantById(id);
