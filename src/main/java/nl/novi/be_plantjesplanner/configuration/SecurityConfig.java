@@ -56,10 +56,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 //public endpoints: creatings new designer accounts and obtain JWT tokens
                 .requestMatchers("/users/register","/login").permitAll()
-
                 //endpoints related to user management,
+                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
                 .requestMatchers("/users/**").hasRole("ADMIN")
-                .requestMatchers("/users/me").hasRole("DESIGNER")
 
                 //plant catalog endpoints
                 .requestMatchers("/plants/**").hasRole("ADMIN")
