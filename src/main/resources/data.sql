@@ -26,8 +26,8 @@ INSERT INTO design (id, title) VALUES (1, 'Standaard ontwerp voor admin'),(2,'Mi
 
 -- Insert Users (gebruik BCrypt hashes!) designer: "geheim" admin: "super_geheim"
 INSERT INTO users (id, username, password, enabled, role, creation_date, design_id) VALUES
-                                                                                        (1, 'designer_test', '$2a$12$SRLVtg4dIFlCKFpvM5mSveFVVM5wid0p8nL3I.omNHEPBJu2aRI8a', TRUE, 'ROLE_DESIGNER', CURRENT_TIMESTAMP, 1),
-                                                                                        (2, 'admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE, 'ROLE_ADMIN', CURRENT_TIMESTAMP, 2);
+                                                                                        (1, 'designer_test', '$2a$12$SRLVtg4dIFlCKFpvM5mSveFVVM5wid0p8nL3I.omNHEPBJu2aRI8a', TRUE, 'DESIGNER', CURRENT_TIMESTAMP, 1),
+                                                                                        (2, 'admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE, 'ADMIN', CURRENT_TIMESTAMP, 2);
 
 -- Authorities (rollen)
 INSERT INTO authorities (username, authority) VALUES

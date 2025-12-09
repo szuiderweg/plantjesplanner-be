@@ -6,6 +6,8 @@ import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,8 +34,17 @@ public class UserController {
 
     }
 
-    //----for owners
-    //inloggen (eigen account ophalen): gebeurt in Authcontroller
+    //----for admins and designers
+    //GET own User properties
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> getMyUser() {
+        // obtain User properties of current user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();//obtain authentication object created in current HTTPrequest
+        String username = authentication.getName();
+        User myUser = userService.findByUsername(username);
+        return ResponseEntity.ok(Mapper.mapToUserDto(myUser));
+    }
+
     //edit eigen account: wachtwoord resetten
     //eigen account deleten
 

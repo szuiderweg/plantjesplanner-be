@@ -54,12 +54,18 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 .cors().and()
                 .authorizeHttpRequests()
+                //public endpoints: creatings new designer accounts and obtain JWT tokens
                 .requestMatchers("/users/register","/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/info").hasRole("USER")
-                .requestMatchers("/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/admins").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/users/{id}").hasRole("ADMIN")
-                .requestMatchers("/authenticate").permitAll()
+
+                //endpoints related to user management,
+                .requestMatchers("/users/**").hasRole("ADMIN")
+                .requestMatchers("/users/me").hasRole("DESIGNER")
+
+                //plant catalog endpoints
+                .requestMatchers("/plants/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/plants/**").hasRole("DESIGNER")
+
+//                .anyRequest().authenticated()// tijdelijk open achterdeurtje om te testen
                 .anyRequest().denyAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
