@@ -23,12 +23,6 @@ import javax.sql.DataSource;
 @Configuration
 public class SecurityConfig {
     private final DataSource dataSource;
-//
-//    private final JwtRequestFilter jwtRequestFilter;
-//    public SecurityConfig(DataSource dataSource, JwtRequestFilter jwtRequestFilter) {
-//        this.dataSource = dataSource;
-//        this.jwtRequestFilter = jwtRequestFilter;
-//    }
 
     public SecurityConfig(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -55,35 +49,26 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 //public endpoints: creatings new designer accounts and obtain JWT tokens
-                .requestMatchers("/users/register","/login").permitAll()
-                //endpoints related to user management,
-                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
-                .requestMatchers("/users/**").hasRole("ADMIN")
+                .requestMatchers("/login").permitAll()
+//                //endpoints related to user management,
+//                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
+//                .requestMatchers("/users/**").hasRole("ADMIN") todo alle users endpoints aanpassen naar puur JDBC gebruik
 
                 //plant catalog endpoints
                 .requestMatchers("/plants/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/plants/**").hasRole("DESIGNER")
 
-//                .anyRequest().authenticated()// tijdelijk open achterdeurtje om te testen
-                .anyRequest().denyAll()
+                .anyRequest().authenticated()// tijdelijk open achterdeurtje om te testen
+//                .anyRequest().denyAll()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("SELECT username, password, enabled" +
-                        " FROM users" +
-                        " WHERE username=?")
-                .authoritiesByUsernameQuery("SELECT username, authority" +
-                        " FROM authorities " +
-                        " WHERE username=?");
-        return authenticationManagerBuilder.build();
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
 
     @Bean

@@ -85,14 +85,14 @@ public class Mapper {
         return newDesign;
     }
 
-    public static User mapFromUserDto(UserDto userDto){
-    User newUser = new User();
-    newUser.setUsername(userDto.username());
-    newUser.setPassword(userDto.password());
-//    newUser.setRole(userDto.role());
-
-    return newUser;
-    }
+//    public static User mapFromUserDto(UserDto userDto){
+//    User newUser = new User();
+//    newUser.setUsername(userDto.username());
+//    newUser.setPassword(userDto.password());
+////    newUser.setRole(userDto.role());
+//
+//    return newUser;
+//    }
 
 //    public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
 //        SelectedPlant newSelectedPlant = new SelectedPlant();
@@ -153,11 +153,11 @@ public class Mapper {
         return newDesignDto;
     }
 
-    public static UserDto mapToUserDto(User user){
-        //map child object design first
-        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "********", user.getRole(), user.getCreationDate());
-        return newUserDto;
-    }
+//    public static UserDto mapToUserDto(User user){
+//        //map child object design first
+//        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "********", user.getRole(), user.getCreationDate());
+//        return newUserDto;
+//    }
 
 
 }
