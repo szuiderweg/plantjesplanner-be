@@ -1,7 +1,7 @@
 package nl.novi.be_plantjesplanner.dtos;
 
 //DTO for authentication requests in AuthController
-public class AuthRequest {
+public class AuthRequestDto {
     private String username;
     private String password;
 

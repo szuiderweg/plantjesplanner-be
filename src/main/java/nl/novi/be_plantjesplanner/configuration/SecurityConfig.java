@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests()
                 //public endpoints: creatings new designer accounts and obtain JWT tokens
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login","/users/register").permitAll()
 //                //endpoints related to user management,
 //                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
 //                .requestMatchers("/users/**").hasRole("ADMIN") todo alle users endpoints aanpassen naar puur JDBC gebruik

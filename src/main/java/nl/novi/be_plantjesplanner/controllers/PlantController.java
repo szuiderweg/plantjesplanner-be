@@ -21,10 +21,8 @@ import static nl.novi.be_plantjesplanner.helpers.Mapper.mapFromPlantDto;
 import static nl.novi.be_plantjesplanner.helpers.Mapper.mapToPlantDto;
 import nl.novi.be_plantjesplanner.helpers.FileChecker;
 
-//todo: set role rules
 @RestController
 @RequestMapping(value ="/plants")
-@Validated
 public class PlantController {
    private final PlantService plantService;
 

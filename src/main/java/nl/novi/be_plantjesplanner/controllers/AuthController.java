@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import nl.novi.be_plantjesplanner.dtos.AuthRequest;
+import nl.novi.be_plantjesplanner.dtos.AuthRequestDto;
 
 //authenticate user and provide JWT token using Spring's inbuilt Userdetails feature and JDBC authentication
 @RestController
@@ -24,9 +24,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String createAuthenticationToken(@RequestBody AuthRequest authRequest){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+    public String createAuthenticationToken(@RequestBody AuthRequestDto authRequestDto){
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequestDto.getUsername());
         return jwtUtil.generateToken(userDetails);
     }
 
