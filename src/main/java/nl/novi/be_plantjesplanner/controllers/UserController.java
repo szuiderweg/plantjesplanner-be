@@ -45,7 +45,7 @@ public class UserController {
         String username = authentication.getName();
         UserDetails userDetails = userDetailsManager.loadUserByUsername(username);//retrieve from the database the Userdetails that belong to the username from the authentication using JDBC
 
-        //Map some userDetail data to a UserDto
+        //todo Map some userDetail data to a UserDto
         UserDto myUser = new UserDto();
 
 
