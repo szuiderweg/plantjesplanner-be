@@ -45,25 +45,24 @@ public class ExceptionController {
         public ResponseEntity<String> handleIllegalInputException(IllegalArgumentException e){
                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("dit verzoek klopt niet helemaal: \n"+e.getMessage());
     }
-    @ExceptionHandler(MethodArgumentNotValidException.class)//handle errors thrown by @valid annotation in DTO's. limitation: only one error per DTO field
-    public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        for (FieldError error : ex.getFieldErrors()) {
-            errors.putIfAbsent(error.getField(), error.getDefaultMessage());
-        }
-        return ResponseEntity.badRequest().body(errors);
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)//handles errors Thrown by @Validated annotation in controllers in case of invalid requestparameters. collect all violations in a Map with the field name and error message as key-value pairs .
-    //limitation: only one error message per parameter
-    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
-        Map<String, String> errors = new HashMap<>();
-
-        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
-            errors.putIfAbsent(violation.getPropertyPath().toString(), violation.getMessage());
-        }
-        return ResponseEntity.badRequest().body(errors);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)//handle errors thrown by @valid annotation in DTO's. limitation: only one error per DTO field
+//    public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        for (FieldError error : ex.getFieldErrors()) {
+//            errors.putIfAbsent(error.getField(), error.getDefaultMessage());
+//        }
+//        return ResponseEntity.badRequest().body(errors);
+//    }
+//    @ExceptionHandler(ConstraintViolationException.class)//handles errors Thrown by @Validated annotation in controllers in case of invalid requestparameters. collect all violations in a Map with the field name and error message as key-value pairs .
+//    //limitation: only one error message per parameter
+//    public ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//
+//        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+//            errors.putIfAbsent(violation.getPropertyPath().toString(), violation.getMessage());
+//        }
+//        return ResponseEntity.badRequest().body(errors);
+//    }
 
 
     //handles the inbuilt Springboot MaxUploadSizeExceededException in an HTTP response

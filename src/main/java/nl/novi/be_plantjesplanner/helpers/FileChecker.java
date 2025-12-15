@@ -3,11 +3,10 @@ package nl.novi.be_plantjesplanner.helpers;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
+import java.util.Set;
 
 public class FileChecker {
-    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" );//allowed file types for uploaded files
+    private static final Set<String> ALLOWED_TYPES = Set.of("image/png", "image/jpeg", "image/jpg","image/webp", "image/svg+xml" );//allowed file types for uploaded files
     private FileChecker(){}//private constructor to prevent accidental instantiation
 
     //helper to check if an uploaded file is indeed an image in a supported format

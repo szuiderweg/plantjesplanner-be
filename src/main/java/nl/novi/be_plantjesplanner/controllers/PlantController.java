@@ -10,21 +10,17 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static nl.novi.be_plantjesplanner.helpers.Mapper.mapFromPlantDto;
 import static nl.novi.be_plantjesplanner.helpers.Mapper.mapToPlantDto;
 import nl.novi.be_plantjesplanner.helpers.FileChecker;
 
-//todo: set role rules
 @RestController
 @RequestMapping(value ="/plants")
-@Validated
 public class PlantController {
    private final PlantService plantService;
 

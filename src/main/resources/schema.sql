@@ -11,8 +11,22 @@ DROP TABLE IF EXISTS locales CASCADE;
 
 
 
+-- 1. Table definitions for JDBC
+CREATE TABLE users (
+                       username VARCHAR(255) PRIMARY KEY UNIQUE,
+                       password VARCHAR(255) NOT NULL,
+                        enabled BOOLEAN NOT NULL
+);
 
--- 1. Tabellendefinities
+CREATE TABLE authorities (
+                             username VARCHAR(255) NOT NULL,
+                             authority VARCHAR(255) NOT NULL,
+                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE,
+                            CONSTRAINT unique_user_authority UNIQUE (username)
+);
+CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
+
+-- 2. Table definitions for domain entities
 
 
 CREATE TABLE locales (
@@ -49,25 +63,12 @@ CREATE TABLE images (
 
 CREATE TABLE design (
                          id SERIAL PRIMARY KEY,
-                         title VARCHAR(255) NOT NULL
+                         title VARCHAR(255) NOT NULL,
+                         username VARCHAR(255) NOT NULL,
+                        CONSTRAINT fk_designs_users FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
 
-CREATE TABLE users (
-                       id SERIAL PRIMARY KEY,
-                       username VARCHAR(50) NOT NULL UNIQUE,
-                       password VARCHAR(255) NOT NULL,
-                       enabled BOOLEAN NOT NULL,
-                       role VARCHAR(64) NOT NULL,
-                       creation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                       design_id INTEGER REFERENCES design(id)
-);
 
-CREATE TABLE authorities (
-                             username VARCHAR(50) NOT NULL,
-                             authority VARCHAR(50) NOT NULL,
-                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username)
-);
-CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
 
 CREATE TABLE plants (
                         id SERIAL PRIMARY KEY,
@@ -84,4 +85,3 @@ CREATE TABLE plants (
                         plantavatar_id INTEGER REFERENCES images(id)
 );
 
--- 2. Data inserts
