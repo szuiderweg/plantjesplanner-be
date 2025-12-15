@@ -8,12 +8,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -34,7 +33,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsManager userDetailsManager() {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
         manager.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?");
         manager.setAuthoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username=?");
@@ -50,9 +49,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 //public endpoints: creatings new designer accounts and obtain JWT tokens
                 .requestMatchers("/login","/users/register").permitAll()
-//                //endpoints related to user management,
-//                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
-//                .requestMatchers("/users/**").hasRole("ADMIN") todo alle users endpoints aanpassen naar puur JDBC gebruik
+                //endpoints related to user management,
+                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
+                .requestMatchers("/users/**").hasRole("ADMIN")
 
                 //plant catalog endpoints
                 .requestMatchers("/plants/**").hasRole("ADMIN")
