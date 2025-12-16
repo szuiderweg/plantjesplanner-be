@@ -10,6 +10,7 @@ import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
+import nl.novi.be_plantjesplanner.services.image.ImageService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

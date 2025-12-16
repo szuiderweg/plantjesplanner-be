@@ -1,7 +1,6 @@
-package nl.novi.be_plantjesplanner.services;
+package nl.novi.be_plantjesplanner.services.image;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
-import nl.novi.be_plantjesplanner.dtos.ImageMetadataDto;
 import nl.novi.be_plantjesplanner.entities.ImageMetadata;
 import nl.novi.be_plantjesplanner.exceptions.InvalidImageTypeException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
@@ -12,7 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -24,11 +22,11 @@ import java.util.Optional;
 
 import static nl.novi.be_plantjesplanner.helpers.FileChecker.checkMediaType;
 
-public class ImageService {
-    private final ImageRepository imageRepository;
-    private final String uploadDirectory;
+public abstract class AbstractImageService implements ImageService{
+    protected final ImageRepository imageRepository;
+    protected final String uploadDirectory;
 
-    public ImageService(ImageRepository imageRepository, String folderName){
+    protected AbstractImageService(ImageRepository imageRepository, String folderName){
         this.imageRepository = imageRepository;
         //set up the folder in local filesystem that will store imagefiles in the same directory as the Plantjesplanner app.
         String uploadDir = "../"+folderName;
@@ -37,6 +35,7 @@ public class ImageService {
     }
 
     //saves imagefile in local filesystem and creates, saves and returns image metadata
+    @Override
     public ImageMetadata saveImage(MultipartFile uploadedImage)
     {
        String originalFilename = uploadedImage.getOriginalFilename();
@@ -53,6 +52,7 @@ public class ImageService {
     }
 
     //retrieves old image file, replaces with new file and updates+returns  the image metadata
+    @Override
     public ImageMetadata updateImage(MultipartFile newFile, String requestedFileName) {
         //retrieve filepath of existing file
         Path oldFilePath = Paths.get(uploadDirectory, requestedFileName);
@@ -88,6 +88,7 @@ public class ImageService {
 
 
     //retrieves an image file and returns it in a DTO together with its mediatype
+    @Override
     public ImageDownloadFileDto getImageDto(String fileName){
            try {
                Path filePath = Paths.get(uploadDirectory).resolve(fileName).normalize();
@@ -110,7 +111,8 @@ public class ImageService {
         }
 
     }
-
+    //retrieves the metadata of an image file from the database
+    @Override
     public ImageMetadata getImageMetadata(String fileName){
             //retrieve metadata from database
             Optional<ImageMetadata> imageOptional = imageRepository.findByStoredFilename(fileName);
@@ -122,6 +124,8 @@ public class ImageService {
             }
     }
 //todo BUG check gebruik van deze method door plant service want ik weet niet of het nu goed werkt
+    //delete image file + metadata
+    @Override
     public void deleteImageById(Long id, Boolean isQuiet) {
         //isQuiet == false: indicates that an error can be thrown that interrupts the flow of the program
         //isQuiet == true: an error message is printed and the program continues
@@ -160,7 +164,7 @@ public class ImageService {
 
 
     //local Helpers
-    private void createImageUploadDirectory() {//create upload directory if it does not exist yet
+    protected void createImageUploadDirectory() {//create upload directory if it does not exist yet
         Path path = Paths.get(uploadDirectory);
         if (!Files.exists(path)) {
             try {
@@ -173,7 +177,4 @@ public class ImageService {
             System.out.println("Upload directory bestaat al: "+ uploadDirectory);
         }
     }
-
-
-
 }
