@@ -8,9 +8,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -21,6 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
+
     private final DataSource dataSource;
 
     public SecurityConfig(DataSource dataSource) {
@@ -28,7 +29,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -41,30 +42,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filter (HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
-        //noinspection removal
-        http.csrf().disable()
-                .httpBasic().disable()
-                .cors().and()
-                .authorizeHttpRequests()
-                //public endpoints: creatings new designer accounts and obtain JWT tokens
-                .requestMatchers("/login","/users/register").permitAll()
-                //endpoints related to user management,
-                .requestMatchers("/users/me").hasAnyRole("ADMIN","DESIGNER")
-                .requestMatchers("/users/**").hasRole("ADMIN")
-
-                //plant catalog endpoints
-                .requestMatchers("/plants/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/plants/**").hasRole("DESIGNER")
-
-                .anyRequest().authenticated()// tijdelijk open achterdeurtje om te testen
-//                .anyRequest().denyAll()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .cors(cors -> {}) // voor CORS; configuratie kan via WebMvcConfigurer
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/users/register").permitAll()
+                        .requestMatchers("/users/me").hasAnyRole("ADMIN", "DESIGNER")
+                        .requestMatchers("/users/**").hasRole("ADMIN")
+                        .requestMatchers("/plants/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/plants/**").hasRole("DESIGNER")
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authConfig
@@ -83,6 +80,4 @@ public class SecurityConfig {
             }
         };
     }
-
-
 }
