@@ -16,7 +16,7 @@ VALUES
     (3, false, false, false, false, true, true, true, false, false, false, false, false);
 
 -- Insert Images
-INSERT INTO images (id, original_filename, stored_filename, upload_date_time)
+INSERT INTO image_metadata (id, original_filename, stored_filename, upload_date_time)
 VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
        (2, 'zonnebloem.jpg', 'zonnebloem.jpg', '2025-04-28T20:45:00+02:00'),
        (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
@@ -44,7 +44,7 @@ VALUES
     (3, 'Hosta', 'Hosta sieboldiana', 'Schaduwminnende vaste plant met brede bladeren.', 0.6, 0.8, '#98FB98', 'GROEN', true, 3, 3, 3);
 
 -- 3. Sequences aanpassen
-SELECT setval('images_id_seq', (SELECT MAX(id) FROM images));
+SELECT setval('image_metadata_id_seq', (SELECT MAX(id) FROM image_metadata));
 SELECT setval('plants_id_seq', (SELECT MAX(id) FROM plants));
 SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calendars));
 SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));

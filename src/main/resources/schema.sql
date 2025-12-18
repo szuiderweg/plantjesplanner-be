@@ -54,7 +54,7 @@ CREATE TABLE blooming_calendars (
                                     december BOOLEAN NOT NULL
 );
 
-CREATE TABLE images (
+CREATE TABLE image_metadata (
                         id SERIAL PRIMARY KEY,
                         original_filename VARCHAR(255) NOT NULL,
                         stored_filename VARCHAR(255) NOT NULL,
@@ -82,6 +82,6 @@ CREATE TABLE plants (
                         published BOOLEAN DEFAULT false,
                         locale_id INTEGER REFERENCES locales(id),
                         blooming_calendar_id INTEGER REFERENCES blooming_calendars(id),
-                        plantavatar_id INTEGER REFERENCES images(id)
+                        plantavatar_id INTEGER REFERENCES image_metadata(id)
 );
 
