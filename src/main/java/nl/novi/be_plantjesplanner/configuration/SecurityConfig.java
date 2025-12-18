@@ -46,14 +46,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
-                .cors(cors -> {}) // voor CORS; configuratie kan via WebMvcConfigurer
+                .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/users/register").permitAll()
-                        .requestMatchers("/users/me").hasAnyRole("ADMIN", "DESIGNER")
+                        .requestMatchers("/login", "/users/register").permitAll()//create new designer is public
+                        .requestMatchers("/users/me").authenticated()//anyone with valid JWT
                         .requestMatchers("/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/plants/**").hasAnyRole("ADMIN","DESIGNER")
                         .requestMatchers("/plants/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/plants/**").hasRole("DESIGNER")
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()//todo: op denyAll() zetten als alle endpoints klaar zijn
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

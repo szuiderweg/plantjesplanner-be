@@ -13,10 +13,6 @@ public class ImageMetadata {
     private String storedFilename;
     private ZonedDateTime uploadDateTime;
 
-    @OneToOne(mappedBy = "plantAvatar")
-    private Plant plant;
-
-
     public ImageMetadata(){
         uploadDateTime = ZonedDateTime.now();
     }
@@ -63,11 +59,4 @@ public class ImageMetadata {
         this.uploadDateTime = ZonedDateTime.now();
     }
 
-    public Plant getPlant() {
-        return plant;
-    }
-
-    public void setPlant(Plant plant) {
-        this.plant = plant;
-    }
 }
