@@ -1,15 +1,13 @@
 
---clear tables
+--clear tables (for development only, remove DROP statements for PROD)
 
 DROP TABLE IF EXISTS plants CASCADE;
 DROP TABLE IF EXISTS authorities CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS design CASCADE;
-DROP TABLE IF EXISTS images CASCADE;
+DROP TABLE IF EXISTS image_metadata CASCADE;
 DROP TABLE IF EXISTS blooming_calendars CASCADE;
 DROP TABLE IF EXISTS locales CASCADE;
-
-
 
 -- 1. Table definitions for JDBC
 CREATE TABLE users (
@@ -27,8 +25,6 @@ CREATE TABLE authorities (
 CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
 
 -- 2. Table definitions for domain entities
-
-
 CREATE TABLE locales (
                          id SERIAL PRIMARY KEY,
                          sunlight VARCHAR(32) NOT NULL,
@@ -67,8 +63,6 @@ CREATE TABLE design (
                          username VARCHAR(255) NOT NULL,
                         CONSTRAINT fk_designs_users FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE plants (
                         id SERIAL PRIMARY KEY,
