@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 public class UserDto{
     private String username;
+    @Nullable
     private String password;
     @Nullable
     private String role;

@@ -3,6 +3,7 @@ package nl.novi.be_plantjesplanner.controllers;
 
 import nl.novi.be_plantjesplanner.dtos.UserDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +12,10 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("users")
@@ -45,15 +50,32 @@ public class UserController {
         String username = authentication.getName();
         UserDetails userDetails = userDetailsManager.loadUserByUsername(username);//retrieve from the database the Userdetails that belong to the username from the authentication using JDBC
 
-        //todo Map some userDetail data to a UserDto
+        //Map some userDetail data to a UserDto
         UserDto myUser = new UserDto();
-
-
-
+        myUser.setUsername(userDetails.getUsername());
+        myUser.setPassword("******");//
+        myUser.setRole(extractRole(userDetails.getAuthorities()));
         return ResponseEntity.ok(myUser);
     }
 
+    //GET list of all usernames -- ADMIN only
+//    public ResponseEntity<List<String>> getAllUsernames()
+//    {
+//        List<String> usernames = userDetailsManager.
+//    }
 
+    //UserController helpers
+
+    //extract role description as a String and remove the ROLE_ prefix from the authorities of a Userdetails object (Spring security). "authorities" is a collection of type GrantedAuthority. In this application Users have at most 1 authority
+    private String extractRole(Collection<? extends GrantedAuthority> authorities) {
+        for (GrantedAuthority authority : authorities) {//iterate through the collection of authorities
+            String name = authority.getAuthority();
+            if (name.startsWith("ROLE_")) { //check prefix
+                return name.substring(5);//return everything after "_" . return inside the for-loop because in this app Users have at most 1 authority (business rule)
+            }
+        }
+        return null;
+    }
 }
 
 
