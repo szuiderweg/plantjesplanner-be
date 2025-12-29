@@ -1,32 +1,34 @@
 package nl.novi.be_plantjesplanner.configuration;
 
 import nl.novi.be_plantjesplanner.security.JwtRequestFilter;
+import nl.novi.be_plantjesplanner.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
 
-    private final DataSource dataSource;
+  private final JwtRequestFilter jwtRequestFilter;
+  private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+  public SecurityConfig(JwtRequestFilter jwtRequestFilter, CustomUserDetailsService userDetailsService){
+      this.jwtRequestFilter = jwtRequestFilter;
+      this.userDetailsService = userDetailsService;
+  }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -34,11 +36,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager() {
-        JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
-        manager.setUsersByUsernameQuery("SELECT username, password, enabled FROM users WHERE username=?");
-        manager.setAuthoritiesByUsernameQuery("SELECT username, authority FROM authorities WHERE username=?");
-        return manager;
+    public AuthenticationManager authenticationManager(){
+      return new ProviderManager(authenticationProvider());
+    }
+
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(){
+      DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+      authProvider.setUserDetailsService(userDetailsService);
+      authProvider.setPasswordEncoder(passwordEncoder());
+      return authProvider;
     }
 
     @Bean
@@ -55,19 +63,15 @@ public class SecurityConfig {
                         .requestMatchers("/plants/**").hasRole("ADMIN")
                         .anyRequest().authenticated()//todo: op denyAll() zetten als alle endpoints klaar zijn
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig
-    ) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {

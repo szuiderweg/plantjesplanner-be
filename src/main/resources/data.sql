@@ -29,9 +29,9 @@ INSERT INTO users (username, password, enabled) VALUES
                                                     ('admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE);
 
 -- Authorities (rollen)
-INSERT INTO authorities (username, authority) VALUES
-                                                  ('designer_test', 'ROLE_DESIGNER'),
-                                                  ('admin_test',   'ROLE_ADMIN');
+INSERT INTO authorities (id, username, authority) VALUES
+                                                  (1, 'designer_test', 'ROLE_DESIGNER'),
+                                                  (2, 'admin_test',   'ROLE_ADMIN');
 -- Insert Design
 INSERT INTO design (id, title, username) VALUES (1, 'Standaard ontwerp voor admin','admin_test'),(2,'Mijn prachtige tuin','designer_test');
 

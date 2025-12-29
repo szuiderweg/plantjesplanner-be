@@ -1,8 +1,11 @@
 package nl.novi.be_plantjesplanner.controllers;
 
 import nl.novi.be_plantjesplanner.security.JwtUtil;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,12 +27,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String createAuthenticationToken(@RequestBody AuthRequestDto authRequestDto){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
+    public ResponseEntity createAuthenticationToken(@RequestBody AuthRequestDto authRequestDto){
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUsername(), authRequestDto.getPassword()));
+        }catch(AuthenticationException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authRequestDto.getUsername());
-        return jwtUtil.generateToken(userDetails);
+        return ResponseEntity.ok(jwtUtil.generateToken(userDetails));
     }
-
-
-
 }
