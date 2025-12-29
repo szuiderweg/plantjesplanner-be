@@ -9,22 +9,21 @@ DROP TABLE IF EXISTS image_metadata CASCADE;
 DROP TABLE IF EXISTS blooming_calendars CASCADE;
 DROP TABLE IF EXISTS locales CASCADE;
 
--- 1. Table definitions for JDBC
+-- Table definitions for domain entities
 CREATE TABLE users (
-                       username VARCHAR(255) PRIMARY KEY UNIQUE,
+                       username VARCHAR(255) PRIMARY KEY,
                        password VARCHAR(255) NOT NULL,
-                        enabled BOOLEAN NOT NULL
+                       enabled BOOLEAN NOT NULL
 );
 
 CREATE TABLE authorities (
+                             id SERIAL PRIMARY KEY,
                              username VARCHAR(255) NOT NULL,
                              authority VARCHAR(255) NOT NULL,
-                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE,
-                            CONSTRAINT unique_user_authority UNIQUE (username)
+                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
 
--- 2. Table definitions for domain entities
+
 CREATE TABLE locales (
                          id SERIAL PRIMARY KEY,
                          sunlight VARCHAR(32) NOT NULL,
