@@ -1,8 +1,12 @@
 package nl.novi.be_plantjesplanner.entities;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "design")
+@Table(name = "designs")
 public class Design {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -10,8 +14,14 @@ public class Design {
 
     private String title;
 
-    @Column(name = "username", nullable = false) //in the database this column contains the username as foreign key to the user table. The relation between a User and a Design is maintained by a database constraint on the Design table instead of a JPA mapping. see the file "schema.sql" for details  todo: dit is wel een design keuze. Ik doe het zo om op deze manier het beheren van users+ authorities helemaal over te laten aan JDBC.
-    private String username;
+    private double gardenSize; //in square meters m2
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "locale_id", unique = true)
+    private Locale locale;
+
+    @OneToMany(mappedBy = "design",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<SelectedPlant> selectedPlants = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -25,11 +35,27 @@ public class Design {
         this.title = title;
     }
 
-    public String getUsername() {
-        return username;
+    public double getGardenSize() {
+        return gardenSize;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }//get setter voor username omdat het een foreign key van de user tabel is
+    public void setGardenSize(double gardenSize) {
+        this.gardenSize = gardenSize;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public Set<SelectedPlant> getSelectedPlants() {
+        return selectedPlants;
+    }
+
+    public void setSelectedPlants(Set<SelectedPlant> selectedPlants) {
+        this.selectedPlants = selectedPlants;
+    }
 }

@@ -4,24 +4,12 @@
 DROP TABLE IF EXISTS plants CASCADE;
 DROP TABLE IF EXISTS authorities CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS design CASCADE;
+DROP TABLE IF EXISTS designs CASCADE;
 DROP TABLE IF EXISTS image_metadata CASCADE;
 DROP TABLE IF EXISTS blooming_calendars CASCADE;
 DROP TABLE IF EXISTS locales CASCADE;
 
 -- Table definitions for domain entities
-CREATE TABLE users (
-                       username VARCHAR(255) PRIMARY KEY,
-                       password VARCHAR(255) NOT NULL,
-                       enabled BOOLEAN NOT NULL
-);
-
-CREATE TABLE authorities (
-                             id SERIAL PRIMARY KEY,
-                             username VARCHAR(255) NOT NULL,
-                             authority VARCHAR(255) NOT NULL,
-                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE
-);
 
 
 CREATE TABLE locales (
@@ -56,11 +44,13 @@ CREATE TABLE image_metadata (
                         upload_date_time TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE design (
+CREATE TABLE designs (
                          id SERIAL PRIMARY KEY,
                          title VARCHAR(255) NOT NULL,
-                         username VARCHAR(255) NOT NULL,
-                        CONSTRAINT fk_designs_users FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+                        garden_size DOUBLE PRECISION,
+                        locale_id INTEGER UNIQUE,
+                             CONSTRAINT fk_users_designs FOREIGN KEY (locale_id) REFERENCES locales(id)
+
 );
 
 CREATE TABLE plants (
@@ -73,8 +63,32 @@ CREATE TABLE plants (
                         bloom_color_hex VARCHAR(16),
                         bloom_color_group VARCHAR(64),
                         published BOOLEAN DEFAULT false,
-                        locale_id INTEGER REFERENCES locales(id),
+                        locale_id INTEGER UNIQUE REFERENCES locales(id),
                         blooming_calendar_id INTEGER REFERENCES blooming_calendars(id),
                         plantavatar_id INTEGER REFERENCES image_metadata(id)
 );
 
+CREATE TABLE users (
+                       username VARCHAR(255) PRIMARY KEY,
+                       password VARCHAR(255) NOT NULL,
+                       enabled BOOLEAN NOT NULL,
+                       design_id BIGINT UNIQUE,
+                        CONSTRAINT fk_users_designs FOREIGN KEY (design_id) REFERENCES designs(id)
+);
+
+CREATE TABLE authorities (
+                             id SERIAL PRIMARY KEY,
+                             username VARCHAR(255) NOT NULL,
+                             authority VARCHAR(255) NOT NULL,
+                             CONSTRAINT fk_authorities_users FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE
+);
+
+CREATE TABLE selected_plants(
+                            id SERIAL PRIMARY KEY,
+                            quantity INTEGER NOT NULL,
+                            design_id BIGINT NOT NULL,
+                            plant_id BIGINT NOT NULL,
+                            CONSTRAINT fk_selectedplants_designs FOREIGN KEY (design_id) REFERENCES designs(id) ON DELETE CASCADE,
+                            CONSTRAINT fk_selectedplants_plants FOREIGN KEY (plant_id) REFERENCES plants(id),
+                            CONSTRAINT uq_design_plant UNIQUE (design_id, plant_id)
+);

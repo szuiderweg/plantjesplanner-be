@@ -4,18 +4,20 @@ import jakarta.persistence.*;
 
 
 @Entity
-@Table(name = "selected_plants")
+@Table(name = "selected_plants", uniqueConstraints = {@UniqueConstraint(columnNames = {"design_id", "plant_id"})})
 public class SelectedPlant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name= "design_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name= "design_id", nullable = false)
     private Design design;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plant_id", nullable = false)
     private Plant plant;
 

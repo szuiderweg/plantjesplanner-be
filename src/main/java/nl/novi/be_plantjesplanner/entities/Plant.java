@@ -27,7 +27,7 @@ public class Plant {
 
     private Boolean published = false;//sets visibility of a plant:  with users Designer-role only see plant with published = true
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "locale_id")
+    @JoinColumn(name = "locale_id", unique = true)
     private Locale locale;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

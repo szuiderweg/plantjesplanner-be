@@ -20,11 +20,6 @@ public class Locale{
     private String soilType;
     private Boolean openGroundOnly;
 
-    @OneToOne(mappedBy = "locale")
-    private Plant plant;
-
-//    @OneToOne(mappedBy = "locale")
-//    private Design design;
 
 
     //getters and setters
@@ -71,19 +66,4 @@ public class Locale{
         this.openGroundOnly = openGroundOnly;
     }
 
-    public Plant getPlant() {
-        return plant;
-    }
-
-    public void setPlant(Plant plant) {
-        this.plant = plant;
-    }
-
-//    public Design getDesign() {
-//        return design;
-//    }
-//
-//    public void setDesign(Design design) {
-//        this.design = design;
-//    }
 }
