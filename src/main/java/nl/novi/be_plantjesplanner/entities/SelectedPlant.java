@@ -1,6 +1,7 @@
 package nl.novi.be_plantjesplanner.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 
 
 @Entity
@@ -11,7 +12,8 @@ public class SelectedPlant {
     private Long id;
 
     @Column(nullable = false)
-    private Integer quantity;
+    @Min(1)
+    private Integer amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "design_id", nullable = false)
@@ -26,12 +28,12 @@ public class SelectedPlant {
         return id;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Plant getPlant() {

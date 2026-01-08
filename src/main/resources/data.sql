@@ -8,7 +8,7 @@ VALUES
     (2, 'ZONNIG', 'MATIG_VOCHTIG', 'BESCHUT', 'klei, zandgrond', false),
     (3, 'SCHADUW', 'VOCHTIG', 'STERKE_WIND', 'veen, humusgrond', true),
     (4, 'ZONNIG', 'MATIG_VOCHTIG', 'BESCHUT', 'zandgrond', false),
-    (5, 'NULL', 'NULL', 'NULL', '', false);
+    (5, 'SCHADUW', 'NAT', 'GEMIDDELD', '', false);
 
 
 -- Insert BloomingCalendars
@@ -47,13 +47,14 @@ INSERT INTO authorities (id, username, authority) VALUES
                                                       (2, 'admin_test',   'ROLE_ADMIN');
 
 -- selected plants for example design of designer_test
-INSERT INTO selected_plants(id, quantity, design_id, plant_id) VALUES (1, 3, 2, 2);
+INSERT INTO selected_plants(id, amount, design_id, plant_id) VALUES (1, 3, 2, 2);
 
 
--- -- 3. set id number sequences
--- SELECT setval('image_metadata_id_seq', (SELECT MAX(id) FROM image_metadata));
--- SELECT setval('plants_id_seq', (SELECT MAX(id) FROM plants));
--- SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calendars));
--- SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));
--- SELECT setval('design_id_seq', (SELECT MAX(id) FROM designs));
+-- 3. set id number sequences
+SELECT setval('image_metadata_id_seq', (SELECT MAX(id) FROM image_metadata));
+SELECT setval('plants_id_seq', (SELECT MAX(id) FROM plants));
+SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calendars));
+SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));
+SELECT setval('designs_id_seq', (SELECT MAX(id) FROM designs));
+SELECT setval('authorities_id_seq',(SELECT MAX(id) FROM authorities));
 -- SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

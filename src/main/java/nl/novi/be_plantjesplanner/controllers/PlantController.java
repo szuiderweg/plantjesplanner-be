@@ -37,6 +37,7 @@ public class PlantController {
       Plant newPlant = mapFromPlantDto(plantDto);
       newPlant = plantService.savePlant(newPlant, file);
       PlantDto savedPlantDto = mapToPlantDto(newPlant);
+
       return ResponseEntity.status(HttpStatus.CREATED).body(savedPlantDto);
    }
 

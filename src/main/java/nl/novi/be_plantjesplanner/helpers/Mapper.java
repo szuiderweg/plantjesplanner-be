@@ -11,7 +11,7 @@ public class Mapper {
     //FROM-DTO mappers
     public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
         SelectedPlant newSelectedPlant = new SelectedPlant();
-        newSelectedPlant.setQuantity(selectedPlantDto.quantity());
+        newSelectedPlant.setAmount(selectedPlantDto.quantity());
 
 //      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
         newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));

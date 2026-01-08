@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS designs CASCADE;
 DROP TABLE IF EXISTS image_metadata CASCADE;
 DROP TABLE IF EXISTS blooming_calendars CASCADE;
 DROP TABLE IF EXISTS locales CASCADE;
+DROP TABLE IF EXISTS selected_plants CASCADE;
 
 -- Table definitions for domain entities
 
@@ -85,7 +86,7 @@ CREATE TABLE authorities (
 
 CREATE TABLE selected_plants(
                             id SERIAL PRIMARY KEY,
-                            quantity INTEGER NOT NULL,
+                            amount INTEGER NOT NULL,
                             design_id BIGINT NOT NULL,
                             plant_id BIGINT NOT NULL,
                             CONSTRAINT fk_selectedplants_designs FOREIGN KEY (design_id) REFERENCES designs(id) ON DELETE CASCADE,
