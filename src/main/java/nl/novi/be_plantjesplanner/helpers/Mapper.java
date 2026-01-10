@@ -11,7 +11,7 @@ public class Mapper {
     //FROM-DTO mappers
     public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
         SelectedPlant newSelectedPlant = new SelectedPlant();
-        newSelectedPlant.setQuantity(selectedPlantDto.quantity());
+        newSelectedPlant.setAmount(selectedPlantDto.quantity());
 
 //      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
         newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
@@ -82,6 +82,12 @@ public class Mapper {
     public static Design mapFromDesignDto(DesignDto designDto){
         Design newDesign = new Design();
         newDesign.setTitle(designDto.title());
+        newDesign.setGardenSize(designDto.gardenSize());
+
+        if (designDto.localeDto() != null) {
+            newDesign.setLocale(mapFromLocaleDto(designDto.localeDto()));
+        }
+
         return newDesign;
     }
 
@@ -149,7 +155,10 @@ public class Mapper {
     }
 
     public static DesignDto mapToDesignDto(Design design){
-        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle());
+        //map child objects first
+        LocaleDto newLocaleDto = design.getLocale() != null? Mapper.mapToLocaleDto(design.getLocale()) : null;
+
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize(), newLocaleDto);
         return newDesignDto;
     }
 

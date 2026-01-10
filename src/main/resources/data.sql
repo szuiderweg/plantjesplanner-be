@@ -6,7 +6,10 @@ INSERT INTO locales (id, sunlight, moisture, wind_tolerance, soil_type, open_gro
 VALUES
     (1, 'HALFSCHADUW', 'DROOG', 'BESCHUT', 'tuinaarde, bosgrond', true),
     (2, 'ZONNIG', 'MATIG_VOCHTIG', 'BESCHUT', 'klei, zandgrond', false),
-    (3, 'SCHADUW', 'VOCHTIG', 'STERKE_WIND', 'veen, humusgrond', true);
+    (3, 'SCHADUW', 'VOCHTIG', 'STERKE_WIND', 'veen, humusgrond', true),
+    (4, 'ZONNIG', 'MATIG_VOCHTIG', 'BESCHUT', 'zandgrond', false),
+    (5, 'SCHADUW', 'NAT', 'GEMIDDELD', '', false);
+
 
 -- Insert BloomingCalendars
 INSERT INTO blooming_calendars (id, january, february, march, april, may, june, july, august, september, october, november, december)
@@ -22,20 +25,6 @@ VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
        (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
 
 
-
--- Insert Users (gebruik BCrypt hashes!) designer: "geheim" admin: "super_geheim"
-INSERT INTO users (username, password, enabled) VALUES
-                                                    ( 'designer_test', '$2a$12$SRLVtg4dIFlCKFpvM5mSveFVVM5wid0p8nL3I.omNHEPBJu2aRI8a', TRUE),
-                                                    ('admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE);
-
--- Authorities (rollen)
-INSERT INTO authorities (id, username, authority) VALUES
-                                                  (1, 'designer_test', 'ROLE_DESIGNER'),
-                                                  (2, 'admin_test',   'ROLE_ADMIN');
--- Insert Design
-INSERT INTO design (id, title, username) VALUES (1, 'Standaard ontwerp voor admin','admin_test'),(2,'Mijn prachtige tuin','designer_test');
-
-
 -- Insert Plants
 INSERT INTO plants (id, dutch_name, latin_name, description, height, footprint, bloom_color_hex, bloom_color_group, published, locale_id, blooming_calendar_id, plantavatar_id)
 VALUES
@@ -43,10 +32,29 @@ VALUES
     (2, 'Zonnebloem', 'Helianthus annuus', 'Zonnige hoge bloem met groot hart.', 2.0, 0.5, '#FFD700', 'GEEL', true, 2, 2, 2),
     (3, 'Hosta', 'Hosta sieboldiana', 'Schaduwminnende vaste plant met brede bladeren.', 0.6, 0.8, '#98FB98', 'GROEN', true, 3, 3, 3);
 
--- 3. Sequences aanpassen
+
+-- Insert Design
+INSERT INTO designs (id, title, garden_size, locale_id ) VALUES (1, 'Standaard ontwerp voor admin', 0.0, 5),(2,'Mijn prachtige tuin','15.0', 4);
+
+-- Insert Users (use BCrypt hashes!) designer: "geheim" admin: "super_geheim" todo credentials verwijderen voor inleveren
+INSERT INTO users (username, password, enabled,  design_id) VALUES
+                                                                ( 'designer_test', '$2a$12$SRLVtg4dIFlCKFpvM5mSveFVVM5wid0p8nL3I.omNHEPBJu2aRI8a', TRUE,2),
+                                                                ('admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE,1);
+
+-- Authorities (roles)
+INSERT INTO authorities (id, username, authority) VALUES
+                                                      (1, 'designer_test', 'ROLE_DESIGNER'),
+                                                      (2, 'admin_test',   'ROLE_ADMIN');
+
+-- selected plants for example design of designer_test
+INSERT INTO selected_plants(id, amount, design_id, plant_id) VALUES (1, 3, 2, 2);
+
+
+-- 3. set id number sequences
 SELECT setval('image_metadata_id_seq', (SELECT MAX(id) FROM image_metadata));
 SELECT setval('plants_id_seq', (SELECT MAX(id) FROM plants));
 SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calendars));
 SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));
-SELECT setval('design_id_seq', (SELECT MAX(id) FROM design));
+SELECT setval('designs_id_seq', (SELECT MAX(id) FROM designs));
+SELECT setval('authorities_id_seq',(SELECT MAX(id) FROM authorities));
 -- SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -88,6 +89,18 @@ public class ExceptionController {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ongeldige inloggegevens");
+    }
+
+    //handles exceptions caused by missing or invalid JWT
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException e){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("je bent niet ingelogd of je sessie is verlopen");
+    }
+
+    //handles exceptions because of wrong permissions
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDenied(AccessDeniedException e){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("je hebt geen rechten om deze actie uit te voeren");
     }
 
     //500 errors for development

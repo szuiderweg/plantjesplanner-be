@@ -13,6 +13,7 @@ import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import nl.novi.be_plantjesplanner.services.image.ImageService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class PlantService {
         if (plantRepository.existsByDutchNameIgnoreCase(newPlant.getDutchName())) {
             throw new DuplicateResourceException("Er bestaat al een plant met deze naam: " + newPlant.getDutchName());
         }
-        if (newPlantAvatar!= null && newPlantAvatar.isEmpty()) {
+        if (newPlantAvatar!= null && !newPlantAvatar.isEmpty()) {
             ImageMetadata plantAvatarMetadata = imageService.saveImage(newPlantAvatar); //save new avatar file in local filesystem, and create metadata about the avatar file
             newPlant.setPlantAvatar(plantAvatarMetadata);//save avatar metadata as part of the new plant
         }
@@ -46,7 +47,7 @@ public class PlantService {
     }
 
     //corresponds to updatePlant request in the PlantController
-    public Plant updatePlantById(Plant updatedPlant , MultipartFile updatedAvatarFile, Long id){//todo iets verzinnen om met null-child values om te gaan. ik vind dat in PUT requests de child entities niet leeg/null mogen zijn. Anders was het wel een PATCH
+    public Plant updatePlantById(Plant updatedPlant , MultipartFile updatedAvatarFile, Long id){
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
             Plant existingPlant = plantOptional.get();
@@ -73,11 +74,16 @@ public class PlantService {
             }
             //update plant avatar image (optional)
             if (updatedAvatarFile != null) {
-                String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
-                ImageMetadata updatedAvatarMetadata = imageService.updateImage(updatedAvatarFile, oldAvatarFilename);//update plant avatar file and generate new metadata
-                existingPlant.setPlantAvatar(updatedAvatarMetadata);//
+                if (existingPlant.getPlantAvatar() == null){
+                    ImageMetadata newImageMetadata = imageService.saveImage(updatedAvatarFile);
+                    existingPlant.setPlantAvatar(newImageMetadata);
+                }else{
+                    String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
+                    ImageMetadata updatedAvatarMetadata = imageService.updateImage(updatedAvatarFile, oldAvatarFilename);//update plant avatar file and generate new metadata
+                    existingPlant.setPlantAvatar(updatedAvatarMetadata);
+                }
             }
-            plantRepository.save(existingPlant);// todo try catch block hier?
+            plantRepository.save(existingPlant);
             return existingPlant;
         }
         else{
@@ -125,14 +131,16 @@ public class PlantService {
         return foundPlants;
     }
 
+    @Transactional
     public void deletePlantById(Long id){
         //look up the id of the image linked to this plant and delete the image file first, then the rest of the plant
-        Optional<Plant> plantOptional = plantRepository.findById(id);
-        if(plantOptional.isPresent()){
-            Plant foundPlant = plantOptional.get();
-            Long plantAvatarId = foundPlant.getPlantAvatar().getId();
+       Plant plant = plantRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("geen plant gevonden met id: "+id));
+
+            if(plant.getPlantAvatar() != null){
+            Long plantAvatarId = plant.getPlantAvatar().getId();
             imageService.deleteImageById(plantAvatarId, true);
-        }
-        plantRepository.deleteById(id);
+            }
+
+        plantRepository.delete(plant);
     }
 }

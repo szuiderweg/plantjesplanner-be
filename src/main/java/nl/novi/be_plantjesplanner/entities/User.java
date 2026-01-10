@@ -18,6 +18,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "design_id", unique = true)
+    private Design design;
+
     //getters & setters
 
     public String getUsername() {
@@ -50,5 +54,13 @@ public class User {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
     }
 }
