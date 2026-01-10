@@ -2,9 +2,11 @@ package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.UserDto;
 import nl.novi.be_plantjesplanner.entities.Authority;
+import nl.novi.be_plantjesplanner.entities.Design;
 import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
+import nl.novi.be_plantjesplanner.repositories.DesignRepository;
 import nl.novi.be_plantjesplanner.repositories.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,10 +21,12 @@ import java.util.Set;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
+    private final DesignRepository designRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public UserService(UserRepository userRepository, DesignRepository designRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.designRepository = designRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -32,7 +36,7 @@ public class UserService {
         if (userRepository.existsUserByUsername(userDto.getUsername())){
             throw new DuplicateResourceException("deze gebruiker bestaat al");
         }
-
+        //create new user with authority
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -44,6 +48,14 @@ public class UserService {
 
         user.setAuthorities(Set.of(authority));// Spring security expects a collection of authorities instead of a single authority
 
+        //create new design for user
+        Design design = new Design();
+        design.setTitle("Prachtige tuin van "+user.getUsername());
+        design.setGardenSize(0.0);
+
+        user.setDesign(design);
+        designRepository.save(design);
+        //save user
         userRepository.save(user);
     }
 

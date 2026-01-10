@@ -82,6 +82,7 @@ public class Mapper {
     public static Design mapFromDesignDto(DesignDto designDto){
         Design newDesign = new Design();
         newDesign.setTitle(designDto.title());
+        newDesign.setGardenSize(designDto.gardenSize());
         return newDesign;
     }
 
@@ -149,7 +150,7 @@ public class Mapper {
     }
 
     public static DesignDto mapToDesignDto(Design design){
-        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle());
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize());
         return newDesignDto;
     }
 

@@ -17,7 +17,7 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -33,7 +33,7 @@ public class UserController {
             return ResponseEntity.ok("gebruiker aangemaakt: "+userDto.getUsername());
     }
 
-    //register new user with admin Role
+    //register new user with admin Role (admin only)
     @PostMapping("/admin")
     public ResponseEntity<String> registerNewAdmin( @RequestBody UserDto userDto){
 
