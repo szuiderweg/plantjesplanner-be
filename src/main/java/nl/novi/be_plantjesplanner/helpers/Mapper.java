@@ -4,14 +4,16 @@ import nl.novi.be_plantjesplanner.dtos.*;
 import nl.novi.be_plantjesplanner.entities.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Mapper {
     private Mapper(){}//private constructor to prevent accidental instantiation
     //FROM-DTO mappers
     public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
         SelectedPlant newSelectedPlant = new SelectedPlant();
-        newSelectedPlant.setAmount(selectedPlantDto.quantity());
+        newSelectedPlant.setAmount(selectedPlantDto.amount());
 
 //      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
         newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
@@ -91,33 +93,20 @@ public class Mapper {
         return newDesign;
     }
 
-//    public static User mapFromUserDto(UserDto userDto){
-//    User newUser = new User();
-//    newUser.setUsername(userDto.username());
-//    newUser.setPassword(userDto.password());
-////    newUser.setRole(userDto.role());
-//
-//    return newUser;
-//    }
 
-//    public static SelectedPlant mapFromSelectedPlantDto(SelectedPlantDto selectedPlantDto){
-//        SelectedPlant newSelectedPlant = new SelectedPlant();
-//        newSelectedPlant.setQuantity(selectedPlantDto.quantity());
-//
-////      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
-//        newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
-//        return newSelectedPlant;
-//    }
+
 
 
 //TO DTO mappers
-//    public static SelectedPlantDto mapToSelectedPlantDto(SelectedPlant selectedPlant){
-//        //map child objects first
-//        PlantDto newPlantDto = Mapper.mapToPlantDto(selectedPlant.getPlant());
-//
-//        //DesignDto newDesignDto = Mapper.mapToDesignDto(selectedPlant.getDesign());
-//        SelectedPlantDto = new SelectedPlantDto(selectedPlant.getId(), selectedPlant.getQuantity(), )
-//    }
+    public static SelectedPlantDto mapToSelectedPlantDto(SelectedPlant selectedPlant){
+        //map child objects first
+        PlantDto newPlantDto = Mapper.mapToPlantDto(selectedPlant.getPlant());
+
+        //DesignDto newDesignDto = Mapper.mapToDesignDto(selectedPlant.getDesign());
+        return new SelectedPlantDto(selectedPlant.getId(), selectedPlant.getAmount(), newPlantDto);
+    }
+
+
     public static PlantDto mapToPlantDto(Plant plant){
         //map child objects first
         LocaleDto newLocaleDto = plant.getLocale() != null? Mapper.mapToLocaleDto(plant.getLocale()) : null;
@@ -140,6 +129,17 @@ public class Mapper {
     return plantDtoList;
     }
 
+    public static Set<SelectedPlantDto> mapToSelectedPlantDtoSet(Set<SelectedPlant> selectedPlants) {
+        Set<SelectedPlantDto> selectedPlantDtoSet = new HashSet<>();
+
+        for (SelectedPlant sp : selectedPlants) {
+            selectedPlantDtoSet.add(mapToSelectedPlantDto(sp));
+        }
+
+        return selectedPlantDtoSet;
+    }
+
+
     public static BloomingCalendarDto mapToBloomingCalendarDto(BloomingCalendar bloomingCalendar) {
         BloomingCalendarDto newBloomingCalendarDto = new BloomingCalendarDto(bloomingCalendar.bloomsInJanuary(), bloomingCalendar.bloomsInFebruary(), bloomingCalendar.bloomsInMarch(), bloomingCalendar.bloomsInApril(), bloomingCalendar.bloomsInMay(), bloomingCalendar.bloomsInJune(), bloomingCalendar.bloomsInJuly(), bloomingCalendar.bloomsInAugust(), bloomingCalendar.bloomsInSeptember(), bloomingCalendar.bloomsInOctober(), bloomingCalendar.bloomsInNovember(), bloomingCalendar.bloomsInDecember());
         return newBloomingCalendarDto;
@@ -158,15 +158,11 @@ public class Mapper {
         //map child objects first
         LocaleDto newLocaleDto = design.getLocale() != null? Mapper.mapToLocaleDto(design.getLocale()) : null;
 
-        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize(), newLocaleDto);
+        Set<SelectedPlantDto> selectedPlantDtoSet = mapToSelectedPlantDtoSet(design.getSelectedPlants());
+
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize(), newLocaleDto, selectedPlantDtoSet);
         return newDesignDto;
     }
-
-//    public static UserDto mapToUserDto(User user){
-//        //map child object design first
-//        UserDto newUserDto =  new UserDto(user.getId(), user.getUsername(), "********", user.getRole(), user.getCreationDate());
-//        return newUserDto;
-//    }
 
 
 }
