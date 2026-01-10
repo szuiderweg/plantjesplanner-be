@@ -61,7 +61,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/plants/**").hasAnyRole("ADMIN","DESIGNER")
                         .requestMatchers("/plants/**").hasRole("ADMIN")
-                        .requestMatchers("/designs/**").hasRole("DESIGNER")
+                        .requestMatchers("/designs/me/**").hasRole("DESIGNER")
                         .anyRequest().authenticated()//todo: op denyAll() zetten als alle endpoints klaar zijn
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

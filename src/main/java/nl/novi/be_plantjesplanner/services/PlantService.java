@@ -74,11 +74,16 @@ public class PlantService {
             }
             //update plant avatar image (optional)
             if (updatedAvatarFile != null) {
-                String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
-                ImageMetadata updatedAvatarMetadata = imageService.updateImage(updatedAvatarFile, oldAvatarFilename);//update plant avatar file and generate new metadata
-                existingPlant.setPlantAvatar(updatedAvatarMetadata);//
+                if (existingPlant.getPlantAvatar() == null){
+                    ImageMetadata newImageMetadata = imageService.saveImage(updatedAvatarFile);
+                    existingPlant.setPlantAvatar(newImageMetadata);
+                }else{
+                    String oldAvatarFilename = existingPlant.getPlantAvatar().getStoredFilename();//retrieve the filename of the old image
+                    ImageMetadata updatedAvatarMetadata = imageService.updateImage(updatedAvatarFile, oldAvatarFilename);//update plant avatar file and generate new metadata
+                    existingPlant.setPlantAvatar(updatedAvatarMetadata);
+                }
             }
-            plantRepository.save(existingPlant);// todo try catch block hier?
+            plantRepository.save(existingPlant);
             return existingPlant;
         }
         else{

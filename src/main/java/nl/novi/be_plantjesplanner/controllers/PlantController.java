@@ -9,6 +9,7 @@ import nl.novi.be_plantjesplanner.services.PlantService;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +30,7 @@ public class PlantController {
    }
 
    //POST a new plant - admin only
-   @PostMapping
+   @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
    public ResponseEntity<PlantDto> postPlant(@Valid @RequestPart("plant") PlantDto plantDto, @RequestPart(value = "image", required = false) MultipartFile file) {
       if(file != null) {
          FileChecker.checkUploadedImage(file);
@@ -42,7 +43,7 @@ public class PlantController {
    }
 
    // edit (PUT) a specific plant - admin only
-   @PutMapping("/{id}")
+   @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
    public ResponseEntity<PlantDto> updatePlant(@Valid @RequestPart("plant") PlantDto plantDto,@RequestPart(value = "image", required = false) MultipartFile file, @PathVariable Long id){
       if(file != null) {
          FileChecker.checkUploadedImage(file);

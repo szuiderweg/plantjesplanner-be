@@ -83,6 +83,11 @@ public class Mapper {
         Design newDesign = new Design();
         newDesign.setTitle(designDto.title());
         newDesign.setGardenSize(designDto.gardenSize());
+
+        if (designDto.localeDto() != null) {
+            newDesign.setLocale(mapFromLocaleDto(designDto.localeDto()));
+        }
+
         return newDesign;
     }
 
@@ -150,7 +155,10 @@ public class Mapper {
     }
 
     public static DesignDto mapToDesignDto(Design design){
-        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize());
+        //map child objects first
+        LocaleDto newLocaleDto = design.getLocale() != null? Mapper.mapToLocaleDto(design.getLocale()) : null;
+
+        DesignDto newDesignDto = new DesignDto(design.getId(), design.getTitle(), design.getGardenSize(), newLocaleDto);
         return newDesignDto;
     }
 
