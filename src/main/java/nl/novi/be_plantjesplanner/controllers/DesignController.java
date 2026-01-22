@@ -43,7 +43,7 @@ public class DesignController {
     //requests for selectedPlants of a design
 
     // add a plant to a design as a selected plant
-    @PostMapping(value="/me/plants")
+    @PostMapping(value="/me/selected-plants")
     public ResponseEntity<DesignDto> addPlantToMyDesign(@Valid @RequestBody AddSelectedPlantDto dto, Authentication authentication){
         String username = authentication.getName();
 
@@ -52,7 +52,7 @@ public class DesignController {
     }
 
     //change amount of a selectedPlant
-    @PatchMapping(value = "/me/plants/{selectedPlantId}")
+    @PatchMapping(value = "/me/selected-plants/{selectedPlantId}")
     public ResponseEntity<Void> updateSelectedPlantAmount(@PathVariable Long selectedPlantId, @RequestParam @Min(1) int amount, Authentication authentication){
         String username = authentication.getName();
         designService.updateSelectedPlantAmount(username, selectedPlantId, amount);
@@ -60,7 +60,7 @@ public class DesignController {
     }
 
     //remove a selectedPlant from a user's design
-    @DeleteMapping(value = "/me/plants/{selectedPlantId}")
+    @DeleteMapping(value = "/me/selected-plants/{selectedPlantId}")
     public ResponseEntity<Void> deleteSelectedPlant(@PathVariable Long selectedPlantId, Authentication authentication){
         String username = authentication.getName();
         designService.removePlantFromMyDesign(username, selectedPlantId);

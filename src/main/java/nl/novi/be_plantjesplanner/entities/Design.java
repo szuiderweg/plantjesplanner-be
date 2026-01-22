@@ -65,7 +65,7 @@ public class Design {
     //helper methods selectedPlants
 
     //add plant to design
-    public void addPlant(Plant plant, int amount){
+    public void addPlantToSelectedPlants(Plant plant, int amount){
        //check if plant is already present in this designs SelectedPlants set
         for(SelectedPlant selectedPlant : selectedPlants){
             if(selectedPlant.getPlant().equals(plant)){
@@ -81,7 +81,7 @@ public class Design {
     }
 
     //edit amount of a selectedplant
-    public void updateAmount(Long selectedPlantId, int newAmount){
+    public void updateAmountSelectedPlants(Long selectedPlantId, int newAmount){
         if(newAmount <= 0){
             throw new IllegalArgumentException("aantal moet 1 of meer zijn");
         }

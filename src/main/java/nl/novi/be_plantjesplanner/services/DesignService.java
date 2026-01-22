@@ -69,7 +69,7 @@ public class DesignService {
         return design;
     }
 
-    //actions related to SelectedPlants of Design
+    //helper methods related to SelectedPlants of Design
 
     //add a plant to a design
     public Design addPlantToDesign(String username, Long plantId, int amount){
@@ -84,7 +84,7 @@ public class DesignService {
         Plant plant =  plantRepository.findById(plantId)
                 .orElseThrow(() -> new RecordNotFoundException("Plant niet gevonden"));
 
-        design.addPlant(plant, amount);
+        design.addPlantToSelectedPlants(plant, amount);
 
         return design;
     }
@@ -97,7 +97,7 @@ public class DesignService {
         if (design == null){
             throw new RecordNotFoundException("geen tuinontwerp gevonden");
         }
-        design.updateAmount(selectedPlantId, amount);
+        design.updateAmountSelectedPlants(selectedPlantId, amount);
     }
 
     //remove a selectedPlant from design
