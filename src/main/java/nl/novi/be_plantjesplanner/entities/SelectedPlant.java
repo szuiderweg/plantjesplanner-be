@@ -3,7 +3,6 @@ package nl.novi.be_plantjesplanner.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
-
 @Entity
 @Table(name = "selected_plants", uniqueConstraints = {@UniqueConstraint(columnNames = {"design_id", "plant_id"})})
 public class SelectedPlant {

@@ -1,7 +1,6 @@
 package nl.novi.be_plantjesplanner.entities;
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
-//TODO wanneer image uploader werkt, overbodige properties en getters+setters verwijderen
 @Entity
 @Table(name = "image_metadata")
 public class ImageMetadata {
@@ -42,14 +41,6 @@ public class ImageMetadata {
     public void setStoredFilename(String storedFilename) {
         this.storedFilename = storedFilename;
     }
-
-//    public String getFilePath() {
-//        return filePath;
-//    }
-//
-//    public void setFilePath(String filePath) {
-//        this.filePath = filePath;
-//    }
 
     public ZonedDateTime getUploadDateTime() {
         return uploadDateTime;

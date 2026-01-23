@@ -73,8 +73,7 @@ public class PlantController {
       List<Plant> foundPlants = plantService.getAllPlants();
       return ResponseEntity.ok().body(Mapper.mapToPlantDtoList(foundPlants));
    }
-   //GET plant by dutch name - admin & designer
-   //todo: include Latin name in search
+
    @GetMapping("/search")
    ResponseEntity<List<PlantDto>> getPlantsByDutchName(@RequestParam @NotBlank @Length(min = 1, max = 50, message = "De zoekterm moet tussen de 1 en 50 tekens zijn") String name){
       List<Plant> foundPlants = plantService.getPlantsByDutchName(name);

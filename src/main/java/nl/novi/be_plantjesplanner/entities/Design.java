@@ -1,10 +1,7 @@
 package nl.novi.be_plantjesplanner.entities;
-
 import jakarta.persistence.*;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
-
-import java.util.DuplicateFormatFlagsException;
 import java.util.HashSet;
 import java.util.Set;
 

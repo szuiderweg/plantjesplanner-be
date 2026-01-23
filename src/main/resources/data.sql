@@ -36,7 +36,7 @@ VALUES
 -- Insert Design
 INSERT INTO designs (id, title, garden_size, locale_id ) VALUES (1, 'Standaard ontwerp voor admin', 0.0, 5),(2,'Mijn prachtige tuin','15.0', 4);
 
--- Insert Users (use BCrypt hashes!) designer: "geheim" admin: "super_geheim" todo credentials verwijderen voor inleveren
+-- Insert Users (use BCrypt hashes!)
 INSERT INTO users (username, password, enabled,  design_id) VALUES
                                                                 ( 'designer_test', '$2a$12$SRLVtg4dIFlCKFpvM5mSveFVVM5wid0p8nL3I.omNHEPBJu2aRI8a', TRUE,2),
                                                                 ('admin_test',   '$2a$12$jKxKvO8s/EKuTiEghAQCPeXnMEizilOSKjb4.AXBjWZms8kRC20ry', TRUE,1);

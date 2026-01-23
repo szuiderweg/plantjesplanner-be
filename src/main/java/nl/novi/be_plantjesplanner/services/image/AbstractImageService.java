@@ -123,7 +123,6 @@ public abstract class AbstractImageService implements ImageService{
                 throw new RecordNotFoundException("afbeelding niet gevonden in database");
             }
     }
-//todo BUG check gebruik van deze method door plant service want ik weet niet of het nu goed werkt
     //delete image file + metadata
     @Override
     public void deleteImageById(Long id, Boolean isQuiet) {

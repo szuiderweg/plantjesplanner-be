@@ -1,20 +1,8 @@
 package nl.novi.be_plantjesplanner.controllers;
-
-import nl.novi.be_plantjesplanner.entities.Authority;
-import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.dtos.UserDto;
-import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
-import nl.novi.be_plantjesplanner.repositories.UserRepository;
 import nl.novi.be_plantjesplanner.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.Collection;
-import java.util.Set;
-
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +20,6 @@ public class UserController {
            userService.registerUser(userDto, "ROLE_DESIGNER" );
             return ResponseEntity.ok("gebruiker aangemaakt: "+userDto.getUsername());
     }
-
     //register new user with admin Role (admin only)
     @PostMapping("/admin")
     public ResponseEntity<String> registerNewAdmin( @RequestBody UserDto userDto){
@@ -47,14 +34,6 @@ public class UserController {
         UserDto myUser = userService.getMyUserByUsername();
         return ResponseEntity.ok(myUser);
     }
-
-    //GET list of all usernames -- ADMIN only
-//    public ResponseEntity<List<String>> getAllUsernames()
-//    {
-//        List<String> usernames = userDetailsManager.
-//    }
-
-
 }
 
 
