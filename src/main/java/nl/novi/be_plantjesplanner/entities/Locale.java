@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import nl.novi.be_plantjesplanner.enumerations.Moisture;
 import nl.novi.be_plantjesplanner.enumerations.Sunlight;
 import nl.novi.be_plantjesplanner.enumerations.WindTolerance;
-//todo BUG? check CRUD acties voor locale: bij save plant, wordt er dan ook in de database een locale aangemaakt?
 @Entity
 @Table(name = "locales")
 public class Locale{
@@ -19,8 +18,6 @@ public class Locale{
     private WindTolerance windTolerance;
     private String soilType;
     private Boolean openGroundOnly;
-
-
 
     //getters and setters
     public Long getId() {

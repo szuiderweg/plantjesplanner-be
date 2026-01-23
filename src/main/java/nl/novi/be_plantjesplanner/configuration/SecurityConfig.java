@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,7 +62,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,   "/designs/me/**").hasRole("DESIGNER")
                         .requestMatchers(HttpMethod.PATCH,  "/designs/me/**").hasRole("DESIGNER")
                         .requestMatchers(HttpMethod.DELETE, "/designs/me/**").hasRole("DESIGNER")
-                        .anyRequest().authenticated()//todo: op denyAll() zetten als alle endpoints klaar zijn
+                        .anyRequest().denyAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider());

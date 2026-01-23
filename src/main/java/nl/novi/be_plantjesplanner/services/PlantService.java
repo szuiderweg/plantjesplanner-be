@@ -1,13 +1,11 @@
 package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.dtos.ImageDownloadFileDto;
-import nl.novi.be_plantjesplanner.dtos.PlantDto;
 import nl.novi.be_plantjesplanner.entities.BloomingCalendar;
 import nl.novi.be_plantjesplanner.entities.ImageMetadata;
 import nl.novi.be_plantjesplanner.entities.Locale;
 import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.exceptions.DuplicateResourceException;
-import nl.novi.be_plantjesplanner.helpers.Mapper;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import nl.novi.be_plantjesplanner.services.image.ImageService;
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

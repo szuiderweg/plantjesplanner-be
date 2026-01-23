@@ -15,7 +15,6 @@ public class Mapper {
         SelectedPlant newSelectedPlant = new SelectedPlant();
         newSelectedPlant.setAmount(selectedPlantDto.amount());
 
-//      newSelectedPlant.setDesign(mapFromDesignDto(selectedPlantDto.designDto());//todo design entity rechtbreien
         newSelectedPlant.setPlant(mapFromPlantDto(selectedPlantDto.plantDto()));
         return newSelectedPlant;
     }

@@ -5,7 +5,6 @@ import io.jsonwebtoken.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,7 +15,7 @@ import java.security.Key;
 
 @Service
 public class JwtUtil {
-    private static final String SECRET_KEY="31vzb5rnc08vbcpx1oqjy1xvnljj7obn392845ufdjjr9rfi8034jr";//todo: secret in application.properties zetten
+    private static final String SECRET_KEY="31vzb5rnc08vbcpx1oqjy1xvnljj7obn392845ufdjjr9rfi8034jr";
 
     private Key getSigningKey(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
