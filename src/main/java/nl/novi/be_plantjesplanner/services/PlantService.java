@@ -32,21 +32,19 @@ public class PlantService {
         this.imageService = imageService;
     }
 
-    //corresponds to postPlant request in the PlantController
     public Plant savePlant(Plant newPlant, MultipartFile newPlantAvatar) {
         if (plantRepository.existsByDutchNameIgnoreCase(newPlant.getDutchName())) {
             throw new DuplicateResourceException("Er bestaat al een plant met deze naam: " + newPlant.getDutchName());
         }
         if (newPlantAvatar!= null && !newPlantAvatar.isEmpty()) {
             ImageMetadata plantAvatarMetadata = imageService.saveImage(newPlantAvatar); //save new avatar file in local filesystem, and create metadata about the avatar file
-            newPlant.setPlantAvatar(plantAvatarMetadata);//save avatar metadata as part of the new plant
+            newPlant.setPlantAvatar(plantAvatarMetadata);//set avatar metadata as part of the new plant
         }
 
         Plant savedPlant = plantRepository.save(newPlant);
         return savedPlant;
     }
 
-    //corresponds to updatePlant request in the PlantController
     public Plant updatePlantById(Plant updatedPlant , MultipartFile updatedAvatarFile, Long id){
         Optional<Plant> plantOptional = plantRepository.findById(id);
         if(plantOptional.isPresent()){
@@ -117,14 +115,12 @@ public class PlantService {
             throw new RecordNotFoundException("geen plant gevonden met id "+ id);
         }
     }
-        //corresponds to GET all Plants request in the PlantController
     public List<Plant> getAllPlants()
     {
         List<Plant> foundPlants = plantRepository.findAll();
         return foundPlants;
     }
 
-    //search for plants by Dutch name
     public List<Plant> getPlantsByDutchName(String dutchName)
     {
         List<Plant> foundPlants = plantRepository.findByDutchNameContainingIgnoreCase(dutchName);

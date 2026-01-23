@@ -22,11 +22,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class SecurityConfig {
 
-  private final JwtRequestFilter jwtRequestFilter;
   private final CustomUserDetailsService userDetailsService;
 
-  public SecurityConfig(JwtRequestFilter jwtRequestFilter, CustomUserDetailsService userDetailsService){
-      this.jwtRequestFilter = jwtRequestFilter;
+  public SecurityConfig( CustomUserDetailsService userDetailsService){
       this.userDetailsService = userDetailsService;
   }
 
@@ -61,7 +59,10 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/plants/**").hasAnyRole("ADMIN","DESIGNER")
                         .requestMatchers("/plants/**").hasRole("ADMIN")
-                        .requestMatchers("/designs/me/**").hasRole("DESIGNER")
+                        .requestMatchers(HttpMethod.GET,    "/designs/me/**").hasRole("DESIGNER")
+                        .requestMatchers(HttpMethod.POST,   "/designs/me/**").hasRole("DESIGNER")
+                        .requestMatchers(HttpMethod.PATCH,  "/designs/me/**").hasRole("DESIGNER")
+                        .requestMatchers(HttpMethod.DELETE, "/designs/me/**").hasRole("DESIGNER")
                         .anyRequest().authenticated()//todo: op denyAll() zetten als alle endpoints klaar zijn
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -81,6 +82,8 @@ public class SecurityConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("*")
+                        .allowedHeaders("*")
+                        .exposedHeaders("Authorization")
                         .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
             }
         };

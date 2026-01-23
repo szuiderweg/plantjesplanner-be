@@ -2,21 +2,26 @@ package nl.novi.be_plantjesplanner.services;
 
 import nl.novi.be_plantjesplanner.entities.Design;
 import nl.novi.be_plantjesplanner.entities.Locale;
+import nl.novi.be_plantjesplanner.entities.Plant;
 import nl.novi.be_plantjesplanner.entities.User;
 import nl.novi.be_plantjesplanner.exceptions.RecordNotFoundException;
 import nl.novi.be_plantjesplanner.repositories.DesignRepository;
+import nl.novi.be_plantjesplanner.repositories.PlantRepository;
 import nl.novi.be_plantjesplanner.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class DesignService {
     private final DesignRepository designRepository;
     private final UserRepository userRepository;
+    private final PlantRepository plantRepository;
 
-    public DesignService(DesignRepository designRepository, UserRepository userRepository){
+    public DesignService(DesignRepository designRepository, UserRepository userRepository, PlantRepository plantRepository){
         this.designRepository = designRepository;
         this.userRepository = userRepository;
+        this.plantRepository = plantRepository;
     }
 
     public Design getDesignById(Long id){
@@ -34,7 +39,6 @@ public class DesignService {
         return design;
     }
 
-    @Transactional
     public Design updateDesignOfUser(String username, Design designUpdate){
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFoundException("gebruiker niet gevonden"));
         Design design = user.getDesign();
@@ -64,5 +68,49 @@ public class DesignService {
       }
         return design;
     }
+
+    //helper methods related to SelectedPlants of Design
+
+    //add a plant to a design
+    public Design addPlantToDesign(String username, Long plantId, int amount){
+        //find design that belongs to the user
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RecordNotFoundException("Gebruiker niet gevonden"));
+        Design design = user.getDesign();
+        if (design == null){
+            throw new RecordNotFoundException("geen tuinontwerp gevonden");
+        }
+
+        Plant plant =  plantRepository.findById(plantId)
+                .orElseThrow(() -> new RecordNotFoundException("Plant niet gevonden"));
+
+        design.addPlantToSelectedPlants(plant, amount);
+
+        return design;
+    }
+
+    //change the amount of a selectedPlant
+    public void updateSelectedPlantAmount(String username, Long selectedPlantId, int amount){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFoundException("Gebruiker niet gevonden"));
+
+        Design design = user.getDesign();
+        if (design == null){
+            throw new RecordNotFoundException("geen tuinontwerp gevonden");
+        }
+        design.updateAmountSelectedPlants(selectedPlantId, amount);
+    }
+
+    //remove a selectedPlant from design
+    public void removePlantFromMyDesign(String username, Long selectedPlantId){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFoundException("Gebruiker niet gevonden"));
+
+        Design design = user.getDesign();
+        if (design == null){
+            throw new RecordNotFoundException("geen tuinontwerp gevonden");
+        }
+        design.removeSelectedPlant(selectedPlantId);
+
+    }
+
 
 }

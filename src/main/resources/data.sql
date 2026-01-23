@@ -21,7 +21,7 @@ VALUES
 -- Insert Images
 INSERT INTO image_metadata (id, original_filename, stored_filename, upload_date_time)
 VALUES (1, 'klimroos.jpg', 'klimroos.jpg', '2025-04-28T20:45:00+02:00'),
-       (2, 'zonnebloem.jpg', 'zonnebloem.jpg', '2025-04-28T20:45:00+02:00'),
+       (2, 'zonnebloem.jpeg', 'zonnebloem.jpeg', '2025-04-28T20:45:00+02:00'),
        (3, 'Hosta-Plant.jpg', 'Hosta-Plant.jpg', '2025-04-28T20:45:00+02:00');
 
 
@@ -30,7 +30,7 @@ INSERT INTO plants (id, dutch_name, latin_name, description, height, footprint, 
 VALUES
     (1, 'Klimroos New Dawn', 'Rosa New Dawn', 'Zachte roze klimroos die lang wordt.', 1.5, 1.0, '#FFE4E1', 'ROZE', true, 1, 1, 1),
     (2, 'Zonnebloem', 'Helianthus annuus', 'Zonnige hoge bloem met groot hart.', 2.0, 0.5, '#FFD700', 'GEEL', true, 2, 2, 2),
-    (3, 'Hosta', 'Hosta sieboldiana', 'Schaduwminnende vaste plant met brede bladeren.', 0.6, 0.8, '#98FB98', 'GROEN', true, 3, 3, 3);
+    (3, 'Hosta', 'Hosta sieboldiana', 'Schaduwminnende vaste plant met brede bladeren.', 0.6, 0.8, '#CCCCFF', 'PAARS', true, 3, 3, 3);
 
 
 -- Insert Design
@@ -57,4 +57,5 @@ SELECT setval('blooming_calendars_id_seq', (SELECT MAX(id) FROM blooming_calenda
 SELECT setval('locales_id_seq', (SELECT MAX(id) FROM locales));
 SELECT setval('designs_id_seq', (SELECT MAX(id) FROM designs));
 SELECT setval('authorities_id_seq',(SELECT MAX(id) FROM authorities));
+SELECT setval('selected_plants_id_seq',(SELECT MAX(id) FROM selected_plants));
 -- SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
